@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late String email, password, name, roll, phone;
+  String? email, password, name, roll, phone;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -110,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         body: Center(
             child: SizedBox(
-                height: 250.0,
+                height: 600.0,
                 width: 300.0,
                 child: Column(
                   children: <Widget>[
@@ -119,44 +121,6 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25.0,
-                                    right: 25.0,
-                                    top: 20.0,
-                                    bottom: 5.0),
-                                child: SizedBox(
-                                  height: 50.0,
-                                  child: TextFormField(
-                                    decoration:
-                                        const InputDecoration(hintText: 'Name'),
-                                    validator: (value) => value!.isEmpty
-                                        ? 'Name is required'
-                                        : validateName(value),
-                                    onChanged: (value) {
-                                      name = value;
-                                    },
-                                  ),
-                                )),
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25.0,
-                                    right: 25.0,
-                                    top: 20.0,
-                                    bottom: 5.0),
-                                child: SizedBox(
-                                  height: 50.0,
-                                  child: TextFormField(
-                                    decoration: const InputDecoration(
-                                        hintText: 'Roll Number'),
-                                    validator: (value) => value!.isEmpty
-                                        ? 'Roll number is required'
-                                        : validateRoll(value),
-                                    onChanged: (value) {
-                                      roll = value;
-                                    },
-                                  ),
-                                )),
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: 25.0,
@@ -196,10 +160,14 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                   ),
                                 )),
+                            const SizedBox(
+                              height: 50,
+                            ),
                             InkWell(
                                 onTap: () {
                                   if (checkFields()) {
-                                    signIn(email, password);
+                                    signIn(email!, password!, roll!, name!,
+                                        phone!);
                                   }
                                 },
                                 child: Container(
@@ -216,59 +184,26 @@ class _LoginPageState extends State<LoginPage> {
                 ))));
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn(String email, String password, String roll, String name,
+      String phone) async {
+    print(email + password + roll + name);
     try {
       _showDialog(
           context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
-      User user = (await _auth.createUserWithEmailAndPassword(
-          email: email, password: password)) as User;
-      _dialog.hide();
-
-      try {
-        _showDialog(
-            context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
-        await users.doc(user.uid).set({
-          'id': user.uid,
-          'name': name,
-          'email': email,
-          'password': password
-          // ignore: avoid_print
-        }).then((value) => print("Registered"));
-
-        _dialog.hide();
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const MyHomePage(
-                      title: '',
-                    )));
-        showSuccess('Account created');
-      } catch (e) {
-        // ignore: avoid_print
-        print("abcdef" + e.toString());
-        _dialog.hide();
-        showError(e.toString());
-      }
-      // ignore: unnecessary_null_comparison
-      if (user != null) {
-        // ignore: deprecated_member_use
-        await FirebaseAuth.instance.currentUser!.updateProfile(
-          displayName: name,
-        );
-      } else {
-        showError('Something went wrong');
-      }
+      (await _auth.signInWithEmailAndPassword(
+          email: email, password: password));
     } catch (e) {
       _dialog.hide();
       showError(e.toString());
     }
+    _dialog.hide();
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const MyHomePage(
-                  title: '',
-                )));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => const MyHomePage(
+    //               title: '',
+    //             )));
   }
 
   validateName(String value) {
