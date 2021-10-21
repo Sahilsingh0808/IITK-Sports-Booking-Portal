@@ -112,6 +112,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: const BottomAppBar(
+          color: Colors.blueAccent,
+          child: SizedBox(
+            height: 26,
+            child: Text(
+              'Developed by Sahil Singh',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  decorationStyle: TextDecorationStyle.wavy,
+                  fontStyle: FontStyle.italic),
+            ),
+          ),
+          elevation: 5,
+        ),
         appBar: AppBar(
           title: const Text("Log in to your account"),
           leading: IconButton(

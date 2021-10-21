@@ -230,6 +230,21 @@ class _SOFState extends State<SOF> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: const BottomAppBar(
+        color: Colors.blueAccent,
+        child: SizedBox(
+          height: 26,
+          child: Text(
+            'Developed by Sahil Singh',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                decorationStyle: TextDecorationStyle.wavy,
+                fontStyle: FontStyle.italic),
+          ),
+        ),
+        elevation: 5,
+      ),
       appBar: AppBar(
         title: const Text("Fill in your compananions' details"),
         leading: IconButton(

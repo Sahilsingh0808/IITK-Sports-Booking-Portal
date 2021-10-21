@@ -74,8 +74,31 @@ class _BookSlotState extends State<BookSlot> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       home: Scaffold(
+        bottomNavigationBar: const BottomAppBar(
+          color: Colors.blueAccent,
+          child: SizedBox(
+            height: 26,
+            child: Text(
+              'Developed by Sahil Singh',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  decorationStyle: TextDecorationStyle.wavy,
+                  fontStyle: FontStyle.italic),
+            ),
+          ),
+          elevation: 5,
+        ),
+        appBar: AppBar(
+          title: const Text("Book your seat"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
         body: Column(
           children: [
             const SizedBox(

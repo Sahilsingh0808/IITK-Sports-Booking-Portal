@@ -78,6 +78,21 @@ class _MyHomePageState extends State<MyHomePage> {
       home: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
+          bottomNavigationBar: const BottomAppBar(
+            color: Colors.blueAccent,
+            child: SizedBox(
+              height: 26,
+              child: Text(
+                'Developed by Sahil Singh',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 20,
+                    decorationStyle: TextDecorationStyle.wavy,
+                    fontStyle: FontStyle.italic),
+              ),
+            ),
+            elevation: 5,
+          ),
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
