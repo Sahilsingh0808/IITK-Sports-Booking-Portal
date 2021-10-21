@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/main.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
@@ -110,6 +111,13 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const Text("Create your new account"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
         body: Center(
             child: SizedBox(
                 height: 600.0,
@@ -271,12 +279,8 @@ class _RegisterPageState extends State<RegisterPage> {
         }).then((value) => print("Registered"));
 
         _dialog.hide();
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const MyHomePage(
-                      title: '',
-                    )));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const Dashboard()));
         showSuccess('Account created');
       } catch (e) {
         // ignore: avoid_print

@@ -4,8 +4,10 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gnsdev/main.dart';
+import 'package:gnsdev/dashboard.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+
+import '../main.dart';
 
 void main() async {
   runApp(const LoginPage());
@@ -110,9 +112,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const Text("Log in to your account"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
         body: Center(
             child: SizedBox(
-                height: 600.0,
+                height: 300.0,
                 width: 300.0,
                 child: Column(
                   children: <Widget>[
@@ -166,8 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                             InkWell(
                                 onTap: () {
                                   if (checkFields()) {
-                                    signIn(email!, password!, roll!, name!,
-                                        phone!);
+                                    signIn(email!, password!);
                                   }
                                 },
                                 child: Container(
@@ -184,26 +192,21 @@ class _LoginPageState extends State<LoginPage> {
                 ))));
   }
 
-  Future<void> signIn(String email, String password, String roll, String name,
-      String phone) async {
-    print(email + password + roll + name);
+  Future<void> signIn(String email, String password) async {
+    print(email + password);
     try {
       _showDialog(
           context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
       (await _auth.signInWithEmailAndPassword(
           email: email, password: password));
+      _dialog.hide();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Dashboard()));
     } catch (e) {
       _dialog.hide();
       showError(e.toString());
     }
     _dialog.hide();
-
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => const MyHomePage(
-    //               title: '',
-    //             )));
   }
 
   validateName(String value) {

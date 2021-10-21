@@ -250,20 +250,18 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else {
-      if (_currentValue == 0) {
-      } else {
-        navigatorKey.currentState!.push(MaterialPageRoute(
-            builder: (context) => SOF(
-                  currentDate.day.toString() +
-                      "/" +
-                      currentDate.month.toString() +
-                      "/" +
-                      currentDate.year.toString(),
-                  _chosenValue!,
-                  _chosenValue2!,
-                  _currentValue.toString(),
-                )));
-      }
+      navigatorKey.currentState!.push(MaterialPageRoute(
+          builder: (context) => SOF(
+                currentDate.day.toString() +
+                    "_" +
+                    currentDate.month.toString() +
+                    "_" +
+                    currentDate.year.toString(),
+                _chosenValue!,
+                _chosenValue2!,
+                _currentValue.toString(),
+              )));
+
       //   try {
       //     await FirebaseFirestore.instance
       //         .collection("bookings")

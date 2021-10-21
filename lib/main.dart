@@ -2,11 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/authentication/login.dart';
 import 'package:gnsdev/authentication/regsiter.dart';
+import 'package:gnsdev/book.dart';
+import 'package:gnsdev/dashboard.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(const MyHomePage(
+    title: '',
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -20,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'GnS Portal',
       theme: ThemeData(
         // This is the theme of your application.
@@ -34,7 +39,8 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(
-          title: 'Games and Sports Council, IITK: Offline Registration Portal'),
+          title:
+              'Games and Sports Council, IITK: Registration Portal for Sports Activities'),
     );
   }
 }
@@ -66,94 +72,106 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              height: 50,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterPage()));
-                  },
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFF0029E2)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side:
-                                  const BorderSide(color: Color(0xFF0029E2))))),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Image.asset('assets/images/blank.png'),
-                          onPressed: () {},
-                        ),
-                        const Text(
-                          "REGISTER (new user)",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                      ])),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'GnS Portal',
+      home: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: const Text(
+                "Games and Sports Council, IITK: Registration Portal for Sports Activities"),
+          ),
+          body: Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 400,
+                  height: 50,
+                  child: Builder(builder: (context) {
+                    return ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterPage()));
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                const Color(0xFF0029E2)),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(
+                                        color: Color(0xFF0029E2))))),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Builder(builder: (context) {
+                                return const Text(
+                                  "REGISTER",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600),
+                                );
+                              }),
+                            ]));
+                  }),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SizedBox(
+                  width: 400,
+                  height: 50,
+                  child: Builder(builder: (context) {
+                    return ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()));
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                const Color(0xFF0029E2)),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(
+                                        color: Color(0xFF0029E2))))),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Builder(builder: (context) {
+                                return const Text(
+                                  "LOG IN",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600),
+                                );
+                              }),
+                            ]));
+                  }),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 40,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              height: 50,
-              child: ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFF0029E2)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side:
-                                  const BorderSide(color: Color(0xFF0029E2))))),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Image.asset('assets/images/blank.png'),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginPage()));
-                          },
-                        ),
-                        const Text(
-                          "LOG IN (existing user)",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                      ])),
-            ),
-          ],
+          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: _incrementCounter,
+          //   tooltip: 'Increment',
+          //   child: const Icon(Icons.add),
+          // ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
