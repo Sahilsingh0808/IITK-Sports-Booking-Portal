@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   String? email, password, name, roll, phone;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  bool showPassword = false;
 
   final formKey = GlobalKey<FormState>();
 
@@ -173,8 +174,20 @@ class _LoginPageState extends State<LoginPage> {
                                 child: SizedBox(
                                   height: 50.0,
                                   child: TextFormField(
-                                    obscureText: true,
-                                    decoration: const InputDecoration(
+                                    obscureText: !showPassword,
+                                    decoration: InputDecoration(
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              showPassword = !showPassword;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            showPassword
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                          ),
+                                        ),
                                         hintText: 'Password'),
                                     validator: (value) => value!.isEmpty
                                         ? 'Password is required'

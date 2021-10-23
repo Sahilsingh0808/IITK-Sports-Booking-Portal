@@ -25,7 +25,8 @@ class _BookSlotState extends State<BookSlot> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference bookings =
       FirebaseFirestore.instance.collection('bookings');
-  String? seats, data1, temp = "Confirm Seat";
+  String? data1, temp = "Confirm Seat";
+  int? seats;
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _textFieldController = TextEditingController();
@@ -35,12 +36,13 @@ class _BookSlotState extends State<BookSlot> {
   final navigatorKey = GlobalKey<NavigatorState>();
 
   Future<void> _selectDate(BuildContext context) async {
+    DateTime last = currentDate.add(const Duration(days: 2));
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: currentDate,
         initialDatePickerMode: DatePickerMode.day,
         firstDate: currentDate1,
-        lastDate: DateTime(2022));
+        lastDate: last);
     if (picked != null) {
       setState(() {
         currentDate = picked;
@@ -99,43 +101,74 @@ class _BookSlotState extends State<BookSlot> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Builder(builder: (context) {
-              return const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("You can book slots below"),
-              );
-            }),
-            Builder(builder: (context) {
-              return ElevatedButton(
-                onPressed: () => _selectDate(context),
-                child: Text(
-                    "${currentDate.day}/${currentDate.month}/${currentDate.year}"),
-              );
-            }),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<String>(
-                value: _chosenValue,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Builder(builder: (context) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("You can book slots below"),
+                );
+              }),
+              Builder(builder: (context) {
+                return ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  child: Text(
+                      "${currentDate.day}/${currentDate.month}/${currentDate.year}"),
+                );
+              }),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButton<String>(
+                  value: _chosenValue,
+                  //elevation: 5,
+                  style: const TextStyle(color: Colors.black),
+
+                  items: <String>[
+                    'Football Main Ground',
+                    'Hockey Main Ground',
+                    'Squash 1',
+                    'Squash 2',
+                    'Squash 3',
+                    'P.E.',
+                    'Cricket Main Ground',
+                    'VolleyBall Main Ground',
+                    'BasketBall Main Ground',
+                    'Badminton Main Ground',
+                    'Tennis Main Ground'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  hint: const Text(
+                    "Please choose a sports ground",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onChanged: (value) {
+                    assert(value != null);
+                    setState(() {
+                      _chosenValue = value!;
+                    });
+                  },
+                ),
+              ),
+              DropdownButton<String>(
+                value: _chosenValue2,
                 //elevation: 5,
                 style: const TextStyle(color: Colors.black),
 
                 items: <String>[
-                  'Football Main Ground',
-                  'Hockey Main Ground',
-                  'Squash 1',
-                  'Squash 2',
-                  'Squash 3',
-                  'P.E.',
-                  'Cricket Main Ground',
-                  'VolleyBall Main Ground',
-                  'BasketBall Main Ground',
-                  'Badminton Main Ground',
-                  'Tennis Main Ground'
+                  '6-7 AM',
+                  '7-8 AM',
+                  '8-9 AM',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -143,7 +176,7 @@ class _BookSlotState extends State<BookSlot> {
                   );
                 }).toList(),
                 hint: const Text(
-                  "Please choose a sports ground",
+                  "Please choose a time slot",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -152,90 +185,83 @@ class _BookSlotState extends State<BookSlot> {
                 onChanged: (value) {
                   assert(value != null);
                   setState(() {
-                    _chosenValue = value!;
+                    _chosenValue2 = value!;
                   });
                 },
               ),
-            ),
-            DropdownButton<String>(
-              value: _chosenValue2,
-              //elevation: 5,
-              style: const TextStyle(color: Colors.black),
-
-              items: <String>[
-                '6-7 AM',
-                '7-8 AM',
-                '8-9 AM',
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
+              const SizedBox(
+                height: 50,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text("Number of People you will accompany:"),
+              ),
+              NumberPicker(
+                value: _currentValue,
+                minValue: 0,
+                maxValue: 10,
+                step: 1,
+                haptics: true,
+                onChanged: (value) => setState(() {
+                  _currentValue = value;
+                  if (_currentValue > 0) {
+                    temp = "Next";
+                  } else {
+                    temp = "Confirm Seat";
+                  }
+                }),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.black26),
+                ),
+              ),
+              Text('Selected Number of People: $_currentValue'),
+              const SizedBox(
+                height: 50,
+              ),
+              Builder(builder: (context) {
+                return InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  splashColor: Colors.green,
+                  onTap: () {
+                    check(_chosenValue, _chosenValue2);
+                  },
+                  child: Ink(
+                      color: Colors.greenAccent,
+                      width: 200,
+                      height: 50,
+                      child: const Center(
+                          child: Text(
+                        'Check availabilty',
+                        textScaleFactor: 1,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ))),
                 );
-              }).toList(),
-              hint: const Text(
-                "Please choose a time slot",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
-              ),
-              onChanged: (value) {
-                assert(value != null);
-                setState(() {
-                  _chosenValue2 = value!;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text("Number of People you will accompany:"),
-            ),
-            NumberPicker(
-              value: _currentValue,
-              minValue: 0,
-              maxValue: 10,
-              step: 1,
-              haptics: true,
-              onChanged: (value) => setState(() {
-                _currentValue = value;
-                if (_currentValue > 0) {
-                  temp = "Next";
-                } else {
-                  temp = "Confirm Seat";
-                }
               }),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.black26),
+              const SizedBox(
+                height: 50,
               ),
-            ),
-            Text('Selected Number of People: $_currentValue'),
-            const SizedBox(
-              height: 50,
-            ),
-            Builder(builder: (context) {
-              return InkWell(
-                borderRadius: BorderRadius.circular(10),
-                splashColor: Colors.green,
-                onTap: () {
-                  validate(_chosenValue, _chosenValue2);
-                },
-                child: Ink(
-                    color: Colors.greenAccent,
-                    width: 200,
-                    height: 50,
-                    child: Center(
-                        child: Text(
-                      temp!,
-                      textScaleFactor: 2,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ))),
-              );
-            }),
-          ],
+              Builder(builder: (context) {
+                return InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  splashColor: Colors.green,
+                  onTap: () {
+                    validate(_chosenValue, _chosenValue2);
+                  },
+                  child: Ink(
+                      color: Colors.greenAccent,
+                      width: 200,
+                      height: 50,
+                      child: Center(
+                          child: Text(
+                        temp!,
+                        textScaleFactor: 2,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ))),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -307,6 +333,82 @@ class _BookSlotState extends State<BookSlot> {
       //   } catch (e) {
       //     showError(e.toString());
       //   }
+    }
+  }
+
+  showSuccess(String tittle, String successmessage) {
+    AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        showCloseIcon: true,
+        title: tittle,
+        desc: successmessage,
+        btnOkColor: const Color(0xFF0029E2),
+        btnOkOnPress: () {
+          debugPrint('OnClcik');
+        },
+        btnOkIcon: Icons.check_circle,
+        onDissmissCallback: (type) {
+          debugPrint('Dialog Dissmiss from callback $type');
+        }).show();
+  }
+
+  Future<void> check(chosenValue, chosenValue2) async {
+    if (chosenValue == null && chosenValue2 == null) {
+      print("hello");
+      Fluttertoast.showToast(
+        msg: "Please select ground and time slot",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+      // ignore: prefer_const_constructors
+      // _messangerKey.currentState!.showSnackBar(SnackBar(
+      //   content: const Text("Please select ground and time slot"),
+      // ));
+    } else if (chosenValue == null && chosenValue2 != null) {
+      Fluttertoast.showToast(
+        msg: "Please select ground",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (chosenValue2 == null && chosenValue != null) {
+      Fluttertoast.showToast(
+        msg: "Please select time slot",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else {
+      try {
+        var collection = FirebaseFirestore.instance.collection('bookings');
+        var docSnapshot = await collection
+            .doc('Football Main Ground')
+            .collection('21_10_2021')
+            .doc('6-7 AM')
+            .get();
+        if (docSnapshot.exists) {
+          Map<String, dynamic>? data = docSnapshot.data();
+          // You can then retrieve the value from the Map like this:
+          seats = data?['seats'];
+          if (seats! < 0) {
+            showError("No seats available");
+          } else {
+            showSuccess(
+                "Slot Availabilty", "Available seats: " + seats.toString());
+          }
+        } else {
+          showError("No slots available");
+        }
+      } catch (e) {
+        showError(e.toString());
+      }
     }
   }
 }

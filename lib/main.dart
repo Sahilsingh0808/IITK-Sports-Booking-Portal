@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gnsdev/authentication/independentnumber.dart';
 import 'package:gnsdev/authentication/login.dart';
+import 'package:gnsdev/authentication/registercont.dart';
 import 'package:gnsdev/authentication/regsiter.dart';
 import 'package:gnsdev/book.dart';
 import 'package:gnsdev/dashboard.dart';
@@ -8,9 +10,7 @@ import 'package:gnsdev/dashboard.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyHomePage(
-    title: '',
-  ));
+  runApp(const IndependentNumber());
 }
 
 class MyApp extends StatefulWidget {

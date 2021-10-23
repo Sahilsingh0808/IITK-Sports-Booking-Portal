@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/book.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:http/http.dart' as http;
 
 // class Company extends StatefulWidget {
 //   final String date, ground, time, people;
@@ -54,8 +56,61 @@ class _SOFState extends State<SOF> {
   List<PersonEntry> entries = [];
   late SimpleFontelicoProgressDialog _dialog;
   final User? _auth = FirebaseAuth.instance.currentUser;
+  String? userEmail;
 
   var cards = <Card>[];
+
+  Future sendEmail(
+      {required String name,
+      required String email,
+      required String subject,
+      required String message}) async {
+    const String serviceID = 'service_t1yuekz';
+    const String templateID = 'template_ydlj5s4';
+    const String userID = 'user_Rgq3HtaCMu8ckNNNPVR0T';
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'service_id': serviceID,
+          'template_id': templateID,
+          'user_id': userID,
+          'template_params': {
+            'user_email': email,
+            'user_subject': subject,
+            'user_message': message,
+            'reply_to': 'gns.offline@gmail.com',
+          }
+        }));
+    // ignore: avoid_print
+    print(response.body);
+  }
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  // static sendRegistrationNotification(String email) async {
+  //   Map<String, String> headers = Map();
+  //   headers["Authorization"] = "Bearer ";
+  //   headers["Content-Type"] = "application/json";
+
+  //   Uri url = 'https://api.sendgrid.com/v3/mail/send' as Uri;
+  //   var response = await http.post(url,
+  //       headers: headers,
+  //       body:
+  //           "{\n          \"personalizations\": [\n            {\n              \"to\": [\n                {\n                  \"email\": \"sahilsingh20@iitk.ac.in\"\n                },\n                {\n                  \"email\": \"\"\n                }\n              ]\n            }\n          ],\n          \"from\": {\n            \"email\": \"sahilsingh08062001@gmail.com\"\n          },\n          \"subject\": \"New user registration\",\n          \"content\": [\n            {\n              \"type\": \"text\/plain\",\n              \"value\": \"New user register: $email\"\n            }\n          ]\n        }");
+  //   print('Response status: ${response.statusCode}');
+  //   print('Response body: ${response.body}');
+  // }
+
+  void inputData() {
+    final User? user = auth.currentUser;
+    setState(() {
+      userEmail = user?.email;
+    });
+    // here you write the codes to input the data into firestore
+  }
 
   Card createCard() {
     var nameController = TextEditingController();
@@ -123,6 +178,7 @@ class _SOFState extends State<SOF> {
     if (int.parse(widget.people) == 0) {
       getSeats(widget.date, widget.ground, widget.people, widget.time);
     }
+    inputData();
   }
 
   showSuccess(String successmessage) {
@@ -349,6 +405,18 @@ class _SOFState extends State<SOF> {
         print(a);
 
         try {
+          var collection = FirebaseFirestore.instance.collection('users');
+          var docSnapshot = await collection
+              .doc('Football Main Ground')
+              .collection('21_10_2021')
+              .doc('6-7 AM')
+              .get();
+          if (docSnapshot.exists) {
+            Map<String, dynamic>? data = docSnapshot.data();
+
+            // You can then retrieve the value from the Map like this:
+            seats = data?['seats'];
+          }
           // _showDialog(context, SimpleFontelicoProgressDialogType.hurricane,
           //     'Hurricane');
           await FirebaseFirestore.instance
@@ -357,12 +425,59 @@ class _SOFState extends State<SOF> {
               .collection('21_10_2021')
               .doc('6-7 AM')
               .update({'seats': a});
+
+          var mails;
+
+          // for (int i = 0; i < mailTECs.length; i++) {
+          //   mails[i] += mailTECs[i].text + "_";
+          // }
+          // mails[mailTECs.length] = userEmail;
+
+          // final mailer = Mailer(
+          //     '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');
+          // const toAddress = Address('sahilsingh20@iitk.ac.in');
+          // const fromAddress = Address('sahilsingh08062001@gmail.com');
+          // final content = Content(
+          //     'text/plain',
+          //     'Your seat for ' +
+          //         widget.ground +
+          //         ' on ' +
+          //         widget.date +
+          //         ' at ' +
+          //         widget.time +
+          //         ' has been booked.\n');
+          // const subject = 'Booking Confirmation for IITK sports facility';
+          // const personalization = Personalization([toAddress]);
+          // try {
+          //   final email = Email([personalization], fromAddress, subject,
+          //       content: [content]);
+          //   mailer.send(email).then((result) {
+          //     // ...
+          //   });
+          // } catch (e) {
+          //   showError("Mail could not be sent");
+          // }
+
+          sendEmail(
+              name: 'Games and Sports Council, IITK',
+              email: userEmail!,
+              message: 'Your seat for ' +
+                  widget.ground +
+                  ' on ' +
+                  widget.date +
+                  ' at ' +
+                  widget.time +
+                  ' has been booked.',
+              subject: 'Booking Confirmation for Sports Facilities IITK');
+
+          showSuccess('Booking Confirmed');
+
           // _dialog.hide();
         } catch (e) {
           showError(e.toString());
         }
         // _dialog.hide();
-        showSuccess("Booking Confirmed");
+        // showSuccess("Booking Confirmed");
         // _dialog.hide();
       } else {
         // _dialog.hide();
