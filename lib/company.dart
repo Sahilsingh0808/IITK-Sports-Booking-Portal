@@ -8,6 +8,8 @@ import 'package:gnsdev/book.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:http/http.dart' as http;
 
+import 'authentication/registercont.dart';
+
 // class Company extends StatefulWidget {
 //   final String date, ground, time, people;
 //   const Company(this.date, this.ground, this.time, this.people);
@@ -371,6 +373,7 @@ class _SOFState extends State<SOF> {
       String date, String ground, String people, String time) async {
     var roll1;
     var seats;
+    var emailList;
 
     var collection = FirebaseFirestore.instance.collection('bookings');
 
@@ -384,7 +387,6 @@ class _SOFState extends State<SOF> {
 
       // You can then retrieve the value from the Map like this:
       seats = data?['seats'];
-      roll1 = data?['Roll No'];
       // print((seats) - int.parse(people));
       final nameD = _auth!.displayName;
 
@@ -405,7 +407,7 @@ class _SOFState extends State<SOF> {
         print(a);
 
         try {
-          var collection = FirebaseFirestore.instance.collection('users');
+          var collection = FirebaseFirestore.instance.collection('bookings');
           var docSnapshot = await collection
               .doc('Football Main Ground')
               .collection('21_10_2021')
@@ -416,17 +418,52 @@ class _SOFState extends State<SOF> {
 
             // You can then retrieve the value from the Map like this:
             seats = data?['seats'];
+            emailList = data?['email'];
+            print("Email List" + emailList);
           }
           // _showDialog(context, SimpleFontelicoProgressDialogType.hurricane,
           //     'Hurricane');
+
+          String accompanyDetails = "";
+          for (int i = 0; i < int.parse(widget.people); i++) {
+            accompanyDetails += nameTECs[i].text +
+                "%" +
+                rollTECs[i].text +
+                "%" +
+                mailTECs[i].text +
+                "%" +
+                phoneTECs[i].text +
+                "%";
+            accompanyDetails += "\n";
+          }
+
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(userEmail)
+              .collection('user bookings')
+              .doc('Booking ' + ground + " " + date + " " + time)
+              .set({
+            'ground': ground,
+            'date': date,
+            'slot': time,
+            'accompany': widget.people,
+            'accompany details': accompanyDetails
+          });
+
+          var tempEmail = emailList;
+          for (int i = 0; i < int.parse(widget.people); i++) {
+            tempEmail += mailTECs[i].text + "%";
+          }
+          tempEmail += userEmail;
           await FirebaseFirestore.instance
               .collection("bookings")
-              .doc('Football Main Ground')
+              .doc("Football Main Ground")
               .collection('21_10_2021')
               .doc('6-7 AM')
-              .update({'seats': a});
-
-          var mails;
+              .update({
+            'seats': a,
+            'email': tempEmail,
+          });
 
           // for (int i = 0; i < mailTECs.length; i++) {
           //   mails[i] += mailTECs[i].text + "_";
@@ -458,6 +495,7 @@ class _SOFState extends State<SOF> {
           //   showError("Mail could not be sent");
           // }
 
+          //email sent to parent user
           sendEmail(
               name: 'Games and Sports Council, IITK',
               email: userEmail!,
@@ -469,6 +507,23 @@ class _SOFState extends State<SOF> {
                   widget.time +
                   ' has been booked.',
               subject: 'Booking Confirmation for Sports Facilities IITK');
+
+          //email sent to daughter users(s)
+          for (int i = 0; i < int.parse(widget.people); i++) {
+            print("Sending Email to users");
+            print(mailTECs[i].text);
+            sendEmail(
+                name: 'Games and Sports Council, IITK',
+                email: mailTECs[i].text,
+                message: userEmail! +
+                    'has booked your seat for ' +
+                    widget.ground +
+                    ' on ' +
+                    widget.date +
+                    ' at ' +
+                    widget.time,
+                subject: 'Booking Confirmation for Sports Facilities IITK');
+          }
 
           showSuccess('Booking Confirmed');
 

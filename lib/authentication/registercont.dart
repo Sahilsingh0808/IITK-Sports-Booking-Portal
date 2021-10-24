@@ -162,12 +162,7 @@ class _RegisterContState extends State<RegisterCont> {
       }
       if (moveAhead == true) {
         inputData();
-        // await FirebaseFirestore.instance
-        //       .collection("users")
-        //       .doc(userEmail)
-        //       .collection('user bookings')
-        //       .doc('Booking '+)
-        //       .update({'seats': a});
+       
 
         for (int i = 0; i < widget.people; i++) {
           await users.doc(entries[i].mail).set({

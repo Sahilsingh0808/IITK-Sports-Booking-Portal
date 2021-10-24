@@ -10,7 +10,9 @@ import 'package:gnsdev/dashboard.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const IndependentNumber());
+  runApp(const MyHomePage(
+    title: 'Sports Facility Booking, IITK',
+  ));
 }
 
 class MyApp extends StatefulWidget {

@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'company.dart';
 
 class BookSlot extends StatefulWidget {
@@ -19,6 +20,7 @@ class BookSlot extends StatefulWidget {
 
 class _BookSlotState extends State<BookSlot> {
   DateTime currentDate = DateTime.now();
+  late SimpleFontelicoProgressDialog _dialog;
   DateTime currentDate1 = DateTime.now();
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -102,43 +104,74 @@ class _BookSlotState extends State<BookSlot> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Builder(builder: (context) {
-                return const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("You can book slots below"),
-                );
-              }),
-              Builder(builder: (context) {
-                return ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text(
-                      "${currentDate.day}/${currentDate.month}/${currentDate.year}"),
-                );
-              }),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButton<String>(
-                  value: _chosenValue,
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Builder(builder: (context) {
+                  return const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("You can book slots below"),
+                  );
+                }),
+                Builder(builder: (context) {
+                  return ElevatedButton(
+                    onPressed: () => _selectDate(context),
+                    child: Text(
+                        "${currentDate.day}/${currentDate.month}/${currentDate.year}"),
+                  );
+                }),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<String>(
+                    value: _chosenValue,
+                    //elevation: 5,
+                    style: const TextStyle(color: Colors.black),
+
+                    items: <String>[
+                      'Football Main Ground',
+                      'Hockey Main Ground',
+                      'Squash 1',
+                      'Squash 2',
+                      'Squash 3',
+                      'P.E.',
+                      'Cricket Main Ground',
+                      'VolleyBall Main Ground',
+                      'BasketBall Main Ground',
+                      'Badminton Main Ground',
+                      'Tennis Main Ground'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    hint: const Text(
+                      "Please choose a sports ground",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    onChanged: (value) {
+                      assert(value != null);
+                      setState(() {
+                        _chosenValue = value!;
+                      });
+                    },
+                  ),
+                ),
+                DropdownButton<String>(
+                  value: _chosenValue2,
                   //elevation: 5,
                   style: const TextStyle(color: Colors.black),
 
                   items: <String>[
-                    'Football Main Ground',
-                    'Hockey Main Ground',
-                    'Squash 1',
-                    'Squash 2',
-                    'Squash 3',
-                    'P.E.',
-                    'Cricket Main Ground',
-                    'VolleyBall Main Ground',
-                    'BasketBall Main Ground',
-                    'Badminton Main Ground',
-                    'Tennis Main Ground'
+                    '6-7 AM',
+                    '7-8 AM',
+                    '8-9 AM',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -146,7 +179,7 @@ class _BookSlotState extends State<BookSlot> {
                     );
                   }).toList(),
                   hint: const Text(
-                    "Please choose a sports ground",
+                    "Please choose a time slot",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -155,112 +188,83 @@ class _BookSlotState extends State<BookSlot> {
                   onChanged: (value) {
                     assert(value != null);
                     setState(() {
-                      _chosenValue = value!;
+                      _chosenValue2 = value!;
                     });
                   },
                 ),
-              ),
-              DropdownButton<String>(
-                value: _chosenValue2,
-                //elevation: 5,
-                style: const TextStyle(color: Colors.black),
-
-                items: <String>[
-                  '6-7 AM',
-                  '7-8 AM',
-                  '8-9 AM',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                const SizedBox(
+                  height: 50,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Number of People you will accompany:"),
+                ),
+                NumberPicker(
+                  value: _currentValue,
+                  minValue: 0,
+                  maxValue: 10,
+                  step: 1,
+                  haptics: true,
+                  onChanged: (value) => setState(() {
+                    _currentValue = value;
+                    if (_currentValue > 0) {
+                      temp = "Next";
+                    } else {
+                      temp = "Confirm Seat";
+                    }
+                  }),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.black26),
+                  ),
+                ),
+                Text('Selected Number of People: $_currentValue'),
+                const SizedBox(
+                  height: 50,
+                ),
+                Builder(builder: (context) {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    splashColor: Colors.green,
+                    onTap: () {
+                      check(_chosenValue, _chosenValue2);
+                    },
+                    child: Ink(
+                        color: Colors.greenAccent,
+                        width: 200,
+                        height: 50,
+                        child: const Center(
+                            child: Text(
+                          'Check availabilty',
+                          textScaleFactor: 1,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ))),
                   );
-                }).toList(),
-                hint: const Text(
-                  "Please choose a time slot",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                ),
-                onChanged: (value) {
-                  assert(value != null);
-                  setState(() {
-                    _chosenValue2 = value!;
-                  });
-                },
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Number of People you will accompany:"),
-              ),
-              NumberPicker(
-                value: _currentValue,
-                minValue: 0,
-                maxValue: 10,
-                step: 1,
-                haptics: true,
-                onChanged: (value) => setState(() {
-                  _currentValue = value;
-                  if (_currentValue > 0) {
-                    temp = "Next";
-                  } else {
-                    temp = "Confirm Seat";
-                  }
                 }),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.black26),
+                const SizedBox(
+                  height: 50,
                 ),
-              ),
-              Text('Selected Number of People: $_currentValue'),
-              const SizedBox(
-                height: 50,
-              ),
-              Builder(builder: (context) {
-                return InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  splashColor: Colors.green,
-                  onTap: () {
-                    check(_chosenValue, _chosenValue2);
-                  },
-                  child: Ink(
-                      color: Colors.greenAccent,
-                      width: 200,
-                      height: 50,
-                      child: const Center(
-                          child: Text(
-                        'Check availabilty',
-                        textScaleFactor: 1,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))),
-                );
-              }),
-              const SizedBox(
-                height: 50,
-              ),
-              Builder(builder: (context) {
-                return InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  splashColor: Colors.green,
-                  onTap: () {
-                    validate(_chosenValue, _chosenValue2);
-                  },
-                  child: Ink(
-                      color: Colors.greenAccent,
-                      width: 200,
-                      height: 50,
-                      child: Center(
-                          child: Text(
-                        temp!,
-                        textScaleFactor: 2,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ))),
-                );
-              }),
-            ],
+                Builder(builder: (context) {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    splashColor: Colors.green,
+                    onTap: () {
+                      validate(_chosenValue, _chosenValue2);
+                    },
+                    child: Ink(
+                        color: Colors.greenAccent,
+                        width: 200,
+                        height: 50,
+                        child: Center(
+                            child: Text(
+                          temp!,
+                          textScaleFactor: 2,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ))),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
       ),

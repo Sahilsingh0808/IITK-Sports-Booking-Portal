@@ -561,7 +561,7 @@ class _RegisterPageState extends State<RegisterPage> {
         }).then((value) => print("Registered"));
 
         _dialog.hide();
-        if (category == 'student') {
+        if (category == 'Student') {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const Dashboard()));
         } else {
