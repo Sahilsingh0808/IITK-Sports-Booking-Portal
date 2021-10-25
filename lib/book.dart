@@ -300,6 +300,56 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else {
+      String? userEmail = '';
+      var list;
+      try {
+        final User? user = FirebaseAuth.instance.currentUser;
+        setState(() {
+          userEmail = user?.email;
+        });
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userEmail)
+            .collection("user bookings")
+            .get();
+        list = querySnapshot.docs;
+      } catch (e) {
+        showError(e.toString());
+      }
+
+      //check if user already booked same slot or same ground on same day
+      for (var res in list) {
+        String date = res.data()["date"];
+        String ground = res.data()["ground"];
+        String time = res.data()["slot"];
+        print(date + " " + ground + " " + time);
+        if (date ==
+                currentDate.day.toString() +
+                    "_" +
+                    currentDate.month.toString() +
+                    "_" +
+                    currentDate.year.toString() &&
+            ground == chosenValue) {
+          Fluttertoast.showToast(
+            msg: "You have already booked this ground on this day",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+          );
+          return;
+        } else if (time == chosenValue2.toString()) {
+          Fluttertoast.showToast(
+            msg: "You have already booked this slot on this day",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+          );
+          return;
+        }
+      }
+
       navigatorKey.currentState!.push(MaterialPageRoute(
           builder: (context) => SOF(
                 currentDate.day.toString() +
@@ -387,28 +437,77 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else {
+      String? userEmail = '';
+      var list;
       try {
-        var collection = FirebaseFirestore.instance.collection('bookings');
-        var docSnapshot = await collection
-            .doc('Football Main Ground')
-            .collection('21_10_2021')
-            .doc('6-7 AM')
+        final User? user = FirebaseAuth.instance.currentUser;
+        setState(() {
+          userEmail = user?.email;
+        });
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userEmail)
+            .collection("user bookings")
             .get();
-        if (docSnapshot.exists) {
-          Map<String, dynamic>? data = docSnapshot.data();
-          // You can then retrieve the value from the Map like this:
-          seats = data?['seats'];
-          if (seats! < 0) {
-            showError("No seats available");
-          } else {
-            showSuccess(
-                "Slot Availabilty", "Available seats: " + seats.toString());
-          }
-        } else {
-          showError("No slots available");
-        }
+        list = querySnapshot.docs;
       } catch (e) {
         showError(e.toString());
+      }
+
+      //check if user already booked same slot or same ground on same day
+      for (var res in list) {
+        String date = res.data()["date"];
+        String ground = res.data()["ground"];
+        String time = res.data()["slot"];
+        print(date + " " + ground + " " + time);
+        if (date ==
+                currentDate.day.toString() +
+                    "_" +
+                    currentDate.month.toString() +
+                    "_" +
+                    currentDate.year.toString() &&
+            ground == chosenValue) {
+          Fluttertoast.showToast(
+            msg: "You have already booked this ground on this day",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+          );
+          return;
+        } else if (time == chosenValue2.toString()) {
+          Fluttertoast.showToast(
+            msg: "You have already booked this slot on this day",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+          );
+          return;
+        }
+        try {
+          var collection = FirebaseFirestore.instance.collection('bookings');
+          var docSnapshot = await collection
+              .doc('Football Main Ground')
+              .collection('21_10_2021')
+              .doc('6-7 AM')
+              .get();
+          if (docSnapshot.exists) {
+            Map<String, dynamic>? data = docSnapshot.data();
+            // You can then retrieve the value from the Map like this:
+            seats = data?['seats'];
+            if (seats! < 0) {
+              showError("No seats available");
+            } else {
+              showSuccess(
+                  "Slot Availabilty", "Available seats: " + seats.toString());
+            }
+          } else {
+            showError("No slots available");
+          }
+        } catch (e) {
+          showError(e.toString());
+        }
       }
     }
   }

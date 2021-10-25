@@ -475,12 +475,26 @@ class _DashboardState extends State<Dashboard> {
       String important, String accDetails) {
     String desc1 = "";
     List<String> temp = accDetails.split('%');
+    for (int i = 0; i < temp.length; i++) {
+      print(temp[i] + "__");
+    }
     if (int.parse(id) == 0 || accDetails == "") {
       desc1 = "Not Available";
     } else {
-      for (int i = 0; i < temp.length; i += 4) {
-        desc1 += temp[i] + "(" + temp[i + 1] + ") ; ";
+      for (int i = 0; i < temp.length; i++) {
+        Pattern pattern =
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        RegExp regex = RegExp(pattern.toString());
+        if (regex.hasMatch(temp[i])) {
+          desc1 += temp[i] + "; ";
+        }
       }
+      // for (int i = 0; i < temp.length; i += 4) {
+      //   if (i >= temp.length) {
+      //     break;
+      //   }
+      //   desc1 += temp[i] + "(" + temp[i + 1] + ") ; ";
+      // }
     }
 
     AwesomeDialog(
@@ -538,7 +552,7 @@ class _DashboardState extends State<Dashboard> {
         title: 'Warning',
         btnOkColor: const Color(0xFF0029E2),
         btnCancelColor: const Color(0xFF353B57),
-        desc: 'Are you sure you want to delete this note?',
+        desc: 'Are you sure you want to delete this booking?',
         btnCancelOnPress: () {},
         onDissmissCallback: (type) {
           debugPrint('Dialog Dissmiss from callback $type');

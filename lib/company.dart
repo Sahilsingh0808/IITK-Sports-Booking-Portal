@@ -56,6 +56,7 @@ class _SOFState extends State<SOF> {
   var rollTECs = <TextEditingController>[];
   var mailTECs = <TextEditingController>[];
   var phoneTECs = <TextEditingController>[];
+  List<bool> isPresent = [];
   List<PersonEntry> entries = [];
   late SimpleFontelicoProgressDialog _dialog;
   final User? _auth = FirebaseAuth.instance.currentUser;
@@ -376,6 +377,37 @@ class _SOFState extends State<SOF> {
     var roll1;
     var seats;
     var emailList;
+
+    if (int.parse(widget.people) > 0) {
+      setState(() {
+        for (int i = 0; i < mailTECs.length; i++) {
+          isPresent.add(false);
+        }
+      });
+
+      final db = FirebaseFirestore.instance;
+      var result = await db.collection('users').get();
+      for (var res in result.docs) {
+        print("RES");
+        for (int j = 0; j < mailTECs.length; j++) {
+          print("Jack");
+          if (res.id.toString() == mailTECs[j].text) {
+            setState(() {
+              isPresent[j] = true;
+            });
+          }
+        }
+      }
+
+      for (int i = 0; i < mailTECs.length; i++) {
+        if (isPresent[i] == false) {
+          showError("User " +
+              mailTECs[i].text +
+              " is not registered. Please register first to continue.");
+          return;
+        }
+      }
+    }
 
     var collection = FirebaseFirestore.instance.collection('bookings');
 
