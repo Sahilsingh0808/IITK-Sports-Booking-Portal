@@ -29,14 +29,11 @@ class _BookSlotState extends State<BookSlot> {
       FirebaseFirestore.instance.collection('bookings');
   String? data1, temp = "Confirm Seat";
   int? seats;
-
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _textFieldController = TextEditingController();
-
   String? _chosenValue, _chosenValue2, valueText;
   late int _currentValue = 0;
   final navigatorKey = GlobalKey<NavigatorState>();
-
   Future<void> _selectDate(BuildContext context) async {
     DateTime last = currentDate.add(const Duration(days: 2));
     final DateTime? picked = await showDatePicker(

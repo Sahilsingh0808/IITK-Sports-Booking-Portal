@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/book.dart';
+import 'package:gnsdev/dashboard.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:http/http.dart' as http;
 
@@ -194,16 +195,13 @@ class _SOFState extends State<SOF> {
         desc: successmessage,
         btnOkColor: const Color(0xFF0029E2),
         btnOkOnPress: () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const BookSlot(
-                        title: '',
-                      )));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Dashboard()));
         },
         btnOkIcon: Icons.check_circle,
         onDissmissCallback: (type) {
-          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Dashboard()));
         }).show();
   }
 
@@ -307,7 +305,8 @@ class _SOFState extends State<SOF> {
         title: const Text("Fill in your compananions' details"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Dashboard())),
         ),
       ),
       body: Column(
@@ -341,7 +340,10 @@ class _SOFState extends State<SOF> {
                 ),
                 RaisedButton(
                     child: const Text('Cancel'),
-                    onPressed: () => Navigator.pop(context)),
+                    onPressed: () => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Dashboard()))),
               ],
             ),
           )
@@ -441,7 +443,7 @@ class _SOFState extends State<SOF> {
               .collection("users")
               .doc(userEmail)
               .collection('user bookings')
-              .doc('Booking ' + ground + " " + date + " " + time)
+              .doc('Booking%%' + ground + "%%" + date + "%%" + time)
               .set({
             'ground': ground,
             'date': date,
