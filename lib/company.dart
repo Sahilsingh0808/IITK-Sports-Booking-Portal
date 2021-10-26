@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/book.dart';
 import 'package:gnsdev/dashboard.dart';
+import 'package:gnsdev/profile.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:http/http.dart' as http;
 
 import 'authentication/registercont.dart';
+import 'info.dart';
 
 // class Company extends StatefulWidget {
 //   final String date, ground, time, people;
@@ -286,89 +288,112 @@ class _SOFState extends State<SOF> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: const BottomAppBar(
-        color: Colors.blueAccent,
-        child: SizedBox(
-          height: 26,
-          child: Text(
-            'Developed by Sahil Singh',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                decorationStyle: TextDecorationStyle.wavy,
-                fontStyle: FontStyle.italic),
-          ),
-        ),
-        elevation: 5,
-      ),
-      appBar: AppBar(
-        title: const Text("Fill in your compananions' details"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const Dashboard())),
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              itemCount: cards.length,
-              itemBuilder: (BuildContext context, int index) {
-                return cards[index];
-              },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        bottomNavigationBar: const BottomAppBar(
+          color: Colors.blueAccent,
+          child: SizedBox(
+            height: 26,
+            child: Text(
+              'Developed by Sahil Singh',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  decorationStyle: TextDecorationStyle.wavy,
+                  fontStyle: FontStyle.italic),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  child: const Text('Add New'),
-                  onPressed: () => setState(() {
-                    if (cards.length < int.parse(widget.people)) {
-                      cards.add(createCard());
-                    } else {
-                      _onDone();
-                    }
-                  }),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                RaisedButton(
-                    child: const Text('Cancel'),
-                    onPressed: () => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Dashboard()))),
-              ],
+          elevation: 5,
+        ),
+        appBar: AppBar(
+          actions: [
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: Icon(Icons.info_outline_rounded),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Info()));
+                  });
+            }),
+            SizedBox(width: 20),
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Profile()));
+                  });
+            }),
+            SizedBox(width: 50),
+          ],
+          title: const Text("Fill in your compananions' details"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const Dashboard())),
+          ),
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                itemCount: cards.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return cards[index];
+                },
+              ),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    child: const Text('Add New'),
+                    onPressed: () => setState(() {
+                      if (cards.length < int.parse(widget.people)) {
+                        cards.add(createCard());
+                      } else {
+                        _onDone();
+                      }
+                    }),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  RaisedButton(
+                      child: const Text('Cancel'),
+                      onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()))),
+                ],
+              ),
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.done),
+            onPressed: () {
+              if (cards.length < int.parse(widget.people)) {
+                Fluttertoast.showToast(
+                  msg: "Please add " +
+                      (int.parse(widget.people) - cards.length).toString() +
+                      " more entries",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity:
+                      ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                );
+              } else {
+                _onDone();
+              }
+              _onDone;
+            }),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.done),
-          onPressed: () {
-            if (cards.length < int.parse(widget.people)) {
-              Fluttertoast.showToast(
-                msg: "Please add " +
-                    (int.parse(widget.people) - cards.length).toString() +
-                    " more entries",
-                toastLength: Toast.LENGTH_LONG,
-                gravity:
-                    ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-              );
-            } else {
-              _onDone();
-            }
-            _onDone;
-          }),
     );
   }
 

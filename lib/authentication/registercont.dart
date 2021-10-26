@@ -33,6 +33,7 @@ class _RegisterContState extends State<RegisterCont> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: const BottomAppBar(
           color: Colors.blueAccent,
@@ -162,7 +163,6 @@ class _RegisterContState extends State<RegisterCont> {
       }
       if (moveAhead == true) {
         inputData();
-       
 
         for (int i = 0; i < widget.people; i++) {
           await users.doc(entries[i].mail).set({

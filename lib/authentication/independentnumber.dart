@@ -16,6 +16,7 @@ class _IndependentNumberState extends State<IndependentNumber> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Independent number'),

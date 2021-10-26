@@ -5,10 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gnsdev/profile.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'company.dart';
+import 'info.dart';
 
 class BookSlot extends StatefulWidget {
   static final navKey = GlobalKey<NavigatorState>();
@@ -94,6 +96,26 @@ class _BookSlotState extends State<BookSlot> {
           elevation: 5,
         ),
         appBar: AppBar(
+          actions: [
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: Icon(Icons.info_outline_rounded),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Info()));
+                  });
+            }),
+            SizedBox(width: 20),
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Profile()));
+                  });
+            }),
+            SizedBox(width: 50),
+          ],
           title: const Text("Book your seat"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -496,7 +518,7 @@ class _BookSlotState extends State<BookSlot> {
             Map<String, dynamic>? data = docSnapshot.data();
             // You can then retrieve the value from the Map like this:
             seats = data?['seats'];
-            if (seats! < 0) {
+            if (seats! <= 0) {
               showError("No seats available");
             } else {
               showSuccess(

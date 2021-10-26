@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gnsdev/profile.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 import 'book.dart';
+import 'info.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -337,6 +339,26 @@ class _DashboardState extends State<Dashboard> {
           elevation: 5,
         ),
         appBar: AppBar(
+          actions: [
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: Icon(Icons.info_outline_rounded),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Info()));
+                  });
+            }),
+            SizedBox(width: 20),
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Profile()));
+                  });
+            }),
+            SizedBox(width: 50),
+          ],
           title: const Text("Your Dashboard"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -578,6 +600,14 @@ class _DashboardState extends State<Dashboard> {
             // _showDialog(context, SimpleFontelicoProgressDialogType.hurricane,
             //     'Hurricane');
             //  _showDialog(context, SimpleFontelicoProgressDialogType.iphone, 'Iphone');
+            var acc = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userEmail)
+                .collection('user bookings')
+                .doc(desc)
+                .get();
+            String accompany1 = acc.data()!['accompany details'];
+            var list = accompany1.split('%');
 
             FirebaseFirestore.instance
                 .collection("users")
@@ -588,6 +618,7 @@ class _DashboardState extends State<Dashboard> {
 
             var collection = FirebaseFirestore.instance.collection('bookings');
             int seats = 0;
+            String emailList = '';
             var docSnapshot = await collection
                 .doc('Football Main Ground')
                 .collection('21_10_2021')
@@ -597,6 +628,13 @@ class _DashboardState extends State<Dashboard> {
               Map<String, dynamic>? data = docSnapshot.data();
               // You can then retrieve the value from the Map like this:
               seats = data?['seats'];
+              emailList = data?['email'];
+              emailList.replaceAll(userEmail! + '%', '');
+              emailList.replaceAll(userEmail!, '');
+              for (int i = 0; i < list.length; i++) {
+                emailList.replaceAll(list[i] + '%', '');
+                emailList.replaceAll(list[i], '');
+              }
             }
             seats += accompany + 1;
             await FirebaseFirestore.instance
@@ -604,9 +642,7 @@ class _DashboardState extends State<Dashboard> {
                 .doc("Football Main Ground")
                 .collection('21_10_2021')
                 .doc('6-7 AM')
-                .update({
-              'seats': seats,
-            });
+                .update({'seats': seats, 'email': emailList});
 
             // _dialog.hide();
             showSuccess('Booking deleted');

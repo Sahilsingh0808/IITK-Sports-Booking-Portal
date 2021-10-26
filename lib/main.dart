@@ -6,12 +6,13 @@ import 'package:gnsdev/authentication/registercont.dart';
 import 'package:gnsdev/authentication/regsiter.dart';
 import 'package:gnsdev/book.dart';
 import 'package:gnsdev/dashboard.dart';
+import 'package:gnsdev/dashboardstaff.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyHomePage(
-    title: 'Sports Facility Booking, IITK',
+    title: 'Booking Portal for GnS IITK',
   ));
 }
 
