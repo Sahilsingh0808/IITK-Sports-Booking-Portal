@@ -544,6 +544,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     } else if (category == null) {
       showError("Please choose a category");
+      return;
     }
 
     print(email + password + roll + name);
