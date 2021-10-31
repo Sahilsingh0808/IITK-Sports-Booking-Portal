@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +10,7 @@ import 'package:gnsdev/profile.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'company.dart';
 import 'info.dart';
 
@@ -25,7 +27,41 @@ class _BookSlotState extends State<BookSlot> {
   late SimpleFontelicoProgressDialog _dialog;
   DateTime currentDate1 = DateTime.now();
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
-
+  var peopleCap = [
+    16,
+    16,
+    16,
+    35,
+    35,
+    6,
+    6,
+    4,
+    4,
+    4,
+    16,
+    16,
+    16,
+    6,
+    6,
+    6,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    20,
+    20,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    30
+  ];
   final FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference bookings =
       FirebaseFirestore.instance.collection('bookings');
@@ -33,7 +69,7 @@ class _BookSlotState extends State<BookSlot> {
   int? seats;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _textFieldController = TextEditingController();
-  String? _chosenValue, _chosenValue2, valueText;
+  String? _chosenValue, _chosenValue2, valueText, pickedDate;
   late int _currentValue = 0;
   final navigatorKey = GlobalKey<NavigatorState>();
   Future<void> _selectDate(BuildContext context) async {
@@ -47,6 +83,11 @@ class _BookSlotState extends State<BookSlot> {
     if (picked != null) {
       setState(() {
         currentDate = picked;
+        pickedDate = currentDate.day.toString() +
+            "_" +
+            currentDate.month.toString() +
+            "_" +
+            currentDate.year.toString();
         _dateController.text = DateFormat.yMd().format(currentDate);
       });
     }
@@ -76,45 +117,65 @@ class _BookSlotState extends State<BookSlot> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       home: Scaffold(
-        bottomNavigationBar: const BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
-            height: 26,
-            child: Text(
-              'Developed by Sahil Singh',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  decorationStyle: TextDecorationStyle.wavy,
-                  fontStyle: FontStyle.italic),
-            ),
-          ),
+              height: 26,
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      const TextSpan(text: 'Developed by '),
+                      TextSpan(
+                          text: 'Sahil Singh',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://home.iitk.ac.in/~sahilsingh20/');
+                            }),
+                      // const TextSpan(text: '  For any '),
+                      // TextSpan(
+                      //     text: 'Technical Assistance or Feedback',
+                      //     style: linkStyle,
+                      //     recognizer: TapGestureRecognizer()
+                      //       ..onTap = () {
+                      //         launch('');
+                      //       }),
+                    ],
+                  ),
+                ),
+              )),
           elevation: 5,
         ),
         appBar: AppBar(
           actions: [
             Builder(builder: (context) {
               return IconButton(
-                  icon: Icon(Icons.info_outline_rounded),
+                  icon: const Icon(Icons.info_outline_rounded),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => const Info()));
                   });
             }),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Builder(builder: (context) {
               return IconButton(
-                  icon: Icon(Icons.person),
+                  icon: const Icon(Icons.person),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Profile()));
                   });
             }),
-            SizedBox(width: 50),
+            const SizedBox(width: 50),
           ],
           title: const Text("Book your seat"),
           leading: IconButton(
@@ -150,17 +211,39 @@ class _BookSlotState extends State<BookSlot> {
                     style: const TextStyle(color: Colors.black),
 
                     items: <String>[
-                      'Football Main Ground',
-                      'Hockey Main Ground',
-                      'Squash 1',
-                      'Squash 2',
-                      'Squash 3',
-                      'P.E.',
-                      'Cricket Main Ground',
-                      'VolleyBall Main Ground',
-                      'BasketBall Main Ground',
-                      'Badminton Main Ground',
-                      'Tennis Main Ground'
+                      'Basketball 1 (Main Stadium)',
+                      'Basketball 2 (Main Stadium)',
+                      'Basketball 3 (Main Stadium)',
+                      'Gym MWF (Old Sports Complex)',
+                      'Gym TTS (Old Sports Complex)',
+                      'Badminton 1 (Old Sports Complex)',
+                      'Badminton 2 (Old Sports Complex)',
+                      'Squash 1 (Old Sports Complex)',
+                      'Squash 2 (Old Sports Complex)',
+                      'Squash 3 (Old Sports Complex)',
+                      'Volleyball 1 (Old Sports Complex)',
+                      'Volleyball 2 (Old Sports Complex)',
+                      'Volleyball 3 (Old Sports Complex)',
+                      'Badminton 1 (New Sports Complex)',
+                      'Badminton 2 (New Sports Complex)',
+                      'Badminton 3 (New Sports Complex)',
+                      'Squash 1 (New Sports Complex)',
+                      'Squash 2 (New Sports Complex)',
+                      'Table Tennis 1 (New Sports Complex)',
+                      'Table Tennis 2 (New Sports Complex)',
+                      'Table Tennis 3 (New Sports Complex)',
+                      'Table Tennis 4 (New Sports Complex)',
+                      'Table Tennis 5 (New Sports Complex)',
+                      'Table Tennis 6 (New Sports Complex)',
+                      'Gym MWF (New Sports Complex)',
+                      'Gym TTS (New Sports Complex)',
+                      'Tennis 1 (Tennis Courts)',
+                      'Tennis 2 (Tennis Courts)',
+                      'Tennis 3 (Tennis Courts)',
+                      'Tennis 4 (Tennis Courts)',
+                      'Tennis 5 (Tennis Courts)',
+                      'Tennis 6 (Tennis Courts)',
+                      'Pool (Swimming Pool)'
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -191,6 +274,11 @@ class _BookSlotState extends State<BookSlot> {
                     '6-7 AM',
                     '7-8 AM',
                     '8-9 AM',
+                    '9-10 AM',
+                    '5-6 PM',
+                    '6-7 PM',
+                    '7-8 PM',
+                    '8-9 PM',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -340,35 +428,37 @@ class _BookSlotState extends State<BookSlot> {
       }
 
       //check if user already booked same slot or same ground on same day
-      for (var res in list) {
-        String date = res.data()["date"];
-        String ground = res.data()["ground"];
-        String time = res.data()["slot"];
-        print(date + " " + ground + " " + time);
-        if (date ==
-                currentDate.day.toString() +
-                    "_" +
-                    currentDate.month.toString() +
-                    "_" +
-                    currentDate.year.toString() &&
-            ground == chosenValue) {
-          Fluttertoast.showToast(
-            msg: "You have already booked this ground on this day",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-          );
-          return;
-        } else if (time == chosenValue2.toString()) {
-          Fluttertoast.showToast(
-            msg: "You have already booked this slot on this day",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-          );
-          return;
+      if (list != null) {
+        for (var res in list) {
+          String date = res.data()["date"];
+          String ground = res.data()["ground"];
+          String time = res.data()["slot"];
+          print(date + " " + ground + " " + time);
+          if (date ==
+                  currentDate.day.toString() +
+                      "_" +
+                      currentDate.month.toString() +
+                      "_" +
+                      currentDate.year.toString() &&
+              ground == chosenValue) {
+            Fluttertoast.showToast(
+              msg: "You have already booked this ground on this day",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+            );
+            return;
+          } else if (time == chosenValue2.toString()) {
+            Fluttertoast.showToast(
+              msg: "You have already booked this slot on this day",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+            );
+            return;
+          }
         }
       }
 
@@ -420,7 +510,7 @@ class _BookSlotState extends State<BookSlot> {
         desc: successmessage,
         btnOkColor: const Color(0xFF0029E2),
         btnOkOnPress: () {
-          debugPrint('OnClcik');
+          debugPrint('OnClick');
         },
         btnOkIcon: Icons.check_circle,
         onDissmissCallback: (type) {
@@ -429,6 +519,23 @@ class _BookSlotState extends State<BookSlot> {
   }
 
   Future<void> check(chosenValue, chosenValue2) async {
+    DateTime _now = DateTime.now();
+    String hour = _now.hour.toString();
+    print("Hour" + hour);
+    String date = _now.day.toString() +
+        "_" +
+        _now.month.toString() +
+        "_" +
+        _now.year.toString();
+    print(date);
+    String picked = currentDate.day.toString() +
+        "_" +
+        currentDate.month.toString() +
+        "_" +
+        currentDate.year.toString();
+    print(picked);
+    int hr = int.parse(hour);
+
     if (chosenValue == null && chosenValue2 == null) {
       print("hello");
       Fluttertoast.showToast(
@@ -458,6 +565,86 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
+    } else if (_chosenValue2.toString() == '6-7 AM' &&
+        hr >= 7 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '7-8 AM' &&
+        hr >= 8 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '8-9 AM' &&
+        hr >= 9 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '9-10 AM' &&
+        hr >= 10 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '5-6 PM' &&
+        hr >= 18 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '6-7 PAM' &&
+        hr >= 19 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '7-8 PM' &&
+        hr >= 20 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue2.toString() == '8-9 PM' &&
+        hr >= 21 &&
+        date == picked) {
+      Fluttertoast.showToast(
+        msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
     } else {
       String? userEmail = '';
       var list;
@@ -477,50 +664,59 @@ class _BookSlotState extends State<BookSlot> {
       }
 
       //check if user already booked same slot or same ground on same day
-      for (var res in list) {
-        String date = res.data()["date"];
-        String ground = res.data()["ground"];
-        String time = res.data()["slot"];
-        print(date + " " + ground + " " + time);
-        if (date ==
-                currentDate.day.toString() +
-                    "_" +
-                    currentDate.month.toString() +
-                    "_" +
-                    currentDate.year.toString() &&
-            ground == chosenValue) {
-          Fluttertoast.showToast(
-            msg: "You have already booked this ground on this day",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-          );
-          return;
-        } else if (time == chosenValue2.toString()) {
-          Fluttertoast.showToast(
-            msg: "You have already booked this slot on this day",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-          );
-          return;
+      if (list != null) {
+        for (var res in list) {
+          String date = res.data()["date"];
+          String ground = res.data()["ground"];
+          String time = res.data()["slot"];
+          print(date + " " + ground + " " + time);
+          if (date ==
+                  currentDate.day.toString() +
+                      "_" +
+                      currentDate.month.toString() +
+                      "_" +
+                      currentDate.year.toString() &&
+              ground == chosenValue) {
+            Fluttertoast.showToast(
+              msg: "You have already booked this facility on this day",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+            );
+            return;
+          } else if (time == chosenValue2.toString()) {
+            Fluttertoast.showToast(
+              msg: "You have already booked this slot on this day",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+            );
+            return;
+          }
         }
         try {
           var collection = FirebaseFirestore.instance.collection('bookings');
           var docSnapshot = await collection
-              .doc('Football Main Ground')
-              .collection('21_10_2021')
-              .doc('6-7 AM')
+              .doc(_chosenValue.toString())
+              .collection(currentDate.day.toString() +
+                  "_" +
+                  currentDate.month.toString() +
+                  "_" +
+                  currentDate.year.toString())
+              .doc(_chosenValue2.toString())
               .get();
+          print("Reached 1");
           if (docSnapshot.exists) {
             Map<String, dynamic>? data = docSnapshot.data();
             // You can then retrieve the value from the Map like this:
             seats = data?['seats'];
+            print("Reached 2");
             if (seats! <= 0) {
               showError("No seats available");
             } else {
+              print("Reached 3");
               showSuccess(
                   "Slot Availabilty", "Available seats: " + seats.toString());
             }

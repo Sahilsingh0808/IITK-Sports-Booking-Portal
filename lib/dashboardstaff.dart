@@ -2,12 +2,14 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/info.dart';
 import 'package:gnsdev/profile.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardStaff extends StatefulWidget {
   final String facility;
@@ -61,22 +63,42 @@ class _DashboardStaffState extends State<DashboardStaff> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        bottomNavigationBar: const BottomAppBar(
+       bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
-            height: 26,
-            child: Text(
-              'Developed by Sahil Singh',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  decorationStyle: TextDecorationStyle.wavy,
-                  fontStyle: FontStyle.italic),
-            ),
-          ),
+              height: 26,
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      const TextSpan(text: 'Developed by '),
+                      TextSpan(
+                          text: 'Sahil Singh',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://home.iitk.ac.in/~sahilsingh20/');
+                            }),
+                      // const TextSpan(text: '  For any '),
+                      // TextSpan(
+                      //     text: 'Technical Assistance or Feedback',
+                      //     style: linkStyle,
+                      //     recognizer: TapGestureRecognizer()
+                      //       ..onTap = () {
+                      //         launch('');
+                      //       }),
+                    ],
+                  ),
+                ),
+              )),
           elevation: 5,
         ),
         appBar: AppBar(
@@ -89,15 +111,15 @@ class _DashboardStaffState extends State<DashboardStaff> {
                         MaterialPageRoute(builder: (context) => const Info()));
                   });
             }),
-            SizedBox(width: 20),
-            Builder(builder: (context) {
-              return IconButton(
-                  icon: Icon(Icons.person),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Profile()));
-                  });
-            }),
+            // SizedBox(width: 20),
+            // Builder(builder: (context) {
+            //   return IconButton(
+            //       icon: Icon(Icons.person),
+            //       onPressed: () {
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => Profile()));
+            //       });
+            // }),
             SizedBox(width: 50),
           ],
           title: const Text("Staff Dashboard"),
@@ -129,17 +151,39 @@ class _DashboardStaffState extends State<DashboardStaff> {
                   style: const TextStyle(color: Colors.black),
 
                   items: <String>[
-                    'Football Main Ground',
-                    'Hockey Main Ground',
-                    'Squash 1',
-                    'Squash 2',
-                    'Squash 3',
-                    'P.E.',
-                    'Cricket Main Ground',
-                    'VolleyBall Main Ground',
-                    'BasketBall Main Ground',
-                    'Badminton Main Ground',
-                    'Tennis Main Ground'
+                    'Basketball 1 (Main Stadium)',
+                    'Basketball 2 (Main Stadium)',
+                    'Basketball 3 (Main Stadium)',
+                    'Gym MWF (Old Sports Complex)',
+                    'Gym TTS (Old Sports Complex)',
+                    'Badminton 1 (Old Sports Complex)',
+                    'Badminton 2 (Old Sports Complex)',
+                    'Squash 1 (Old Sports Complex)',
+                    'Squash 2 (Old Sports Complex)',
+                    'Squash 3 (Old Sports Complex)',
+                    'Volleyball 1 (Old Sports Complex)',
+                    'Volleyball 2 (Old Sports Complex)',
+                    'Volleyball 3 (Old Sports Complex)',
+                    'Badminton 1 (New Sports Complex)',
+                    'Badminton 2 (New Sports Complex)',
+                    'Badminton 3 (New Sports Complex)',
+                    'Squash 1 (New Sports Complex)',
+                    'Squash 2 (New Sports Complex)',
+                    'Table Tennis 1 (New Sports Complex)',
+                    'Table Tennis 2 (New Sports Complex)',
+                    'Table Tennis 3 (New Sports Complex)',
+                    'Table Tennis 4 (New Sports Complex)',
+                    'Table Tennis 5 (New Sports Complex)',
+                    'Table Tennis 6 (New Sports Complex)',
+                    'Gym MWF (New Sports Complex)',
+                    'Gym TTS (New Sports Complex)',
+                    'Tennis 1 (Tennis Courts)',
+                    'Tennis 2 (Tennis Courts)',
+                    'Tennis 3 (Tennis Courts)',
+                    'Tennis 4 (Tennis Courts)',
+                    'Tennis 5 (Tennis Courts)',
+                    'Tennis 6 (Tennis Courts)',
+                    'Pool (Swimming Pool)'
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -170,6 +214,11 @@ class _DashboardStaffState extends State<DashboardStaff> {
                   '6-7 AM',
                   '7-8 AM',
                   '8-9 AM',
+                  '9-10 AM',
+                  '5-6 PM',
+                  '6-7 PM',
+                  '7-8 PM',
+                  '8-9 PM',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -439,32 +488,55 @@ class _DashboardStaffState extends State<DashboardStaff> {
     } else {
       var result = await FirebaseFirestore.instance
           .collection('bookings')
-          .doc('Football Main Ground')
-          .collection('21_10_2021')
-          .doc('6-7 AM')
+          .doc(_chosenValue.toString())
+          .collection(currentDate.day.toString() +
+              "_" +
+              currentDate.month.toString() +
+              "_" +
+              currentDate.year.toString())
+          .doc(_chosenValue2.toString())
           .get();
 
+      String emails = '';
+
       setState(() {
-        String emails = result.data()!['email'];
+        emails = result.data()!['email'];
         emailList = emails.split('%');
-        print(emailList[0] + " " + emailList[1]);
+        print(emailList[0] + " emails");
       });
 
-      for (int i = 0; i < emailList.length; i++) {
-        var userDet = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(emailList[i])
-            .get();
-        userDet1.add(userDet.data());
-      }
-      setState(() {
+      if (result == null || result.data() == null || emails.isEmpty) {
+        Fluttertoast.showToast(
+          msg: "No Bookings to show",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+        );
+        showError('No Bookings to show');
+      } else {
         for (int i = 0; i < emailList.length; i++) {
-          String name = userDet1[i]['name'];
-          String roll = userDet1[i]['roll'];
-          nameList.add(name);
-          rollList.add(roll);
+          if (emailList[i].toString().length > 5) {
+            var userDet = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(emailList[i])
+                .get();
+            userDet1.add(userDet.data());
+          }
         }
-      });
+        setState(() {
+          for (int i = 0; i < emailList.length; i++) {
+            if (emailList[i].toString().length > 5) {
+              String name = userDet1[i]['name'];
+              String roll = userDet1[i]['roll'];
+              if (name.isNotEmpty) {
+                nameList.add(name);
+                rollList.add(roll);
+              }
+            }
+          }
+        });
+      }
 
       // for (int i = 0; i < emailList.length; i++) {
       //   print(emailList[i]);

@@ -1,19 +1,24 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gnsdev/authentication/independentnumber.dart';
 import 'package:gnsdev/authentication/registercont.dart';
 import 'package:gnsdev/dashboard.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:gnsdev/main.dart';
 import 'package:email_auth/email_auth.dart';
 
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() async {
   runApp(const RegisterPage());
@@ -31,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   bool shouldButtonEnabled = true;
-
+  int otpNo = 0;
   final formKey = GlobalKey<FormState>();
   late bool submitValid = false, verified = false;
   bool checkbox = false, student = false, showPassword = false;
@@ -45,6 +50,41 @@ class _RegisterPageState extends State<RegisterPage> {
     emailAuth = EmailAuth(
       sessionName: "Sample session",
     );
+  }
+
+  int otpGenerate() {
+    Random rnd = Random();
+    int min = 10000000, max = 99999999;
+    int num = min + rnd.nextInt(max - min);
+    return num;
+  }
+
+  Future sendEmail(
+      {required String name,
+      required String email,
+      required String subject,
+      required String message}) async {
+    const String serviceID = 'service_t1yuekz';
+    const String templateID = 'template_ydlj5s4';
+    const String userID = 'user_Rgq3HtaCMu8ckNNNPVR0T';
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'service_id': serviceID,
+          'template_id': templateID,
+          'user_id': userID,
+          'template_params': {
+            'user_email': email,
+            'user_subject': subject,
+            'user_message': message,
+            'reply_to': 'gns.offline@gmail.com',
+          }
+        }));
+    // ignore: avoid_print
+    print(response.body);
   }
 
   checkFields() {
@@ -97,20 +137,32 @@ class _RegisterPageState extends State<RegisterPage> {
     } else if (!email!.contains('iitk.ac.in')) {
       showError("Please enter your IITK email address");
     } else {
-      bool result = await emailAuth.sendOtp(
-          recipientMail: email.toString(), otpLength: 8);
-      if (result) {
-        setState(() {
-          submitValid = true;
-          showSuccess('OTP sent successfully on ' + email.toString());
-        });
-      }
+      setState(() {
+        otpNo = otpGenerate();
+      });
+      sendEmail(
+          name: 'Games and Sports Council, IITK',
+          email: email.toString(),
+          message:
+              'Your OTP for regestering to the Sports Facilities, IITK is ' +
+                  otpNo.toString(),
+          subject: 'Booking Confirmation for Sports Facilities IITK');
+
+      setState(() {
+        submitValid = true;
+        showSuccess('OTP sent successfully on ' + email.toString());
+      });
     }
   }
 
   bool verify(String otp) {
-    return (emailAuth.validateOtp(
-        recipientMail: email.toString(), userOtp: otp.toString()));
+    // return (emailAuth.validateOtp(
+    //     recipientMail: email.toString(), userOtp: otp.toString()));
+    if (int.parse(otp) == otpNo) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void _showDialog(BuildContext context, SimpleFontelicoProgressDialogType type,
@@ -153,6 +205,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SingleChildScrollView(
@@ -161,19 +217,36 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Stack(
             children: [
               Scaffold(
-                  bottomNavigationBar: const BottomAppBar(
+                  bottomNavigationBar: BottomAppBar(
                     color: Colors.blueAccent,
                     child: SizedBox(
-                      height: 26,
-                      child: Text(
-                        'Developed by Sahil Singh',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 20,
-                            decorationStyle: TextDecorationStyle.wavy,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    ),
+                        height: 26,
+                        child: Center(
+                          child: RichText(
+                            text: TextSpan(
+                              style: defaultStyle,
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Developed by '),
+                                TextSpan(
+                                    text: 'Sahil Singh',
+                                    style: linkStyle,
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        launch(
+                                            'https://home.iitk.ac.in/~sahilsingh20/');
+                                      }),
+                                // const TextSpan(text: '  For any '),
+                                // TextSpan(
+                                //     text: 'Technical Assistance or Feedback',
+                                //     style: linkStyle,
+                                //     recognizer: TapGestureRecognizer()
+                                //       ..onTap = () {
+                                //         launch('');
+                                //       }),
+                              ],
+                            ),
+                          ),
+                        )),
                     elevation: 5,
                   ),
                   appBar: AppBar(
@@ -570,7 +643,6 @@ class _RegisterPageState extends State<RegisterPage> {
           'email': email,
           'roll': roll,
           'phone': phone,
-          'password': password,
           'category': category.toString()
         }).then((value) => print("Registered"));
 

@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'info.dart';
 
@@ -18,35 +20,84 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String? userEmail = '', name = '', roll = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final User? auth = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     userEmail = auth!.email;
     getDetails();
   }
 
+  showSuccess(String successmessage) {
+    AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        showCloseIcon: true,
+        title: 'Success',
+        desc: successmessage,
+        btnOkColor: const Color(0xFF0029E2),
+        btnOkOnPress: () {
+          debugPrint('OnClcik');
+        },
+        btnOkIcon: Icons.check_circle,
+        onDissmissCallback: (type) {
+          debugPrint('Dialog Dissmiss from callback $type');
+        }).show();
+  }
+
+  Future<void> forgotPassword() async {
+    if (userEmail == null || userEmail!.isEmpty) {
+      showError('Some error occured.');
+      return;
+    } else {
+      await _auth.sendPasswordResetEmail(email: userEmail.toString());
+      showSuccess('Password reset link sent to your email');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        bottomNavigationBar: const BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
-            height: 26,
-            child: Text(
-              'Developed by Sahil Singh',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  decorationStyle: TextDecorationStyle.wavy,
-                  fontStyle: FontStyle.italic),
-            ),
-          ),
+              height: 26,
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      const TextSpan(text: 'Developed by '),
+                      TextSpan(
+                          text: 'Sahil Singh',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://home.iitk.ac.in/~sahilsingh20/');
+                            }),
+                      // const TextSpan(text: '  For any '),
+                      // TextSpan(
+                      //     text: 'Technical Assistance or Feedback',
+                      //     style: linkStyle,
+                      //     recognizer: TapGestureRecognizer()
+                      //       ..onTap = () {
+                      //         launch('');
+                      //       }),
+                    ],
+                  ),
+                ),
+              )),
           elevation: 5,
         ),
         appBar: AppBar(
@@ -126,11 +177,30 @@ class _ProfileState extends State<Profile> {
                 height: 10,
               ),
               Card(
-                  margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 8.0),
                   elevation: 2.0,
                   child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 30),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Change Password",
+                          style: TextStyle(
+                              letterSpacing: 2.0, fontWeight: FontWeight.w300),
+                        ),
+                      ))),
+              const SizedBox(
+                height: 10,
+              ),
+              Card(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 8.0),
+                  elevation: 2.0,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 30),
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pushReplacement(
@@ -148,11 +218,12 @@ class _ProfileState extends State<Profile> {
                 height: 10,
               ),
               Card(
-                  margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 8.0),
                   elevation: 2.0,
                   child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 30),
                       child: ElevatedButton(
                         onPressed: () {
                           logout();
@@ -192,10 +263,10 @@ class _ProfileState extends State<Profile> {
         headerAnimationLoop: false,
         animType: AnimType.TOPSLIDE,
         showCloseIcon: true,
-        closeIcon: Icon(Icons.close_fullscreen_outlined),
+        closeIcon: const Icon(Icons.close_fullscreen_outlined),
         title: 'Warning',
-        btnOkColor: Color(0xFF0029E2),
-        btnCancelColor: Color(0xFF353B57),
+        btnOkColor: const Color(0xFF0029E2),
+        btnCancelColor: const Color(0xFF353B57),
         desc: 'Are you sure you want to logout?',
         btnCancelOnPress: () {},
         onDissmissCallback: (type) {
@@ -226,7 +297,7 @@ class _ProfileState extends State<Profile> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => MyHomePage(
+                    builder: (context) => const MyHomePage(
                           title: 'Sports Booking Facility IITK',
                         )));
           } catch (e) {

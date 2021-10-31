@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterCont extends StatefulWidget {
   final int people;
@@ -32,24 +34,45 @@ class _RegisterContState extends State<RegisterCont> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        bottomNavigationBar: const BottomAppBar(
-          color: Colors.blueAccent,
-          child: SizedBox(
-            height: 26,
-            child: Text(
-              'Developed by Sahil Singh',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  decorationStyle: TextDecorationStyle.wavy,
-                  fontStyle: FontStyle.italic),
-            ),
+        bottomNavigationBar: BottomAppBar(
+            color: Colors.blueAccent,
+            child: SizedBox(
+                height: 26,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultStyle,
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Developed by '),
+                        TextSpan(
+                            text: 'Sahil Singh',
+                            style: linkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launch(
+                                    'https://home.iitk.ac.in/~sahilsingh20/');
+                              }),
+                        // const TextSpan(text: '  For any '),
+                        // TextSpan(
+                        //     text: 'Technical Assistance or Feedback',
+                        //     style: linkStyle,
+                        //     recognizer: TapGestureRecognizer()
+                        //       ..onTap = () {
+                        //         launch('');
+                        //       }),
+                      ],
+                    ),
+                  ),
+                )),
+            elevation: 5,
           ),
-          elevation: 5,
-        ),
         appBar: AppBar(
           title: const Text("Fill in your dependents' details (OneTime)"),
           leading: IconButton(
@@ -133,16 +156,7 @@ class _RegisterContState extends State<RegisterCont> {
         for (int i = 0; i < cards.length; i++) {
           var name = nameTECs[i].text;
           var roll = rollTECs[i].text;
-          var mail = mailTECs[i].text;
-          var phone = phoneTECs[i].text;
-          if (name == null ||
-              name.isEmpty ||
-              roll == null ||
-              roll.isEmpty ||
-              mail == null ||
-              mail.isEmpty ||
-              phone == null ||
-              phone.isEmpty) {
+          if (name == null || name.isEmpty || roll == null || roll.isEmpty) {
             Fluttertoast.showToast(
               msg: 'Please fill all the details',
               toastLength: Toast.LENGTH_LONG,
@@ -157,7 +171,7 @@ class _RegisterContState extends State<RegisterCont> {
             });
             return;
           } else {
-            entries.add(PersonEntry(name, roll, mail, phone));
+            entries.add(PersonEntry(name, roll));
           }
         }
       }
@@ -165,11 +179,9 @@ class _RegisterContState extends State<RegisterCont> {
         inputData();
 
         for (int i = 0; i < widget.people; i++) {
-          await users.doc(entries[i].mail).set({
+          await users.doc(userEmail.toString() + "%%" + entries[i].name).set({
             'name': entries[i].name,
-            'email': entries[i].mail,
             'relation': entries[i].roll,
-            'phone': entries[i].phone,
             'category': 'Dependent',
             'independent email': userEmail
           }).then((value) => print("Registered"));
@@ -197,12 +209,8 @@ class _RegisterContState extends State<RegisterCont> {
   Card createCard() {
     var nameController = TextEditingController();
     var ageController = TextEditingController();
-    var jobController = TextEditingController();
-    var phoneController = TextEditingController();
     nameTECs.add(nameController);
     rollTECs.add(ageController);
-    mailTECs.add(jobController);
-    phoneTECs.add(phoneController);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -230,24 +238,6 @@ class _RegisterContState extends State<RegisterCont> {
               controller: ageController,
               decoration: const InputDecoration(
                   labelText: 'Relation with Independent')),
-          TextFormField(
-              validator: (text) {
-                if (text == null || text.isEmpty) {
-                  return 'Email is empty';
-                }
-                return null;
-              },
-              controller: jobController,
-              decoration: const InputDecoration(labelText: 'E-Mail')),
-          TextFormField(
-              validator: (text) {
-                if (text == null || text.isEmpty) {
-                  return 'Phone number is empty';
-                }
-                return null;
-              },
-              controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone No.')),
           const SizedBox(height: 20),
         ],
       ),
@@ -258,12 +248,10 @@ class _RegisterContState extends State<RegisterCont> {
 class PersonEntry {
   final String name;
   final String roll;
-  final String mail;
-  final String phone;
 
-  PersonEntry(this.name, this.roll, this.mail, this.phone);
+  PersonEntry(this.name, this.roll);
   @override
   String toString() {
-    return 'Person: name= $name, roll= $roll, mail= $mail, phone= $phone';
+    return 'Person: name= $name, roll= $roll';
   }
 }

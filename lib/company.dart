@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/book.dart';
@@ -9,6 +10,7 @@ import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/profile.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'authentication/registercont.dart';
 import 'info.dart';
@@ -62,7 +64,8 @@ class _SOFState extends State<SOF> {
   List<PersonEntry> entries = [];
   late SimpleFontelicoProgressDialog _dialog;
   final User? _auth = FirebaseAuth.instance.currentUser;
-  String? userEmail;
+  String? userEmail, phoneUser, rollUser;
+  bool? isStudent = false, isStop = false;
 
   var cards = <Card>[];
 
@@ -110,10 +113,24 @@ class _SOFState extends State<SOF> {
   //   print('Response body: ${response.body}');
   // }
 
-  void inputData() {
+  Future<void> inputData() async {
     final User? user = auth.currentUser;
     setState(() {
       userEmail = user?.email;
+    });
+
+    var res = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .get();
+
+    setState(() {
+      phoneUser = res.data()!['phone'];
+      rollUser = res.data()!['roll'];
+      String temp = res.data()!['category'];
+      if (temp == 'Student') {
+        isStudent = true;
+      }
     });
     // here you write the codes to input the data into firestore
   }
@@ -152,7 +169,8 @@ class _SOFState extends State<SOF> {
                 return null;
               },
               controller: ageController,
-              decoration: const InputDecoration(labelText: 'Roll Number')),
+              decoration: const InputDecoration(
+                  labelText: 'Roll Number (Enter D id dependent)')),
           TextFormField(
               validator: (text) {
                 if (text == null || text.isEmpty) {
@@ -161,7 +179,8 @@ class _SOFState extends State<SOF> {
                 return null;
               },
               controller: jobController,
-              decoration: const InputDecoration(labelText: 'E-Mail')),
+              decoration: const InputDecoration(
+                  labelText: 'E-Mail (Enter D id dependent)')),
           TextFormField(
               validator: (text) {
                 if (text == null || text.isEmpty) {
@@ -170,7 +189,8 @@ class _SOFState extends State<SOF> {
                 return null;
               },
               controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone No.')),
+              decoration: const InputDecoration(
+                  labelText: 'Phone No. (Enter D id dependent)')),
           const SizedBox(height: 20),
         ],
       ),
@@ -288,22 +308,42 @@ class _SOFState extends State<SOF> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        bottomNavigationBar: const BottomAppBar(
+       bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
-            height: 26,
-            child: Text(
-              'Developed by Sahil Singh',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  decorationStyle: TextDecorationStyle.wavy,
-                  fontStyle: FontStyle.italic),
-            ),
-          ),
+              height: 26,
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      const TextSpan(text: 'Developed by '),
+                      TextSpan(
+                          text: 'Sahil Singh',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://home.iitk.ac.in/~sahilsingh20/');
+                            }),
+                      // const TextSpan(text: '  For any '),
+                      // TextSpan(
+                      //     text: 'Technical Assistance or Feedback',
+                      //     style: linkStyle,
+                      //     recognizer: TapGestureRecognizer()
+                      //       ..onTap = () {
+                      //         launch('');
+                      //       }),
+                    ],
+                  ),
+                ),
+              )),
           elevation: 5,
         ),
         appBar: AppBar(
@@ -416,7 +456,9 @@ class _SOFState extends State<SOF> {
         print("RES");
         for (int j = 0; j < mailTECs.length; j++) {
           print("Jack");
-          if (res.id.toString() == mailTECs[j].text) {
+          if (res.id.toString() == mailTECs[j].text ||
+              res.id.toString().contains(nameTECs[j].text) ||
+              mailTECs[j].text == 'D') {
             setState(() {
               isPresent[j] = true;
             });
@@ -437,9 +479,9 @@ class _SOFState extends State<SOF> {
     var collection = FirebaseFirestore.instance.collection('bookings');
 
     var docSnapshot = await collection
-        .doc('Football Main Ground')
-        .collection('21_10_2021')
-        .doc('6-7 AM')
+        .doc(widget.ground)
+        .collection(widget.date)
+        .doc(widget.time)
         .get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
@@ -468,9 +510,9 @@ class _SOFState extends State<SOF> {
         try {
           var collection = FirebaseFirestore.instance.collection('bookings');
           var docSnapshot = await collection
-              .doc('Football Main Ground')
-              .collection('21_10_2021')
-              .doc('6-7 AM')
+              .doc(widget.ground)
+              .collection(widget.date)
+              .doc(widget.time)
               .get();
           if (docSnapshot.exists) {
             Map<String, dynamic>? data = docSnapshot.data();
@@ -484,16 +526,46 @@ class _SOFState extends State<SOF> {
           //     'Hurricane');
 
           String accompanyDetails = "";
+          print(rollUser! + " Test " + phoneUser!);
           for (int i = 0; i < int.parse(widget.people); i++) {
-            accompanyDetails += nameTECs[i].text +
-                "%" +
-                rollTECs[i].text +
-                "%" +
-                mailTECs[i].text +
-                "%" +
-                phoneTECs[i].text +
-                "%";
-            accompanyDetails += "\n";
+            if (rollTECs[i].text == 'D' ||
+                phoneTECs[i].text == 'D' ||
+                mailTECs[i].text == 'D') {
+              if (isStudent == false) {
+                accompanyDetails += nameTECs[i].text +
+                    "%" +
+                    rollUser.toString() +
+                    "%" +
+                    userEmail.toString() +
+                    "%" +
+                    phoneUser.toString() +
+                    "%";
+                accompanyDetails += "\n";
+              } else {
+                setState(() {
+                  isStop = true;
+                });
+                Fluttertoast.showToast(
+                  msg: 'You cannot add companions in dependent category',
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity:
+                      ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                );
+                return;
+              }
+            } else {
+              accompanyDetails += nameTECs[i].text +
+                  "%" +
+                  rollTECs[i].text +
+                  "%" +
+                  mailTECs[i].text +
+                  "%" +
+                  phoneTECs[i].text +
+                  "%";
+              accompanyDetails += "\n";
+            }
           }
 
           await FirebaseFirestore.instance
@@ -511,14 +583,18 @@ class _SOFState extends State<SOF> {
 
           var tempEmail = emailList;
           for (int i = 0; i < int.parse(widget.people); i++) {
-            tempEmail += mailTECs[i].text + "%";
+            if (mailTECs[i].text == 'D') {
+              tempEmail += userEmail.toString() + "%";
+            } else {
+              tempEmail += mailTECs[i].text + "%";
+            }
           }
           tempEmail += userEmail;
           await FirebaseFirestore.instance
               .collection("bookings")
-              .doc("Football Main Ground")
-              .collection('21_10_2021')
-              .doc('6-7 AM')
+              .doc(widget.ground)
+              .collection(widget.date)
+              .doc(widget.time)
               .update({
             'seats': a,
             'email': tempEmail,

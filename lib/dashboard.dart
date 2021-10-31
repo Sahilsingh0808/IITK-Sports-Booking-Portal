@@ -2,9 +2,11 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/profile.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'book.dart';
 import 'info.dart';
@@ -320,22 +322,42 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        bottomNavigationBar: const BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
-            height: 26,
-            child: Text(
-              'Developed by Sahil Singh',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  decorationStyle: TextDecorationStyle.wavy,
-                  fontStyle: FontStyle.italic),
-            ),
-          ),
+              height: 26,
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      const TextSpan(text: 'Developed by '),
+                      TextSpan(
+                          text: 'Sahil Singh',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://home.iitk.ac.in/~sahilsingh20/');
+                            }),
+                      // const TextSpan(text: '  For any '),
+                      // TextSpan(
+                      //     text: 'Technical Assistance or Feedback',
+                      //     style: linkStyle,
+                      //     recognizer: TapGestureRecognizer()
+                      //       ..onTap = () {
+                      //         launch('');
+                      //       }),
+                    ],
+                  ),
+                ),
+              )),
           elevation: 5,
         ),
         appBar: AppBar(
@@ -384,6 +406,9 @@ class _DashboardState extends State<Dashboard> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 50,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -619,29 +644,30 @@ class _DashboardState extends State<Dashboard> {
             var collection = FirebaseFirestore.instance.collection('bookings');
             int seats = 0;
             String emailList = '';
-            var docSnapshot = await collection
-                .doc('Football Main Ground')
-                .collection('21_10_2021')
-                .doc('6-7 AM')
-                .get();
+            var docSnapshot =
+                await collection.doc(ground).collection(date).doc(slot).get();
             if (docSnapshot.exists) {
               Map<String, dynamic>? data = docSnapshot.data();
               // You can then retrieve the value from the Map like this:
               seats = data?['seats'];
               emailList = data?['email'];
-              emailList.replaceAll(userEmail! + '%', '');
-              emailList.replaceAll(userEmail!, '');
-              for (int i = 0; i < list.length; i++) {
-                emailList.replaceAll(list[i] + '%', '');
-                emailList.replaceAll(list[i], '');
+              print("Email List " + emailList);
+              emailList = emailList.replaceAll(userEmail! + '%', '');
+              emailList = emailList.replaceAll(userEmail!, '');
+              if (emailList.isNotEmpty) {
+                for (int i = 0; i < list.length; i++) {
+                  emailList = emailList.replaceAll(emailList[i] + '%', '');
+                  emailList = emailList.replaceAll(emailList[i], '');
+                }
               }
             }
+            print("Email List " + emailList);
             seats += accompany + 1;
             await FirebaseFirestore.instance
                 .collection("bookings")
-                .doc("Football Main Ground")
-                .collection('21_10_2021')
-                .doc('6-7 AM')
+                .doc(ground)
+                .collection(date)
+                .doc(slot)
                 .update({'seats': seats, 'email': emailList});
 
             // _dialog.hide();
@@ -654,7 +680,6 @@ class _DashboardState extends State<Dashboard> {
           } catch (e) {
             showError(e.toString());
             // _dialog.hide();
-            showError(e.toString());
           }
         }).show();
   }

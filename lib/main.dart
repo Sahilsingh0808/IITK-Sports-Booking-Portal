@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/authentication/independentnumber.dart';
 import 'package:gnsdev/authentication/login.dart';
@@ -7,6 +8,8 @@ import 'package:gnsdev/authentication/regsiter.dart';
 import 'package:gnsdev/book.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/dashboardstaff.dart';
+import 'package:gnsdev/info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +29,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GnS Portal',
@@ -69,6 +76,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    TextStyle defaultStyle =
+        const TextStyle(color: Colors.white60, fontSize: 15.0);
+    TextStyle linkStyle = const TextStyle(
+        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -81,19 +92,36 @@ class _MyHomePageState extends State<MyHomePage> {
       home: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          bottomNavigationBar: const BottomAppBar(
+          bottomNavigationBar: BottomAppBar(
             color: Colors.blueAccent,
             child: SizedBox(
-              height: 26,
-              child: Text(
-                'Developed by Sahil Singh',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 20,
-                    decorationStyle: TextDecorationStyle.wavy,
-                    fontStyle: FontStyle.italic),
-              ),
-            ),
+                height: 26,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultStyle,
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Developed by '),
+                        TextSpan(
+                            text: 'Sahil Singh',
+                            style: linkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launch(
+                                    'https://home.iitk.ac.in/~sahilsingh20/');
+                              }),
+                        // const TextSpan(text: '  For any '),
+                        // TextSpan(
+                        //     text: 'Technical Assistance or Feedback',
+                        //     style: linkStyle,
+                        //     recognizer: TapGestureRecognizer()
+                        //       ..onTap = () {
+                        //         launch('');
+                        //       }),
+                      ],
+                    ),
+                  ),
+                )),
             elevation: 5,
           ),
           appBar: AppBar(
