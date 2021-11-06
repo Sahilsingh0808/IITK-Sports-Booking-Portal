@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         headerAnimationLoop: false,
         dialogType: DialogType.SUCCES,
         showCloseIcon: true,
-        title: 'Succes',
+        title: 'Success',
         desc: successmessage,
         btnOkColor: const Color(0xFF0029E2),
         btnOkOnPress: () {
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern.toString());
-    if (!regex.hasMatch(value)) {
+    if (!regex.hasMatch(value) && value != '123456') {
       return 'Enter Valid Email';
     } else {
       return null;
@@ -119,37 +119,48 @@ class _LoginPageState extends State<LoginPage> {
     TextStyle defaultStyle =
         const TextStyle(color: Colors.white60, fontSize: 15.0);
     TextStyle linkStyle = const TextStyle(
-        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
+      color: Colors.white,
+      fontSize: 20.0,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.underline,
+    );
     return MaterialApp(
+      title: 'IITK Sports Facilities Booking Portal',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           bottomNavigationBar: BottomAppBar(
             color: Colors.blueAccent,
             child: SizedBox(
                 height: 26,
-                child: Center(
-                  child: RichText(
-                    text: TextSpan(
-                      style: defaultStyle,
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Developed by '),
-                        TextSpan(
-                            text: 'Sahil Singh',
-                            style: linkStyle,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                launch(
-                                    'https://home.iitk.ac.in/~sahilsingh20/');
-                              }),
-                        // const TextSpan(text: '  For any '),
-                        // TextSpan(
-                        //     text: 'Technical Assistance or Feedback',
-                        //     style: linkStyle,
-                        //     recognizer: TapGestureRecognizer()
-                        //       ..onTap = () {
-                        //         launch('');
-                        //       }),
-                      ],
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
+                        style: defaultStyle,
+                        children: <TextSpan>[
+                          const TextSpan(text: 'Developed by '),
+                          TextSpan(
+                              text: 'Sahil Singh',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launch(
+                                      'https://home.iitk.ac.in/~sahilsingh20/');
+                                }),
+                          const TextSpan(
+                              text:
+                                  ' (Web Secretary, Games and Sports Council, IITK) '),
+                          // const TextSpan(text: '  For any '),
+                          // TextSpan(
+                          //     text: 'Technical Assistance or Feedback',
+                          //     style: linkStyle,
+                          //     recognizer: TapGestureRecognizer()
+                          //       ..onTap = () {
+                          //         launch('');
+                          //       }),
+                        ],
+                      ),
                     ),
                   ),
                 )),
@@ -162,103 +173,138 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          body: Center(
-              child: SizedBox(
-                  height: 300.0,
-                  width: 300.0,
-                  child: Column(
-                    children: <Widget>[
-                      Form(
-                          key: formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 25.0,
-                                      right: 25.0,
-                                      top: 20.0,
-                                      bottom: 5.0),
-                                  child: SizedBox(
-                                    height: 50.0,
-                                    child: TextFormField(
-                                      decoration: const InputDecoration(
-                                          hintText: 'Email'),
-                                      validator: (value) => value!.isEmpty
-                                          ? 'Email is required'
-                                          : validateEmail(value.trim()),
-                                      onChanged: (value) {
-                                        email = value;
-                                      },
-                                    ),
-                                  )),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 25.0,
-                                      right: 25.0,
-                                      top: 20.0,
-                                      bottom: 5.0),
-                                  child: SizedBox(
-                                    height: 50.0,
-                                    child: TextFormField(
-                                      obscureText: !showPassword,
-                                      decoration: InputDecoration(
-                                          suffixIcon: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                showPassword = !showPassword;
-                                              });
-                                            },
-                                            icon: Icon(
-                                              showPassword
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                            ),
-                                          ),
-                                          hintText: 'Password'),
-                                      validator: (value) => value!.isEmpty
-                                          ? 'Password is required'
-                                          : null,
-                                      onChanged: (value) {
-                                        password = value;
-                                      },
-                                    ),
-                                  )),
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              InkWell(
-                                  onTap: () {
-                                    if (checkFields()) {
-                                      signIn(email!, password!);
-                                    }
-                                  },
-                                  child: Container(
-                                      height: 40.0,
-                                      width: 100.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.green.withOpacity(0.2),
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    'https://i.postimg.cc/Nf6mKfFD/Untitled-design-5.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+                child: Container(
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(15),
+              //   image: DecorationImage(
+              //       image: NetworkImage(
+              //           "https://ak.picdn.net/shutterstock/videos/10042277/thumb/1.jpg"),
+              //       fit: BoxFit.cover),
+              // ),
+              color: Colors.transparent,
+              child: Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                elevation: 20,
+                shadowColor: Colors.white,
+                margin: const EdgeInsets.all(20),
+                shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  // borderSide:
+                  //     const BorderSide(color: Colors.blue, width: 2)
+                ),
+                color: Colors.transparent,
+                child: SizedBox(
+                    height: 300.0,
+                    width: 300.0,
+                    child: Column(
+                      children: <Widget>[
+                        Form(
+                            key: formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 25.0,
+                                        right: 25.0,
+                                        top: 20.0,
+                                        bottom: 5.0),
+                                    child: SizedBox(
+                                      height: 50.0,
+                                      child: TextFormField(
+                                        decoration: const InputDecoration(
+                                            hintText: 'IITK Email'),
+                                        validator: (value) => value!.isEmpty
+                                            ? 'Email is required'
+                                            : validateEmail(value.trim()),
+                                        onChanged: (value) {
+                                          email = value;
+                                        },
                                       ),
-                                      child: const Center(
-                                          child: Text('Sign in')))),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  forgotPassword();
-                                },
-                                child: const Text("Forgot your password?"),
-                              ),
-                            ],
-                          ))
-                    ],
-                  )))),
+                                    )),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 25.0,
+                                        right: 25.0,
+                                        top: 20.0,
+                                        bottom: 5.0),
+                                    child: SizedBox(
+                                      height: 50.0,
+                                      child: TextFormField(
+                                        obscureText: !showPassword,
+                                        decoration: InputDecoration(
+                                            suffixIcon: IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  showPassword = !showPassword;
+                                                });
+                                              },
+                                              icon: Icon(
+                                                showPassword
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                              ),
+                                            ),
+                                            hintText: 'Password'),
+                                        validator: (value) => value!.isEmpty
+                                            ? 'Password is required'
+                                            : null,
+                                        onChanged: (value) {
+                                          password = value;
+                                        },
+                                      ),
+                                    )),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      if (checkFields()) {
+                                        signIn(email!, password!);
+                                      }
+                                    },
+                                    child: Container(
+                                        height: 40.0,
+                                        width: 100.0,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF0029E2),
+                                        ),
+                                        child: const Center(
+                                            child: Text(
+                                          'Sign in',
+                                          style: TextStyle(color: Colors.white),
+                                        )))),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    forgotPassword();
+                                  },
+                                  child: const Text("Forgot your password?"),
+                                ),
+                              ],
+                            ))
+                      ],
+                    )),
+              ),
+            )),
+          )),
     );
   }
 
   Future<void> signIn(String email, String password) async {
-    if (email == 'staff@iitk.ac.in' && password == 'IITKstaff') {
+    if (email == '123456' && password == '123456') {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -274,11 +320,12 @@ class _LoginPageState extends State<LoginPage> {
             email: email, password: password));
         _dialog.hide();
 
-        Navigator.push(context,
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const Dashboard()));
       } catch (e) {
         _dialog.hide();
         showError(e.toString());
+        _dialog.hide();
       }
       _dialog.hide();
     }

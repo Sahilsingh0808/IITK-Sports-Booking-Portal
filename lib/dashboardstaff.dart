@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,6 +32,8 @@ class _DashboardStaffState extends State<DashboardStaff> {
   var rollList = [];
   var nameList = [];
   var userDet1 = [];
+  List<String> emails = [];
+  List<String> names = [];
 
   @override
   void initState() {
@@ -66,36 +70,48 @@ class _DashboardStaffState extends State<DashboardStaff> {
     TextStyle defaultStyle =
         const TextStyle(color: Colors.white60, fontSize: 15.0);
     TextStyle linkStyle = const TextStyle(
-        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
+      color: Colors.white,
+      fontSize: 20.0,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.underline,
+    );
     return MaterialApp(
+      title: 'IITK Sports Facilities Booking Portal',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-       bottomNavigationBar: BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
               height: 26,
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: defaultStyle,
-                    children: <TextSpan>[
-                      const TextSpan(text: 'Developed by '),
-                      TextSpan(
-                          text: 'Sahil Singh',
-                          style: linkStyle,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launch('https://home.iitk.ac.in/~sahilsingh20/');
-                            }),
-                      // const TextSpan(text: '  For any '),
-                      // TextSpan(
-                      //     text: 'Technical Assistance or Feedback',
-                      //     style: linkStyle,
-                      //     recognizer: TapGestureRecognizer()
-                      //       ..onTap = () {
-                      //         launch('');
-                      //       }),
-                    ],
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultStyle,
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Developed by '),
+                        TextSpan(
+                            text: 'Sahil Singh',
+                            style: linkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launch(
+                                    'https://home.iitk.ac.in/~sahilsingh20/');
+                              }),
+                        const TextSpan(
+                            text:
+                                ' (Web Secretary, Games and Sports Council, IITK) '),
+                        // const TextSpan(text: '  For any '),
+                        // TextSpan(
+                        //     text: 'Technical Assistance or Feedback',
+                        //     style: linkStyle,
+                        //     recognizer: TapGestureRecognizer()
+                        //       ..onTap = () {
+                        //         launch('');
+                        //       }),
+                      ],
+                    ),
                   ),
                 ),
               )),
@@ -128,62 +144,110 @@ class _DashboardStaffState extends State<DashboardStaff> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: Center(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 50,
-              ),
-              Builder(
-                builder: (context) {
-                  return ElevatedButton(
-                    onPressed: () => _selectDate(context),
-                    child: Text(
-                        "${currentDate.day}/${currentDate.month}/${currentDate.year}"),
-                  );
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButton<String>(
-                  value: _chosenValue,
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.all(23.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black,
+              width: 2,
+            ),
+            // image: DecorationImage(
+            //     image: NetworkImage(
+            //         "https://ak.picdn.net/shutterstock/videos/10042277/thumb/1.jpg"),
+            //     fit: BoxFit.cover),
+          ),
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Builder(
+                  builder: (context) {
+                    return ElevatedButton(
+                      onPressed: () => _selectDate(context),
+                      child: Text(
+                          "${currentDate.day}/${currentDate.month}/${currentDate.year}"),
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<String>(
+                    value: _chosenValue,
+                    //elevation: 5,
+                    style: const TextStyle(color: Colors.black),
+
+                    items: <String>[
+                      'Basketball 1 (Main Sports Stadium)',
+                      'Basketball 2 (Main Sports Stadium)',
+                      'Basketball 3 (Main Sports Stadium)',
+                      'Badminton 1 (Old Sports Complex)',
+                      'Badminton 2 (Old Sports Complex)',
+                      'Squash 1 (Old Sports Complex)',
+                      'Squash 2 (Old Sports Complex)',
+                      'Volleyball 1 (Old Sports Complex)',
+                      'Volleyball 2 (Old Sports Complex)',
+                      'Volleyball 3 (Old Sports Complex)',
+                      'Volleyball 4 (Old Sports Complex)',
+                      'Badminton 1 (New Sports Complex)',
+                      'Badminton 2 (New Sports Complex)',
+                      'Badminton 3 (New Sports Complex)',
+                      'Squash 1 (New Sports Complex)',
+                      'Squash 2 (New Sports Complex)',
+                      'Table Tennis 1 (New Sports Complex)',
+                      'Table Tennis 2 (New Sports Complex)',
+                      'Table Tennis 3 (New Sports Complex)',
+                      'Table Tennis 4 (New Sports Complex)',
+                      'Table Tennis 5 (New Sports Complex)',
+                      'Table Tennis 6 (New Sports Complex)',
+                      'Tennis 1 (Tennis Courts)',
+                      'Tennis 2 (Tennis Courts)',
+                      'Tennis 3 (Tennis Courts)',
+                      'Tennis 4 (Tennis Courts)',
+                      'Tennis 5 (Tennis Courts)',
+                      'Tennis 6 (Tennis Courts)',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    hint: const Text(
+                      "Please choose a sports ground",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    onChanged: (value) {
+                      assert(value != null);
+                      setState(() {
+                        _chosenValue = value!;
+                      });
+                    },
+                  ),
+                ),
+                DropdownButton<String>(
+                  value: _chosenValue2,
                   //elevation: 5,
                   style: const TextStyle(color: Colors.black),
 
                   items: <String>[
-                    'Basketball 1 (Main Stadium)',
-                    'Basketball 2 (Main Stadium)',
-                    'Basketball 3 (Main Stadium)',
-                    'Gym MWF (Old Sports Complex)',
-                    'Gym TTS (Old Sports Complex)',
-                    'Badminton 1 (Old Sports Complex)',
-                    'Badminton 2 (Old Sports Complex)',
-                    'Squash 1 (Old Sports Complex)',
-                    'Squash 2 (Old Sports Complex)',
-                    'Squash 3 (Old Sports Complex)',
-                    'Volleyball 1 (Old Sports Complex)',
-                    'Volleyball 2 (Old Sports Complex)',
-                    'Volleyball 3 (Old Sports Complex)',
-                    'Badminton 1 (New Sports Complex)',
-                    'Badminton 2 (New Sports Complex)',
-                    'Badminton 3 (New Sports Complex)',
-                    'Squash 1 (New Sports Complex)',
-                    'Squash 2 (New Sports Complex)',
-                    'Table Tennis 1 (New Sports Complex)',
-                    'Table Tennis 2 (New Sports Complex)',
-                    'Table Tennis 3 (New Sports Complex)',
-                    'Table Tennis 4 (New Sports Complex)',
-                    'Table Tennis 5 (New Sports Complex)',
-                    'Table Tennis 6 (New Sports Complex)',
-                    'Gym MWF (New Sports Complex)',
-                    'Gym TTS (New Sports Complex)',
-                    'Tennis 1 (Tennis Courts)',
-                    'Tennis 2 (Tennis Courts)',
-                    'Tennis 3 (Tennis Courts)',
-                    'Tennis 4 (Tennis Courts)',
-                    'Tennis 5 (Tennis Courts)',
-                    'Tennis 6 (Tennis Courts)',
-                    'Pool (Swimming Pool)'
+                    '06.30-07.20 AM',
+                    '07.30-08.20 AM',
+                    '08.30-09.20 AM',
+                    '09.30-10.20 AM',
+                    '10.30-11.20 AM',
+                    '11.30-12.20 PM',
+                    '03.00-03.50 PM',
+                    '04.00-04.50 PM',
+                    '05.00-05.50 PM',
+                    '06.00-06.50 PM',
+                    '07.00-07.50 PM',
+                    '08.00-08.50 PM',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -191,7 +255,7 @@ class _DashboardStaffState extends State<DashboardStaff> {
                     );
                   }).toList(),
                   hint: const Text(
-                    "Please choose a sports ground",
+                    "Please choose a time slot",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -200,97 +264,69 @@ class _DashboardStaffState extends State<DashboardStaff> {
                   onChanged: (value) {
                     assert(value != null);
                     setState(() {
-                      _chosenValue = value!;
+                      _chosenValue2 = value!;
                     });
                   },
                 ),
-              ),
-              DropdownButton<String>(
-                value: _chosenValue2,
-                //elevation: 5,
-                style: const TextStyle(color: Colors.black),
-
-                items: <String>[
-                  '6-7 AM',
-                  '7-8 AM',
-                  '8-9 AM',
-                  '9-10 AM',
-                  '5-6 PM',
-                  '6-7 PM',
-                  '7-8 PM',
-                  '8-9 PM',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                hint: const Text(
-                  "Please choose a time slot",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
+                const SizedBox(
+                  height: 50,
                 ),
-                onChanged: (value) {
-                  assert(value != null);
-                  setState(() {
-                    _chosenValue2 = value!;
-                  });
-                },
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              InkWell(
-                  onTap: () {
-                    checkBookings(widget.facility);
-                  },
-                  child: Container(
-                      height: 50.0,
-                      width: 150.0,
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.2),
-                      ),
-                      child: const Center(child: Text('Check Bookings')))),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 200,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: emailList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        child: Column(
-                          children: [
-                            _builderList(
-                                'Booking ' + (index + 1).toString(),
-                                emailList[index],
-                                (nameList.isNotEmpty)
-                                    ? nameList[index]
-                                    : "Loading",
-                                (nameList.isNotEmpty)
-                                    ? rollList[index]
-                                    : "Loading",
-                                (nameList.isNotEmpty)
-                                    ? nameList[index]
-                                    : "Loading",
-                                'result[index].id.toString()',
-                                'result[index].data()'),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
-                      );
+                InkWell(
+                    onTap: () {
+                      checkBookings(widget.facility);
                     },
+                    child: Container(
+                        height: 50.0,
+                        width: 150.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF0029E2),
+                        ),
+                        child: const Center(
+                            child: Text(
+                          'Check Bookings',
+                          style: TextStyle(color: Colors.white),
+                        )))),
+                const SizedBox(
+                  height: 20,
+                ),
+                SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: emails.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            child: Column(
+                              children: [
+                                _builderList(
+                                    'Booking ' + (index + 1).toString(),
+                                    emails[index],
+                                    (rollList.isNotEmpty)
+                                        ? names[index]
+                                        : "Loading",
+                                    (rollList.isNotEmpty)
+                                        ? rollList[index]
+                                        : "Loading",
+                                    (rollList.isNotEmpty)
+                                        ? names[index]
+                                        : "Loading",
+                                    'result[index].id.toString()',
+                                    'result[index].data()'),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -392,8 +428,11 @@ class _DashboardStaffState extends State<DashboardStaff> {
               margin: const EdgeInsets.symmetric(horizontal: 30.0),
               padding: const EdgeInsets.all(23.0),
               decoration: BoxDecoration(
-                color: const Color(0xFFC8DBFF),
-                borderRadius: BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                    image: NetworkImage(
+                        "https://ak.picdn.net/shutterstock/videos/10042277/thumb/1.jpg"),
+                    fit: BoxFit.cover),
               ),
               child: Column(
                 children: <Widget>[
@@ -486,7 +525,7 @@ class _DashboardStaffState extends State<DashboardStaff> {
       );
       return;
     } else {
-      var result = await FirebaseFirestore.instance
+      QuerySnapshot result = await FirebaseFirestore.instance
           .collection('bookings')
           .doc(_chosenValue.toString())
           .collection(currentDate.day.toString() +
@@ -495,17 +534,23 @@ class _DashboardStaffState extends State<DashboardStaff> {
               "_" +
               currentDate.year.toString())
           .doc(_chosenValue2.toString())
+          .collection('names')
           .get();
-
-      String emails = '';
-
+      var list = result.docs;
+      print("REACHING HERE" + list.length.toString());
       setState(() {
-        emails = result.data()!['email'];
-        emailList = emails.split('%');
-        print(emailList[0] + " emails");
+        for (int i = 0; i < list.length; i++) {
+          String temp = list[i].id.toString();
+          print(temp);
+          List<String> temp1 = temp.split('%');
+          print(temp1[0]);
+          print(temp1[1]);
+          emails.add(temp1[0]);
+          names.add(temp1[1]);
+        }
       });
 
-      if (result == null || result.data() == null || emails.isEmpty) {
+      if (result == null || emails.isEmpty) {
         Fluttertoast.showToast(
           msg: "No Bookings to show",
           toastLength: Toast.LENGTH_LONG,
@@ -515,18 +560,18 @@ class _DashboardStaffState extends State<DashboardStaff> {
         );
         showError('No Bookings to show');
       } else {
-        for (int i = 0; i < emailList.length; i++) {
-          if (emailList[i].toString().length > 5) {
+        for (int i = 0; i < emails.length; i++) {
+          if (emails[i].toString().length > 5) {
             var userDet = await FirebaseFirestore.instance
                 .collection('users')
-                .doc(emailList[i])
+                .doc(emails[i])
                 .get();
             userDet1.add(userDet.data());
           }
         }
         setState(() {
-          for (int i = 0; i < emailList.length; i++) {
-            if (emailList[i].toString().length > 5) {
+          for (int i = 0; i < emails.length; i++) {
+            if (emails[i].toString().length > 5) {
               String name = userDet1[i]['name'];
               String roll = userDet1[i]['roll'];
               if (name.isNotEmpty) {

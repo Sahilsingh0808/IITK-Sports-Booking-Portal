@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -56,16 +57,15 @@ class SOF extends StatefulWidget {
 
 class _SOFState extends State<SOF> {
   final _formKey = GlobalKey<FormState>();
-  var nameTECs = <TextEditingController>[];
-  var rollTECs = <TextEditingController>[];
   var mailTECs = <TextEditingController>[];
-  var phoneTECs = <TextEditingController>[];
+
+  bool _switchValue = false;
   List<bool> isPresent = [];
   List<PersonEntry> entries = [];
   late SimpleFontelicoProgressDialog _dialog;
   final User? _auth = FirebaseAuth.instance.currentUser;
   String? userEmail, phoneUser, rollUser;
-  bool? isStudent = false, isStop = false;
+  bool? isStudent = false, isStop = false, stafAccompany = false;
 
   var cards = <Card>[];
 
@@ -90,7 +90,7 @@ class _SOFState extends State<SOF> {
             'user_email': email,
             'user_subject': subject,
             'user_message': message,
-            'reply_to': 'gns.offline@gmail.com',
+            'reply_to': '',
           }
         }));
     // ignore: avoid_print
@@ -136,41 +136,19 @@ class _SOFState extends State<SOF> {
   }
 
   Card createCard() {
-    var nameController = TextEditingController();
-    var ageController = TextEditingController();
     var jobController = TextEditingController();
-    var phoneController = TextEditingController();
-    nameTECs.add(nameController);
-    rollTECs.add(ageController);
     mailTECs.add(jobController);
-    phoneTECs.add(phoneController);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Form(key: _formKey, child: Text('Person ${cards.length + 1}')),
+          Form(
+              key: _formKey,
+              child: Text('Companion ${cards.length + 1} Email ID')),
           const SizedBox(
             height: 10,
           ),
-          TextFormField(
-              validator: (text) {
-                if (text == null || text.isEmpty) {
-                  return 'Text is empty';
-                }
-                return null;
-              },
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Full Name')),
-          TextFormField(
-              validator: (text) {
-                if (text == null || text.isEmpty) {
-                  return 'Text is empty';
-                }
-                return null;
-              },
-              controller: ageController,
-              decoration: const InputDecoration(
-                  labelText: 'Roll Number (Enter D id dependent)')),
+
           TextFormField(
               validator: (text) {
                 if (text == null || text.isEmpty) {
@@ -179,18 +157,16 @@ class _SOFState extends State<SOF> {
                 return null;
               },
               controller: jobController,
-              decoration: const InputDecoration(
-                  labelText: 'E-Mail (Enter D id dependent)')),
-          TextFormField(
-              validator: (text) {
-                if (text == null || text.isEmpty) {
-                  return 'Text is empty';
-                }
-                return null;
-              },
-              controller: phoneController,
-              decoration: const InputDecoration(
-                  labelText: 'Phone No. (Enter D id dependent)')),
+              decoration: const InputDecoration(labelText: 'IITK E-Mail')),
+          // TextFormField(
+          //     validator: (text) {
+          //       if (text == null || text.isEmpty) {
+          //         return 'Text is empty';
+          //       }
+          //       return null;
+          //     },
+          //     controller: phoneController,
+          //     decoration: const InputDecoration(labelText: 'Mobile Number')),
           const SizedBox(height: 20),
         ],
       ),
@@ -205,6 +181,7 @@ class _SOFState extends State<SOF> {
       getSeats(widget.date, widget.ground, widget.people, widget.time);
     }
     inputData();
+    print("DATA " + widget.people);
   }
 
   showSuccess(String successmessage) {
@@ -273,18 +250,8 @@ class _SOFState extends State<SOF> {
     if (int.parse(widget.people) > 0) {
       if (_formKey.currentState!.validate()) {
         for (int i = 0; i < cards.length; i++) {
-          var name = nameTECs[i].text;
-          var roll = rollTECs[i].text;
           var mail = mailTECs[i].text;
-          var phone = phoneTECs[i].text;
-          if (name == null ||
-              name.isEmpty ||
-              roll == null ||
-              roll.isEmpty ||
-              mail == null ||
-              mail.isEmpty ||
-              phone == null ||
-              phone.isEmpty) {
+          if (mail == null || mail.isEmpty) {
             Fluttertoast.showToast(
               msg: 'Please fill all the details',
               toastLength: Toast.LENGTH_LONG,
@@ -296,7 +263,8 @@ class _SOFState extends State<SOF> {
             );
             return;
           }
-          entries.add(PersonEntry(name, roll, mail, phone));
+
+          entries.add(PersonEntry(mail));
         }
         print("OnDone");
         getSeats(widget.date, widget.ground, widget.people, widget.time);
@@ -311,36 +279,48 @@ class _SOFState extends State<SOF> {
     TextStyle defaultStyle =
         const TextStyle(color: Colors.white60, fontSize: 15.0);
     TextStyle linkStyle = const TextStyle(
-        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
+      color: Colors.white,
+      fontSize: 20.0,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.underline,
+    );
     return MaterialApp(
+      title: 'IITK Sports Facilities Booking Portal',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-       bottomNavigationBar: BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
               height: 26,
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: defaultStyle,
-                    children: <TextSpan>[
-                      const TextSpan(text: 'Developed by '),
-                      TextSpan(
-                          text: 'Sahil Singh',
-                          style: linkStyle,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launch('https://home.iitk.ac.in/~sahilsingh20/');
-                            }),
-                      // const TextSpan(text: '  For any '),
-                      // TextSpan(
-                      //     text: 'Technical Assistance or Feedback',
-                      //     style: linkStyle,
-                      //     recognizer: TapGestureRecognizer()
-                      //       ..onTap = () {
-                      //         launch('');
-                      //       }),
-                    ],
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultStyle,
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Developed by '),
+                        TextSpan(
+                            text: 'Sahil Singh',
+                            style: linkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launch(
+                                    'https://home.iitk.ac.in/~sahilsingh20/');
+                              }),
+                        const TextSpan(
+                            text:
+                                ' (Web Secretary, Games and Sports Council, IITK) '),
+                        // const TextSpan(text: '  For any '),
+                        // TextSpan(
+                        //     text: 'Technical Assistance or Feedback',
+                        //     style: linkStyle,
+                        //     recognizer: TapGestureRecognizer()
+                        //       ..onTap = () {
+                        //         launch('');
+                        //       }),
+                      ],
+                    ),
                   ),
                 ),
               )),
@@ -350,22 +330,22 @@ class _SOFState extends State<SOF> {
           actions: [
             Builder(builder: (context) {
               return IconButton(
-                  icon: Icon(Icons.info_outline_rounded),
+                  icon: const Icon(Icons.info_outline_rounded),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => const Info()));
                   });
             }),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Builder(builder: (context) {
               return IconButton(
-                  icon: Icon(Icons.person),
+                  icon: const Icon(Icons.person),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Profile()));
                   });
             }),
-            SizedBox(width: 50),
+            const SizedBox(width: 50),
           ],
           title: const Text("Fill in your compananions' details"),
           leading: IconButton(
@@ -374,45 +354,68 @@ class _SOFState extends State<SOF> {
                 MaterialPageRoute(builder: (context) => const Dashboard())),
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                itemCount: cards.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return cards[index];
-                },
-              ),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  'https://i.postimg.cc/Nf6mKfFD/Untitled-design-5.jpg'),
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  RaisedButton(
-                    child: const Text('Add New'),
-                    onPressed: () => setState(() {
-                      if (cards.length < int.parse(widget.people)) {
-                        cards.add(createCard());
-                      } else {
-                        _onDone();
-                      }
-                    }),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  RaisedButton(
-                      child: const Text('Cancel'),
-                      onPressed: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Dashboard()))),
-                ],
+          ),
+          child: Column(
+            children: <Widget>[
+              // const Text('Would you be coming along with your companions?'),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // CupertinoSwitch(
+              //   value: _switchValue,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _switchValue = value;
+              //       stafAccompany = value;
+              //       print(stafAccompany);
+              //     });
+              //   },
+              // ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cards.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return cards[index];
+                  },
+                ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RaisedButton(
+                      child: const Text('Add New'),
+                      onPressed: () => setState(() {
+                        if (cards.length < int.parse(widget.people)) {
+                          cards.add(createCard());
+                        } else {
+                          _onDone();
+                        }
+                      }),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    RaisedButton(
+                        child: const Text('Cancel'),
+                        onPressed: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Dashboard()))),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.done),
@@ -439,26 +442,26 @@ class _SOFState extends State<SOF> {
 
   Future<void> getSeats(
       String date, String ground, String people, String time) async {
-    var roll1;
     var seats;
-    var emailList;
-
+    print("REACHING");
     if (int.parse(widget.people) > 0) {
       setState(() {
-        for (int i = 0; i < mailTECs.length; i++) {
+        for (int i = 0; i < int.parse(widget.people); i++) {
           isPresent.add(false);
         }
       });
-
+      print("REACHING1");
       final db = FirebaseFirestore.instance;
       var result = await db.collection('users').get();
       for (var res in result.docs) {
         print("RES");
         for (int j = 0; j < mailTECs.length; j++) {
           print("Jack");
-          if (res.id.toString() == mailTECs[j].text ||
-              res.id.toString().contains(nameTECs[j].text) ||
-              mailTECs[j].text == 'D') {
+          if (mailTECs[j].text == userEmail.toString()) {
+            showError('You cannot add yourself here.');
+            return;
+          }
+          if (res.id.toString() == mailTECs[j].text) {
             setState(() {
               isPresent[j] = true;
             });
@@ -477,7 +480,6 @@ class _SOFState extends State<SOF> {
     }
 
     var collection = FirebaseFirestore.instance.collection('bookings');
-
     var docSnapshot = await collection
         .doc(widget.ground)
         .collection(widget.date)
@@ -490,11 +492,12 @@ class _SOFState extends State<SOF> {
       seats = data?['seats'];
       // print((seats) - int.parse(people));
       final nameD = _auth!.displayName;
-
+      int temp = seats - int.parse(people);
       if (((seats) - int.parse(people)) >= 1) {
         int a = (seats);
         print("a " + a.toString());
         a = a - int.parse(people) - 1;
+
         print("Peope " + people);
         print("a " + a.toString());
         // roll1 += "_" + nameD!;
@@ -504,7 +507,6 @@ class _SOFState extends State<SOF> {
         //     print(mailTECs[i]);
         //   }
         // }
-        print(roll1);
         print(a);
 
         try {
@@ -519,55 +521,51 @@ class _SOFState extends State<SOF> {
 
             // You can then retrieve the value from the Map like this:
             seats = data?['seats'];
-            emailList = data?['email'];
-            print("Email List" + emailList);
+            // emailList = data?['email'];
           }
           // _showDialog(context, SimpleFontelicoProgressDialogType.hurricane,
           //     'Hurricane');
 
+          var res = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userEmail)
+              .get();
+          String userName = '';
+
+          setState(() {
+            userName = res.data()!['name'];
+          });
+
           String accompanyDetails = "";
+          accompanyDetails += userName + "%";
+
           print(rollUser! + " Test " + phoneUser!);
           for (int i = 0; i < int.parse(widget.people); i++) {
-            if (rollTECs[i].text == 'D' ||
-                phoneTECs[i].text == 'D' ||
-                mailTECs[i].text == 'D') {
-              if (isStudent == false) {
-                accompanyDetails += nameTECs[i].text +
-                    "%" +
-                    rollUser.toString() +
-                    "%" +
-                    userEmail.toString() +
-                    "%" +
-                    phoneUser.toString() +
-                    "%";
-                accompanyDetails += "\n";
-              } else {
-                setState(() {
-                  isStop = true;
-                });
-                Fluttertoast.showToast(
-                  msg: 'You cannot add companions in dependent category',
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity:
-                      ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-                  backgroundColor: Colors.black,
-                  textColor: Colors.white,
-                );
-                return;
-              }
-            } else {
-              accompanyDetails += nameTECs[i].text +
-                  "%" +
-                  rollTECs[i].text +
-                  "%" +
-                  mailTECs[i].text +
-                  "%" +
-                  phoneTECs[i].text +
-                  "%";
-              accompanyDetails += "\n";
-            }
+            var res = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(mailTECs[i].text)
+                .get();
+            String name = res.data()!['name'];
+            accompanyDetails += name + "%";
           }
-
+          String emails = '';
+          emails += userEmail.toString() + '%';
+          for (int i = 0; i < int.parse(widget.people); i++) {
+            emails += mailTECs[i].text + '%';
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(mailTECs[i].text)
+                .collection('user bookings')
+                .doc('Booking%%' + ground + "%%" + date + "%%" + time)
+                .set({
+              'ground': ground,
+              'date': date,
+              'slot': time,
+              'accompany': widget.people,
+              'emails': emails,
+              'accompany details': accompanyDetails,
+            });
+          }
           await FirebaseFirestore.instance
               .collection("users")
               .doc(userEmail)
@@ -578,18 +576,23 @@ class _SOFState extends State<SOF> {
             'date': date,
             'slot': time,
             'accompany': widget.people,
-            'accompany details': accompanyDetails
+            'emails': emails,
+            'accompany details': accompanyDetails,
           });
 
-          var tempEmail = emailList;
-          for (int i = 0; i < int.parse(widget.people); i++) {
-            if (mailTECs[i].text == 'D') {
-              tempEmail += userEmail.toString() + "%";
-            } else {
-              tempEmail += mailTECs[i].text + "%";
-            }
-          }
-          tempEmail += userEmail;
+          // var tempEmail = emailList;
+          // for (int i = 0; i < int.parse(widget.people); i++) {
+          //   if (mailTECs[i].text == 'D') {
+          //     tempEmail += userEmail.toString() + "%";
+          //   } else {
+          //     tempEmail += mailTECs[i].text + "%";
+          //   }
+          // }
+          // if (stafAccompany = true) {
+          //   tempEmail += userEmail;
+          //   tempEmail += '%';
+          //   print("STAFF ACCOMPANYING");
+          // }
           await FirebaseFirestore.instance
               .collection("bookings")
               .doc(widget.ground)
@@ -597,7 +600,18 @@ class _SOFState extends State<SOF> {
               .doc(widget.time)
               .update({
             'seats': a,
-            'email': tempEmail,
+          });
+
+          await FirebaseFirestore.instance
+              .collection("bookings")
+              .doc(widget.ground)
+              .collection(widget.date)
+              .doc(widget.time)
+              .collection('names')
+              .doc(userEmail! + '%' + userName)
+              .set({
+            'email': userEmail,
+            'name': userName,
           });
 
           // for (int i = 0; i < mailTECs.length; i++) {
@@ -634,29 +648,58 @@ class _SOFState extends State<SOF> {
           sendEmail(
               name: 'Games and Sports Council, IITK',
               email: userEmail!,
-              message: 'Your seat for ' +
+              message: 'Dear ' +
+                  userName +
+                  ' (' +
+                  userEmail! +
+                  ') \nyour seat for ' +
                   widget.ground +
                   ' on ' +
                   widget.date +
                   ' at ' +
                   widget.time +
-                  ' has been booked.',
+                  ' has been confirmed.\nRegards\nSPEC Office',
               subject: 'Booking Confirmation for Sports Facilities IITK');
 
           //email sent to daughter users(s)
           for (int i = 0; i < int.parse(widget.people); i++) {
             print("Sending Email to users");
             print(mailTECs[i].text);
+            var res = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(mailTECs[i].text)
+                .get();
+            String tempName = res.data()!['name'];
+            await FirebaseFirestore.instance
+                .collection("bookings")
+                .doc(widget.ground)
+                .collection(widget.date)
+                .doc(widget.time)
+                .collection('names')
+                .doc(mailTECs[i].text + '%' + tempName)
+                .set({
+              'email': mailTECs[i].text,
+              'name': tempName,
+            });
+
             sendEmail(
                 name: 'Games and Sports Council, IITK',
                 email: mailTECs[i].text,
-                message: userEmail! +
-                    'has booked your seat for ' +
+                message: 'Dear ' +
+                    tempName +
+                    ' (' +
+                    mailTECs[i].text +
+                    ') \nyour seat for ' +
                     widget.ground +
                     ' on ' +
                     widget.date +
                     ' at ' +
-                    widget.time,
+                    widget.time +
+                    ' has been confirmed by ' +
+                    userName +
+                    ' (' +
+                    userEmail! +
+                    ').\nRegards\nSPEC Office',
                 subject: 'Booking Confirmation for Sports Facilities IITK');
           }
 
@@ -721,17 +764,52 @@ class _SOFState extends State<SOF> {
     //   showError(e.toString());
     // }
   }
+
+  // showAlertDialog(BuildContext context) {
+  //   // set up the buttons
+  //   Widget cancelButton = TextButton(
+  //     child: Text("No"),
+  //     onPressed: () {
+  //       setState(() {
+  //         stafAccompany = false;
+  //       });
+  //     },
+  //   );
+  //   Widget continueButton = TextButton(
+  //     child: Text("Yes"),
+  //     onPressed: () {
+  //       setState(() {
+  //         stafAccompany = true;
+  //       });
+  //     },
+  //   );
+
+  //   // set up the AlertDialog
+  //   AlertDialog alert = AlertDialog(
+  //     title: Text("AlertDialog"),
+  //     content: Text("Would you be coming along with your companions?"),
+  //     actions: [
+  //       cancelButton,
+  //       continueButton,
+  //     ],
+  //   );
+
+  //   // show the dialog
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alert;
+  //     },
+  //   );
+  // }
 }
 
 class PersonEntry {
-  final String name;
-  final String roll;
   final String mail;
-  final String phone;
 
-  PersonEntry(this.name, this.roll, this.mail, this.phone);
+  PersonEntry(this.mail);
   @override
   String toString() {
-    return 'Person: name= $name, roll= $roll, mail= $mail, phone= $phone';
+    return 'Person: mail= $mail';
   }
 }

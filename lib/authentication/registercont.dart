@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../info.dart';
 
 class RegisterCont extends StatefulWidget {
   final int people;
@@ -37,14 +40,21 @@ class _RegisterContState extends State<RegisterCont> {
     TextStyle defaultStyle =
         const TextStyle(color: Colors.white60, fontSize: 15.0);
     TextStyle linkStyle = const TextStyle(
-        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
+      color: Colors.white,
+      fontSize: 20.0,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.underline,
+    );
     return MaterialApp(
+      title: 'IITK Sports Facilities Booking Portal',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomAppBar(
-            color: Colors.blueAccent,
-            child: SizedBox(
-                height: 26,
+          color: Colors.blueAccent,
+          child: SizedBox(
+              height: 26,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
                 child: Center(
                   child: RichText(
                     text: TextSpan(
@@ -59,6 +69,9 @@ class _RegisterContState extends State<RegisterCont> {
                                 launch(
                                     'https://home.iitk.ac.in/~sahilsingh20/');
                               }),
+                        const TextSpan(
+                            text:
+                                ' (Web Secretary, Games and Sports Council, IITK) '),
                         // const TextSpan(text: '  For any '),
                         // TextSpan(
                         //     text: 'Technical Assistance or Feedback',
@@ -70,52 +83,73 @@ class _RegisterContState extends State<RegisterCont> {
                       ],
                     ),
                   ),
-                )),
-            elevation: 5,
-          ),
+                ),
+              )),
+          elevation: 5,
+        ),
         appBar: AppBar(
-          title: const Text("Fill in your dependents' details (OneTime)"),
+          actions: [
+            Builder(builder: (context) {
+              return IconButton(
+                  icon: const Icon(Icons.info_outline_rounded),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Info()));
+                  });
+            }),
+            const SizedBox(width: 50),
+          ],
+          title: const Text("Dependent Details"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                itemCount: cards.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return cards[index];
-                },
-              ),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  'https://i.postimg.cc/Nf6mKfFD/Untitled-design-5.jpg'),
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  RaisedButton(
-                    child: const Text('Add New'),
-                    onPressed: () => setState(() {
-                      if (cards.length < (widget.people)) {
-                        cards.add(createCard());
-                      } else {
-                        _onDone();
-                      }
-                    }),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  RaisedButton(
-                      child: const Text('Cancel'),
-                      onPressed: () => Navigator.pop(context)),
-                ],
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cards.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return cards[index];
+                  },
+                ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RaisedButton(
+                      child: const Text('Add New'),
+                      onPressed: () => setState(() {
+                        if (cards.length < (widget.people)) {
+                          cards.add(createCard());
+                        } else {
+                          _onDone();
+                        }
+                      }),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    RaisedButton(
+                        child: const Text('Cancel'),
+                        onPressed: () => Navigator.pop(context)),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.done),
@@ -128,7 +162,7 @@ class _RegisterContState extends State<RegisterCont> {
                   toastLength: Toast.LENGTH_LONG,
                   gravity:
                       ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-                  backgroundColor: Colors.black,
+                  backgroundColor: const Color(0xFF0029E2),
                   textColor: Colors.white,
                 );
               } else {
@@ -145,6 +179,20 @@ class _RegisterContState extends State<RegisterCont> {
       userEmail = user?.email;
     });
     // here you write the codes to input the data into firestore
+  }
+
+  showError(String errormessage) {
+    AwesomeDialog(
+            context: context,
+            dialogType: DialogType.ERROR,
+            animType: AnimType.RIGHSLIDE,
+            headerAnimationLoop: true,
+            title: 'Error',
+            desc: errormessage,
+            btnOkOnPress: () {},
+            btnOkIcon: Icons.cancel,
+            btnOkColor: Colors.red)
+        .show();
   }
 
   _onDone() async {
@@ -170,6 +218,16 @@ class _RegisterContState extends State<RegisterCont> {
               moveAhead = false;
             });
             return;
+          } else if (roll != 'Spouse' &&
+              roll != 'Parent' &&
+              roll != 'Children' &&
+              roll != 'Others') {
+            showError(
+                'Please enter Spouse/Parent/Children/Others in relationship.');
+            setState(() {
+              moveAhead = false;
+            });
+            return;
           } else {
             entries.add(PersonEntry(name, roll));
           }
@@ -178,13 +236,20 @@ class _RegisterContState extends State<RegisterCont> {
       if (moveAhead == true) {
         inputData();
 
+        await FirebaseFirestore.instance
+            .collection('dependents')
+            .doc(userEmail)
+            .set({
+          'number': widget.people,
+        });
+
         for (int i = 0; i < widget.people; i++) {
-          await users.doc(userEmail.toString() + "%%" + entries[i].name).set({
-            'name': entries[i].name,
-            'relation': entries[i].roll,
-            'category': 'Dependent',
-            'independent email': userEmail
-          }).then((value) => print("Registered"));
+          await FirebaseFirestore.instance
+              .collection('dependents')
+              .doc(userEmail)
+              .collection('names')
+              .doc(entries[i].name)
+              .set({'name': entries[i].name, 'relation': entries[i].roll});
         }
         print("OnDone");
         Navigator.pushReplacement(context,
@@ -215,7 +280,7 @@ class _RegisterContState extends State<RegisterCont> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Form(key: _formKey, child: Text('Person ${cards.length + 1}')),
+          Form(key: _formKey, child: Text('Dependent ${cards.length + 1}')),
           const SizedBox(
             height: 10,
           ),
@@ -237,7 +302,8 @@ class _RegisterContState extends State<RegisterCont> {
               },
               controller: ageController,
               decoration: const InputDecoration(
-                  labelText: 'Relation with Independent')),
+                  labelText:
+                      'Your Relationship with Dependent (Write only Spouse/Parent/Children/Others)')),
           const SizedBox(height: 20),
         ],
       ),

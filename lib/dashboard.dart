@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:gnsdev/profile.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:http/http.dart' as http;
 import 'book.dart';
 import 'info.dart';
 
@@ -164,7 +168,7 @@ class _DashboardState extends State<Dashboard> {
   // }
 
   Widget _builderList(String number, String ground, String accompany,
-      String date, String time, String desc, String accDetails) {
+      String date, String time, String desc, String accDetails, String emails) {
     {
       if (number == null || number.isEmpty) number = "Not Available";
       if (ground == null || ground.isEmpty) ground = "Not Available";
@@ -188,8 +192,20 @@ class _DashboardState extends State<Dashboard> {
               margin: const EdgeInsets.symmetric(horizontal: 30.0),
               padding: const EdgeInsets.all(23.0),
               decoration: BoxDecoration(
-                color: const Color(0xFFC8DBFF),
-                borderRadius: BorderRadius.circular(30.0),
+                image: DecorationImage(
+                  image: NetworkImage(
+                      'https://media.istockphoto.com/videos/abstract-light-blue-soft-background-video-id466111690?s=480x480'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+                // image: DecorationImage(
+                //     image: NetworkImage(
+                //         "https://ak.picdn.net/shutterstock/videos/10042277/thumb/1.jpg"),
+                //     fit: BoxFit.cover),
               ),
               child: Column(
                 children: <Widget>[
@@ -256,7 +272,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 child: const Icon(
                                   Icons.remove_red_eye,
-                                  color: Colors.white,
+                                  color: Colors.lightBlueAccent,
                                 ),
                               ),
                             ),
@@ -292,7 +308,7 @@ class _DashboardState extends State<Dashboard> {
                               onTap: () {
                                 setState(() {
                                   deleteData(desc, ground, date, time,
-                                      int.parse(accompany));
+                                      int.parse(accompany), accDetails, emails);
                                 });
                               },
                               child: Container(
@@ -304,7 +320,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 child: const Icon(
                                   Icons.delete,
-                                  color: Colors.white,
+                                  color: Colors.lightBlueAccent,
                                 ),
                               ),
                             ),
@@ -325,202 +341,256 @@ class _DashboardState extends State<Dashboard> {
     TextStyle defaultStyle =
         const TextStyle(color: Colors.white60, fontSize: 15.0);
     TextStyle linkStyle = const TextStyle(
-        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
+      color: Colors.white,
+      fontSize: 20.0,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.underline,
+    );
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.blueAccent,
-          child: SizedBox(
-              height: 26,
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: defaultStyle,
-                    children: <TextSpan>[
-                      const TextSpan(text: 'Developed by '),
-                      TextSpan(
-                          text: 'Sahil Singh',
-                          style: linkStyle,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launch('https://home.iitk.ac.in/~sahilsingh20/');
-                            }),
-                      // const TextSpan(text: '  For any '),
-                      // TextSpan(
-                      //     text: 'Technical Assistance or Feedback',
-                      //     style: linkStyle,
-                      //     recognizer: TapGestureRecognizer()
-                      //       ..onTap = () {
-                      //         launch('');
-                      //       }),
-                    ],
+        title: 'IITK Sports Facilities Booking Portal',
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.blueAccent,
+            child: SizedBox(
+                height: 26,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
+                        style: defaultStyle,
+                        children: <TextSpan>[
+                          const TextSpan(text: 'Developed by '),
+                          TextSpan(
+                              text: 'Sahil Singh',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launch(
+                                      'https://home.iitk.ac.in/~sahilsingh20/');
+                                }),
+                          const TextSpan(
+                              text:
+                                  ' (Web Secretary, Games and Sports Council, IITK) '),
+                          // const TextSpan(text: '  For any '),
+                          // TextSpan(
+                          //     text: 'Technical Assistance or Feedback',
+                          //     style: linkStyle,
+                          //     recognizer: TapGestureRecognizer()
+                          //       ..onTap = () {
+                          //         launch('');
+                          //       }),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              )),
-          elevation: 5,
-        ),
-        appBar: AppBar(
-          actions: [
-            Builder(builder: (context) {
-              return IconButton(
-                  icon: Icon(Icons.info_outline_rounded),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Info()));
-                  });
-            }),
-            SizedBox(width: 20),
-            Builder(builder: (context) {
-              return IconButton(
-                  icon: Icon(Icons.person),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Profile()));
-                  });
-            }),
-            SizedBox(width: 50),
-          ],
-          title: const Text("Your Dashboard"),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
+                )),
+            elevation: 5,
           ),
-        ),
-        body: Center(
-          child: ((bookingList.isEmpty == true))
-              ? Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        'No Bookings',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
+          appBar: AppBar(
+            actions: [
+              Builder(builder: (context) {
+                return IconButton(
+                    icon: Icon(Icons.info_outline_rounded),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Info()));
+                    });
+              }),
+              SizedBox(width: 20),
+              Builder(builder: (context) {
+                return IconButton(
+                    icon: Icon(Icons.person),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Profile()));
+                    });
+              }),
+              SizedBox(width: 50),
+            ],
+            title: const Text("Your Dashboard"),
+            // leading: IconButton(
+            //   icon: const Icon(Icons.arrow_back),
+            //   onPressed: () => Navigator.of(context).pop(),
+            // ),
+          ),
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage('https://i.ibb.co/yd7xN3m/dashboard.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: ((bookingList.isEmpty == true))
+                  ? SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Wrap(
+                            children: const [
+                              Text(
+                                'You have no bookings currently',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(10),
+                              splashColor: Color(0xFF0029E2),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const BookSlot(
+                                      title: 'Book your slot',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  color: Color(0xFF0029E2),
+                                  child: Ink(
+                                      color: Color(0xFF0029E2),
+                                      width: 150,
+                                      height: 70,
+                                      child: const Center(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Book Slot',
+                                          textScaleFactor: 2,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const Text(
-                        'You have no bookings',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(10),
-                          splashColor: Colors.green,
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const BookSlot(
-                                  title: '',
+                    )
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Builder(builder: (context) {
+                            return const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Your Bookings:",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             );
-                          },
-                          child: Ink(
-                              color: Colors.greenAccent,
-                              width: 120,
-                              height: 70,
-                              child: const Center(
-                                  child: Text(
-                                'Book Slot',
-                                textScaleFactor: 2,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : SizedBox(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      Builder(builder: (context) {
-                        return const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Your Bookings:",
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        );
-                      }),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: bookingList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    _builderList(
-                                        'Booking ' + (index + 1).toString(),
-                                        bookingList[index].data()['ground'],
-                                        bookingList[index].data()['accompany'],
-                                        bookingList[index].data()['date'],
-                                        bookingList[index].data()['slot'],
-                                        bookingList[index].id.toString(),
-                                        bookingList[index]
-                                            .data()['accompany details']),
-                                    const SizedBox(height: 20),
-                                  ],
+                          }),
+                          SingleChildScrollView(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: bookingList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      child: Column(
+                                        children: [
+                                          _builderList(
+                                              'Booking ' +
+                                                  (index + 1).toString(),
+                                              bookingList[index]
+                                                  .data()['ground'],
+                                              bookingList[index]
+                                                  .data()['accompany'],
+                                              bookingList[index].data()['date'],
+                                              bookingList[index].data()['slot'],
+                                              bookingList[index].id.toString(),
+                                              bookingList[index]
+                                                  .data()['accompany details'],
+                                              bookingList[index]
+                                                  .data()['emails']),
+                                          const SizedBox(height: 20),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(10),
-                        splashColor: Colors.green,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const BookSlot(
-                                title: '',
                               ),
                             ),
-                          );
-                        },
-                        child: Ink(
-                            color: Colors.greenAccent,
-                            width: 120,
-                            height: 70,
-                            child: const Center(
-                                child: Text(
-                              'Book Slot',
-                              textScaleFactor: 2,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ))),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(10),
+                              splashColor: Color(0xFF0029E2),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const BookSlot(
+                                      title: 'Book your slot',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  color: Color(0xFF0029E2),
+                                  child: Ink(
+                                      color: Color(0xFF0029E2),
+                                      width: 150,
+                                      height: 70,
+                                      child: const Center(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Book Slot',
+                                          textScaleFactor: 2,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-        ),
-      ),
-    );
+                    ),
+            ),
+          ),
+        ));
   }
 
-  void view(String heading, String desc, String id, String date, String time,
-      String important, String accDetails) {
+  Future<void> view(String heading, String desc, String id, String date,
+      String time, String important, String accDetails) async {
     String desc1 = "";
+
     List<String> temp = accDetails.split('%');
     for (int i = 0; i < temp.length; i++) {
       print(temp[i] + "__");
@@ -529,12 +599,17 @@ class _DashboardState extends State<Dashboard> {
       desc1 = "Not Available";
     } else {
       for (int i = 0; i < temp.length; i++) {
-        Pattern pattern =
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-        RegExp regex = RegExp(pattern.toString());
-        if (regex.hasMatch(temp[i])) {
-          desc1 += temp[i] + "; ";
-        }
+        // Pattern pattern =
+        //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        // RegExp regex = RegExp(pattern.toString());
+        // if (regex.hasMatch(temp[i])) {
+        //   var res = await FirebaseFirestore.instance
+        //       .collection('users')
+        //       .doc(temp[i])
+        //       .get();
+        //   String name = res.data()!['name'];
+        // }
+        desc1 += temp[i] + "; ";
       }
       // for (int i = 0; i < temp.length; i += 4) {
       //   if (i >= temp.length) {
@@ -544,15 +619,17 @@ class _DashboardState extends State<Dashboard> {
       // }
     }
 
+    int x = int.parse(id) + 1;
+
     AwesomeDialog(
       context: context,
       headerAnimationLoop: false,
       dialogType: DialogType.NO_HEADER,
-      title: 'Accompanied Companions: ' + id,
-      desc: 'Details of companions: ' + desc1,
+      title: 'Slot Booked for: ' + (x).toString() + " People",
+      desc: desc1,
       btnOkColor: const Color(0xFF0029E2),
       btnOkOnPress: () {
-        debugPrint('OnClcik');
+        debugPrint('OnClick');
       },
       btnOkIcon: Icons.check_circle,
     ).show();
@@ -588,7 +665,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   deleteData(String desc, String ground, String date, String slot,
-      int accompany) async {
+      int accompany, String accDetails, String emails) async {
     AwesomeDialog(
         context: context,
         dialogType: DialogType.WARNING,
@@ -599,7 +676,7 @@ class _DashboardState extends State<Dashboard> {
         title: 'Warning',
         btnOkColor: const Color(0xFF0029E2),
         btnCancelColor: const Color(0xFF353B57),
-        desc: 'Are you sure you want to delete this booking?',
+        desc: 'Are you sure you want to cancel this booking?',
         btnCancelOnPress: () {},
         onDissmissCallback: (type) {
           debugPrint('Dialog Dissmiss from callback $type');
@@ -650,27 +727,80 @@ class _DashboardState extends State<Dashboard> {
               Map<String, dynamic>? data = docSnapshot.data();
               // You can then retrieve the value from the Map like this:
               seats = data?['seats'];
-              emailList = data?['email'];
-              print("Email List " + emailList);
-              emailList = emailList.replaceAll(userEmail! + '%', '');
-              emailList = emailList.replaceAll(userEmail!, '');
-              if (emailList.isNotEmpty) {
-                for (int i = 0; i < list.length; i++) {
-                  emailList = emailList.replaceAll(emailList[i] + '%', '');
-                  emailList = emailList.replaceAll(emailList[i], '');
-                }
-              }
+              // emailList = data?['email'];
+              // print("Email List " + emailList);
+              // emailList = emailList.replaceAll(userEmail! + '%', '');
+              // emailList = emailList.replaceAll(userEmail!, '');
+              // if (emailList.isNotEmpty) {
+              //   for (int i = 0; i < list.length; i++) {
+              //     emailList = emailList.replaceAll(emailList[i] + '%', '');
+              //     emailList = emailList.replaceAll(emailList[i], '');
+              //   }
+              // }
             }
-            print("Email List " + emailList);
-            seats += accompany + 1;
+            // print("Email List " + emailList);
+            seats += accompany;
+            bool isStudent = false;
+            var res = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userEmail)
+                .get();
+            isStudent = (res.data()!['category'] == 'Student') ? true : false;
+            print("Student " + isStudent.toString());
+            if (isStudent) seats++;
             await FirebaseFirestore.instance
                 .collection("bookings")
                 .doc(ground)
                 .collection(date)
                 .doc(slot)
-                .update({'seats': seats, 'email': emailList});
+                .update({'seats': seats});
+
+            List<String> temp = accDetails.split('%');
+            List<String> temp1 = emails.split('%');
+
+            for (int i = 0; i < temp.length; i++) {
+              print(temp[i] + "TEMP");
+              FirebaseFirestore.instance
+                  .collection("bookings")
+                  .doc(ground)
+                  .collection(date)
+                  .doc(slot)
+                  .collection('names')
+                  .doc(temp1[i] + '%' + temp[i])
+                  .delete();
+              FirebaseFirestore.instance
+                  .collection("bookings")
+                  .doc(ground)
+                  .collection(date)
+                  .doc(slot)
+                  .collection('names')
+                  .doc(userEmail! + '%' + temp[i])
+                  .delete();
+            }
+
+            var res1 = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userEmail)
+                .get();
+            String userName = res1.data()!['name'];
 
             // _dialog.hide();
+            sendEmail(
+                name: '',
+                email: userEmail.toString(),
+                subject: 'Booking Cancellation Confirmation ',
+                message: 'Dear ' +
+                    userName +
+                    ' (' +
+                    userEmail.toString() +
+                    '), Your booking for ' +
+                    ground +
+                    ' on ' +
+                    date +
+                    ' at ' +
+                    slot +
+                    ' has been cancelled.\n\nRegards,\nSPEC Office ');
+
             showSuccess('Booking deleted');
             Navigator.pushReplacement(
                 context,
@@ -682,6 +812,34 @@ class _DashboardState extends State<Dashboard> {
             // _dialog.hide();
           }
         }).show();
+  }
+
+  Future sendEmail(
+      {required String name,
+      required String email,
+      required String subject,
+      required String message}) async {
+    const String serviceID = 'service_t1yuekz';
+    const String templateID = 'template_ydlj5s4';
+    const String userID = 'user_Rgq3HtaCMu8ckNNNPVR0T';
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'service_id': serviceID,
+          'template_id': templateID,
+          'user_id': userID,
+          'template_params': {
+            'user_email': email,
+            'user_subject': subject,
+            'user_message': message,
+            'reply_to': '',
+          }
+        }));
+    // ignore: avoid_print
+    print(response.body);
   }
 
   showError(String errormessage) {
@@ -705,7 +863,7 @@ class _DashboardState extends State<Dashboard> {
         headerAnimationLoop: false,
         dialogType: DialogType.SUCCES,
         showCloseIcon: true,
-        title: 'Succes',
+        title: 'Success',
         desc: successmessage,
         btnOkColor: const Color(0xFF0029E2),
         btnOkOnPress: () {

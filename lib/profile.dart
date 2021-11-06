@@ -9,6 +9,7 @@ import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'home.dart';
 import 'info.dart';
 
 class Profile extends StatefulWidget {
@@ -65,36 +66,48 @@ class _ProfileState extends State<Profile> {
     TextStyle defaultStyle =
         const TextStyle(color: Colors.white60, fontSize: 15.0);
     TextStyle linkStyle = const TextStyle(
-        color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic);
+      color: Colors.white,
+      fontSize: 20.0,
+      fontStyle: FontStyle.normal,
+      decoration: TextDecoration.underline,
+    );
     return MaterialApp(
+      title: 'IITK Sports Facilities Booking Portal',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomAppBar(
           color: Colors.blueAccent,
           child: SizedBox(
               height: 26,
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: defaultStyle,
-                    children: <TextSpan>[
-                      const TextSpan(text: 'Developed by '),
-                      TextSpan(
-                          text: 'Sahil Singh',
-                          style: linkStyle,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launch('https://home.iitk.ac.in/~sahilsingh20/');
-                            }),
-                      // const TextSpan(text: '  For any '),
-                      // TextSpan(
-                      //     text: 'Technical Assistance or Feedback',
-                      //     style: linkStyle,
-                      //     recognizer: TapGestureRecognizer()
-                      //       ..onTap = () {
-                      //         launch('');
-                      //       }),
-                    ],
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultStyle,
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Developed by '),
+                        TextSpan(
+                            text: 'Sahil Singh',
+                            style: linkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launch(
+                                    'https://home.iitk.ac.in/~sahilsingh20/');
+                              }),
+                        const TextSpan(
+                            text:
+                                ' (Web Secretary, Games and Sports Council, IITK) '),
+                        // const TextSpan(text: '  For any '),
+                        // TextSpan(
+                        //     text: 'Technical Assistance or Feedback',
+                        //     style: linkStyle,
+                        //     recognizer: TapGestureRecognizer()
+                        //       ..onTap = () {
+                        //         launch('');
+                        //       }),
+                      ],
+                    ),
                   ),
                 ),
               )),
@@ -118,123 +131,136 @@ class _ProfileState extends State<Profile> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://students.iitk.ac.in/sports/2021/images/logo.png"),
-                        fit: BoxFit.cover)),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 200,
-                  child: Container(
-                    alignment: const Alignment(0.0, 2.5),
-                    child: const CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"),
-                      radius: 60.0,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  'https://i.postimg.cc/Nf6mKfFD/Untitled-design-5.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://i.ibb.co/hRLDpyq/profile.jpg"),
+                          fit: BoxFit.cover)),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 200,
+                    child: Container(
+                      alignment: const Alignment(0.0, 2.5),
+                      child: const CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"),
+                        radius: 60.0,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-              Text(
-                (name!.isNotEmpty) ? name! : "Loading",
-                style: const TextStyle(
-                    fontSize: 25.0,
-                    color: Colors.blueGrey,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                (roll!.isNotEmpty) ? roll! : "Loading",
-                style: const TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black45,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.w300),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Booking Portal for Sports Facilities IITK",
-                style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black45,
-                    letterSpacing: 2.0,
-                    fontWeight: FontWeight.w300),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Card(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  elevation: 2.0,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 30),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Change Password",
-                          style: TextStyle(
-                              letterSpacing: 2.0, fontWeight: FontWeight.w300),
-                        ),
-                      ))),
-              const SizedBox(
-                height: 10,
-              ),
-              Card(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  elevation: 2.0,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Dashboard()));
-                        },
-                        child: const Text(
-                          "My Bookings",
-                          style: TextStyle(
-                              letterSpacing: 2.0, fontWeight: FontWeight.w300),
-                        ),
-                      ))),
-              const SizedBox(
-                height: 10,
-              ),
-              Card(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  elevation: 2.0,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          logout();
-                        },
-                        child: const Text(
-                          "Log Out",
-                          style: TextStyle(
-                              letterSpacing: 2.0, fontWeight: FontWeight.w300),
-                        ),
-                      ))),
-            ],
+                const SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  (name!.isNotEmpty) ? name! : "Loading",
+                  style: const TextStyle(
+                      fontSize: 25.0,
+                      color: Colors.blueGrey,
+                      letterSpacing: 2.0,
+                      fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  (roll!.isNotEmpty) ? roll! : "Loading",
+                  style: const TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black45,
+                      letterSpacing: 2.0,
+                      fontWeight: FontWeight.w300),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "IITK Sports Facilities Booking Portal",
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black45,
+                      letterSpacing: 2.0,
+                      fontWeight: FontWeight.w300),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Card(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 8.0),
+                    elevation: 2.0,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 30),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text(
+                            "Change Password",
+                            style: TextStyle(
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ))),
+                const SizedBox(
+                  height: 10,
+                ),
+                Card(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 8.0),
+                    elevation: 2.0,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 30),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Dashboard()));
+                          },
+                          child: const Text(
+                            "My Bookings",
+                            style: TextStyle(
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ))),
+                const SizedBox(
+                  height: 10,
+                ),
+                Card(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 8.0),
+                    elevation: 2.0,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 30),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            logout();
+                          },
+                          child: const Text(
+                            "Log Out",
+                            style: TextStyle(
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ))),
+              ],
+            ),
           ),
         ),
       ),
@@ -298,7 +324,7 @@ class _ProfileState extends State<Profile> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => const MyHomePage(
-                          title: 'Sports Booking Facility IITK',
+                          title: 'Sports Booking Facilities IITK',
                         )));
           } catch (e) {
             showError(e.toString());
