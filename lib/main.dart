@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gnsdev/admin.dart';
+import 'package:gnsdev/admintest.dart';
 import 'package:gnsdev/authentication/independentnumber.dart';
 import 'package:gnsdev/authentication/login.dart';
 import 'package:gnsdev/authentication/registercont.dart';
@@ -21,11 +23,13 @@ import 'package:url_launcher/url_launcher.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // runApp(const MyHomePage(
-  //   title: 'IITK Sports Facilities Booking Portal',
-  // ));
+  runApp(const MyHomePage(
+    title: 'IITK Sports Facilities Booking Portal',
+  ));
   // runApp(Splash());
-  runApp(Maintenance());
+  // runApp(Maintenance());
+  // runApp(DashboardAdminTest());
+  // runApp(DashboardAdmin());
 }
 
 // class MyApp extends StatefulWidget {

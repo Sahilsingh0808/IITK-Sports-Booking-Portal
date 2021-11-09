@@ -89,17 +89,17 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: 5,
           ),
           appBar: AppBar(
-            actions: [
-            Builder(builder: (context) {
-              return IconButton(
-                  icon: const Icon(Icons.info_outline_rounded),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Info()));
-                  });
-            }),
-            const SizedBox(width: 50),
-          ],
+            //   actions: [
+            //   Builder(builder: (context) {
+            //     return IconButton(
+            //         icon: const Icon(Icons.info_outline_rounded),
+            //         onPressed: () {
+            //           Navigator.push(context,
+            //               MaterialPageRoute(builder: (context) => const Info()));
+            //         });
+            //   }),
+            //   const SizedBox(width: 50),
+            // ],
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
             title: const Text("IITK Sports Facilities Booking Portal"),

@@ -115,14 +115,24 @@ class _InfoState extends State<Info> {
                     ),
                     SizedBox(height: 40),
                     Text(
-                      'Special Thanks to: SPEC Chairman- Dr Syam Nair; General Secretary, Games and Sports- Anshika Chaudhary; Associate Head, Events- Shubham Gupta',
+                      'Special Thanks to:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'SPEC Chairman- Dr Syam Nair;\n General Secretary, Games and Sports- Anshika Chaudhary;\n Associate Head, Events- Shubham Gupta',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Beta Testers: Khushi Gautam, Navneet Singh, Sweta Kumari, Swayam Gupta',
+                      'Beta Testers:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Khushi Gautam, Navneet Singh, Sweta Kumari, Swayam Gupta',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
                       textAlign: TextAlign.center,

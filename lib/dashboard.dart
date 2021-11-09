@@ -29,6 +29,7 @@ class _DashboardState extends State<Dashboard> {
   var bookingList = [];
   var mapData = {};
   var bookedData = [];
+  bool isStudent = false;
 
   @override
   initState() {
@@ -261,7 +262,7 @@ class _DashboardState extends State<Dashboard> {
                             child: InkWell(
                               onTap: () {
                                 view(number, ground, accompany, date, time,
-                                    desc, accDetails);
+                                    desc, accDetails, isStudent);
                               },
                               child: Container(
                                 height: 30.0,
@@ -435,6 +436,7 @@ class _DashboardState extends State<Dashboard> {
                             children: const [
                               Text(
                                 'You have no bookings currently',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
@@ -502,41 +504,32 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             );
                           }),
-                          SingleChildScrollView(
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: bookingList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      child: Column(
-                                        children: [
-                                          _builderList(
-                                              'Booking ' +
-                                                  (index + 1).toString(),
-                                              bookingList[index]
-                                                  .data()['ground'],
-                                              bookingList[index]
-                                                  .data()['accompany'],
-                                              bookingList[index].data()['date'],
-                                              bookingList[index].data()['slot'],
-                                              bookingList[index].id.toString(),
-                                              bookingList[index]
-                                                  .data()['accompany details'],
-                                              bookingList[index]
-                                                  .data()['emails']),
-                                          const SizedBox(height: 20),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: bookingList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  child: Column(
+                                    children: [
+                                      _builderList(
+                                          'Booking ' + (index + 1).toString(),
+                                          bookingList[index].data()['ground'],
+                                          bookingList[index]
+                                              .data()['accompany'],
+                                          bookingList[index].data()['date'],
+                                          bookingList[index].data()['slot'],
+                                          bookingList[index].id.toString(),
+                                          bookingList[index]
+                                              .data()['accompany details'],
+                                          bookingList[index].data()['emails']),
+                                      const SizedBox(height: 20),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           const SizedBox(
@@ -588,7 +581,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> view(String heading, String desc, String id, String date,
-      String time, String important, String accDetails) async {
+      String time, String important, String accDetails, bool isStudent) async {
     String desc1 = "";
 
     List<String> temp = accDetails.split('%');
@@ -609,6 +602,7 @@ class _DashboardState extends State<Dashboard> {
         //       .get();
         //   String name = res.data()!['name'];
         // }
+
         desc1 += temp[i] + "; ";
       }
       // for (int i = 0; i < temp.length; i += 4) {
@@ -618,8 +612,11 @@ class _DashboardState extends State<Dashboard> {
       //   desc1 += temp[i] + "(" + temp[i + 1] + ") ; ";
       // }
     }
+    int x = 0;
 
-    int x = int.parse(id) + 1;
+    if (isStudent) {
+      x = int.parse(id) + 1;
+    }
 
     AwesomeDialog(
       context: context,
@@ -683,6 +680,11 @@ class _DashboardState extends State<Dashboard> {
         },
         btnOkOnPress: () async {
           try {
+            bool check = checkDelete(slot, date);
+            if (check == false) {
+              showError('You cannot delete past bookings');
+              return;
+            }
             //  _showDialog(context, SimpleFontelicoProgressDialogType.multiHurricane,
             //       'MultiHurricane');
             //  _showDialog(
@@ -740,12 +742,15 @@ class _DashboardState extends State<Dashboard> {
             }
             // print("Email List " + emailList);
             seats += accompany;
-            bool isStudent = false;
+
             var res = await FirebaseFirestore.instance
                 .collection('users')
                 .doc(userEmail)
                 .get();
-            isStudent = (res.data()!['category'] == 'Student') ? true : false;
+            setState(() {
+              isStudent = (res.data()!['category'] == 'Student') ? true : false;
+            });
+
             print("Student " + isStudent.toString());
             if (isStudent) seats++;
             await FirebaseFirestore.instance
@@ -758,24 +763,34 @@ class _DashboardState extends State<Dashboard> {
             List<String> temp = accDetails.split('%');
             List<String> temp1 = emails.split('%');
 
-            for (int i = 0; i < temp.length; i++) {
-              print(temp[i] + "TEMP");
-              FirebaseFirestore.instance
-                  .collection("bookings")
-                  .doc(ground)
-                  .collection(date)
-                  .doc(slot)
-                  .collection('names')
-                  .doc(temp1[i] + '%' + temp[i])
-                  .delete();
-              FirebaseFirestore.instance
-                  .collection("bookings")
-                  .doc(ground)
-                  .collection(date)
-                  .doc(slot)
-                  .collection('names')
-                  .doc(userEmail! + '%' + temp[i])
-                  .delete();
+            for (int i = 0; i < temp1.length; i++) {
+              if (temp1[i].isNotEmpty && desc.isNotEmpty) {
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(temp1[i])
+                    .collection("user bookings")
+                    .doc(desc)
+                    .delete();
+                print(temp[i] + "TEMP");
+              }
+              if (temp[i].isNotEmpty && temp1[i].isNotEmpty) {
+                await FirebaseFirestore.instance
+                    .collection("bookings")
+                    .doc(ground)
+                    .collection(date)
+                    .doc(slot)
+                    .collection('names')
+                    .doc(temp1[i] + '%' + temp[i])
+                    .delete();
+              }
+              // FirebaseFirestore.instance
+              //     .collection("bookings")
+              //     .doc(ground)
+              //     .collection(date)
+              //     .doc(slot)
+              //     .collection('names')
+              //     .doc(userEmail! + '%' + temp[i])
+              //     .delete();
             }
 
             var res1 = await FirebaseFirestore.instance
@@ -873,5 +888,42 @@ class _DashboardState extends State<Dashboard> {
         onDissmissCallback: (type) {
           debugPrint('Dialog Dissmiss from callback $type');
         }).show();
+  }
+
+  bool checkDelete(String slot, String date) {
+    String mode = slot.substring(slot.length - 2);
+    String time = slot.substring(0, slot.length - 3);
+    List<String> t = time.split('-');
+    List<String> s = t[0].split('.');
+    int hr = int.parse(s[0]);
+    int min = int.parse(s[1]);
+    if (mode.contains('P')) hr += 12;
+    int sum = hr * 60 + min;
+    print(sum);
+    DateTime _now = DateTime.now();
+    String hour = _now.hour.toString();
+    String mins = _now.minute.toString();
+    int h1 = int.parse(hour);
+    int m1 = int.parse(mins);
+    int sums = h1 * 60 + m1;
+    print(sums);
+
+    List<String> dat = date.split('_');
+    int d = int.parse(dat[0]);
+    int m = int.parse(dat[1]);
+    int y = int.parse(dat[2]);
+    date = date.replaceAll('_', '-');
+
+    int day = _now.day.toInt();
+    int mon = _now.month.toInt();
+    int year = _now.year.toInt();
+
+    if (((year > y) ||
+            (year == y && mon > m) ||
+            (year == y && mon == m && day >= d)) &&
+        (sums > sum)) {
+      return false;
+    }
+    return true;
   }
 }

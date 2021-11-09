@@ -285,6 +285,7 @@ class _BookSlotState extends State<BookSlot> {
                                 'Volleyball 2 (Old Sports Complex)',
                                 'Volleyball 3 (Old Sports Complex)',
                                 'Volleyball 4 (Old Sports Complex)',
+                                'Tennis Wall (Old Sports Complex)',
                                 'Badminton 1 (New Sports Complex)',
                                 'Badminton 2 (New Sports Complex)',
                                 'Badminton 3 (New Sports Complex)',
@@ -632,9 +633,38 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (picked == '06_11_2021' || picked == '07_11_2021') {
+    } else if (picked == '6_11_2021' || picked == '7_11_2021') {
       Fluttertoast.showToast(
         msg: "You can book from 8th November 2021",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString() ==
+                'Basketball 1 (Main Sports Stadium)' ||
+            _chosenValue.toString() == 'Basketball 2 (Main Sports Stadium)' ||
+            _chosenValue.toString() == 'Basketball 2 (Main Sports Stadium)') &&
+        (_chosenValue2.toString() == '03.00-03.50 PM' ||
+            _chosenValue2.toString() == '04.00-04.50 PM' ||
+            _chosenValue2.toString() == '09.30-10.20 AM' ||
+            _chosenValue2.toString() == '10.30-11.20 AM' ||
+            _chosenValue2.toString() == '11.30-12.20 PM')) {
+      Fluttertoast.showToast(
+        msg: "This combination for booking is not available.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString().contains('Tennis Courts')) &&
+        (_chosenValue2.toString() == '03.00-03.50 PM' ||
+            _chosenValue2.toString() == '08.30-09.20 AM' ||
+            _chosenValue2.toString() == '09.30-10.20 AM' ||
+            _chosenValue2.toString() == '10.30-11.20 AM' ||
+            _chosenValue2.toString() == '11.30-12.20 PM')) {
+      Fluttertoast.showToast(
+        msg: "This combination for booking is not available.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
         backgroundColor: Colors.black,
@@ -950,6 +980,44 @@ class _BookSlotState extends State<BookSlot> {
         date == picked) {
       Fluttertoast.showToast(
         msg: "You cannot book a slot for the past",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (picked.toString() == '6_11_2021' ||
+        picked.toString() == '7_11_2021') {
+      Fluttertoast.showToast(
+        msg: "You can book from 8th November 2021",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString() ==
+                'Basketball 1 (Main Sports Stadium)' ||
+            _chosenValue.toString() == 'Basketball 2 (Main Sports Stadium)' ||
+            _chosenValue.toString() == 'Basketball 2 (Main Sports Stadium)') &&
+        (_chosenValue2.toString() == '03.00-03.50 PM' ||
+            _chosenValue2.toString() == '04.00-04.50 PM' ||
+            _chosenValue2.toString() == '09.30-10.20 AM' ||
+            _chosenValue2.toString() == '10.30-11.20 AM' ||
+            _chosenValue2.toString() == '11.30-12.20 PM')) {
+      Fluttertoast.showToast(
+        msg: "This combination for booking is not available.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString().contains('Tennis Courts')) &&
+        (_chosenValue2.toString() == '03.00-03.50 PM' ||
+            _chosenValue2.toString() == '08.30-09.20 AM' ||
+            _chosenValue2.toString() == '09.30-10.20 AM' ||
+            _chosenValue2.toString() == '10.30-11.20 AM' ||
+            _chosenValue2.toString() == '11.30-12.20 PM')) {
+      Fluttertoast.showToast(
+        msg: "This combination for booking is not available.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
         backgroundColor: Colors.black,

@@ -143,7 +143,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   Future<void> refreshSeats() async {
     DateTime today = DateTime.now();
-    for (int i = 2; i < 4; i++) {
+    for (int i = 2; i < 6; i++) {
       DateTime next = today.add(Duration(days: i));
 
       String date = today.day.toString() +
@@ -163,11 +163,10 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       //     next1.month.toString() +
       //     '_' +
       //     next1.year.toString();
-      print(date);
+      print(nextDate);
       _showDialog(
           context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
       await addSeats(nextDate);
-      // await addSeats(nextDate1);
       _dialog.hide();
     }
   }
@@ -966,6 +965,143 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     //   'email': '',
     //   'seats': 35,
     // }).then((value) => print("Gym TTS (Old Sports Complex) 08.00-08.50 PM"));
+
+    //Tennis Wall (Old Sports Complex)
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Tennis Wall (Old Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 8,
+    }).then((value) =>
+            print("Tennis Wall (Old Sports Complex) 08.00-08.50 PM"));
 
     //Badminton 1 Old Sports Complex
     await users
@@ -2509,6 +2645,823 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       'seats': 6,
     }).then((value) =>
             print("Badminton 3 (New Sports Complex) 08.00-08.50 PM"));
+
+    //Table Tennis 1 (New Sports Complex)
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Table Tennis 1 (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 1 (New Sports Complex) 08.00-08.50 PM"));
+
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Table Tennis 2 (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 2 (New Sports Complex) 08.00-08.50 PM"));
+
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Table Tennis 3 (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 3 (New Sports Complex) 08.00-08.50 PM"));
+
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Table Tennis 4 (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 4 (New Sports Complex) 08.00-08.50 PM"));
+
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Table Tennis 5 (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 5 (New Sports Complex) 08.00-08.50 PM"));
+
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 06.30-07.20 AM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 07.30-08.20 AM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 08.30-09.20 AM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 09.30-10.20 AM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 10.30-11.20 AM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 11.30-12.20 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('12.00-12.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 12.00-12.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('01.00-01.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 01.00-01.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('02.00-02.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 02.00-02.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('03.00-03.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 03.00-03.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('04.00-04.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 04.00-04.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 05.00-05.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 06.00-06.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 07.00-07.50 PM"));
+    await users
+        .doc('Table Tennis 6 (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 4,
+    }).then((value) =>
+            print("Table Tennis 6 (New Sports Complex) 08.00-08.50 PM"));
 
     //Squash 1 (New Sports Complex)
     await users

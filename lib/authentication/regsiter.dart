@@ -266,19 +266,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     elevation: 5,
                   ),
                   appBar: AppBar(
-                    actions: [
-                      Builder(builder: (context) {
-                        return IconButton(
-                            icon: const Icon(Icons.info_outline_rounded),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Info()));
-                            });
-                      }),
-                      const SizedBox(width: 50),
-                    ],
+                    // actions: [
+                    //   Builder(builder: (context) {
+                    //     return IconButton(
+                    //         icon: const Icon(Icons.info_outline_rounded),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (context) => const Info()));
+                    //         });
+                    //   }),
+                    //   const SizedBox(width: 50),
+                    // ],
                     title: const Text("Create your new account"),
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back),
@@ -298,48 +298,97 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: SingleChildScrollView(
                       child: Column(children: [
                         const SizedBox(height: 20),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 1.1,
-                            width: 500.0,
-                            child: Container(
-                              // decoration: BoxDecoration(
-                              //   borderRadius: BorderRadius.circular(15),
-                              //   image: DecorationImage(
-                              //       image: NetworkImage(
-                              //           "https://ak.picdn.net/shutterstock/videos/10042277/thumb/1.jpg"),
-                              //       fit: BoxFit.cover),
-                              // ),
-                              color: Colors.transparent,
-                              child: Card(
-                                semanticContainer: true,
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                elevation: 20,
-                                shadowColor: Colors.white,
-                                margin: const EdgeInsets.all(20),
-                                shape: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  // borderSide:
-                                  //     const BorderSide(color: Colors.blue, width: 2)
-                                ),
+                        SingleChildScrollView(
+                          child: SizedBox(
+                              height: 800,
+                              width: 500.0,
+                              child: Container(
+                                // decoration: BoxDecoration(
+                                //   borderRadius: BorderRadius.circular(15),
+                                //   image: DecorationImage(
+                                //       image: NetworkImage(
+                                //           "https://ak.picdn.net/shutterstock/videos/10042277/thumb/1.jpg"),
+                                //       fit: BoxFit.cover),
+                                // ),
                                 color: Colors.transparent,
-                                child: Column(
-                                  children: <Widget>[
-                                    Form(
-                                        key: formKey,
-                                        child: SizedBox(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Padding(
+                                child: Card(
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  elevation: 20,
+                                  shadowColor: Colors.white,
+                                  margin: const EdgeInsets.all(20),
+                                  shape: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    // borderSide:
+                                    //     const BorderSide(color: Colors.blue, width: 2)
+                                  ),
+                                  color: Colors.transparent,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Form(
+                                          key: formKey,
+                                          child: SizedBox(
+                                            height: MediaQuery.of(context)
+                                                .size
+                                                .height,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 25.0,
+                                                            right: 25.0,
+                                                            top: 5.0,
+                                                            bottom: 5.0),
+                                                    child: SizedBox(
+                                                      height: 50.0,
+                                                      child: TextFormField(
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                hintText:
+                                                                    'Full Name (as per ID Card)'),
+                                                        validator: (value) =>
+                                                            value!.isEmpty
+                                                                ? 'Name is required'
+                                                                : validateName(
+                                                                    value),
+                                                        onChanged: (value) {
+                                                          name = value;
+                                                        },
+                                                      ),
+                                                    )),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 25.0,
+                                                            right: 25.0,
+                                                            top: 5.0,
+                                                            bottom: 5.0),
+                                                    child: SizedBox(
+                                                      height: 50.0,
+                                                      child: TextFormField(
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                hintText:
+                                                                    'Roll Number/PF Number (as per ID Card)'),
+                                                        validator: (value) =>
+                                                            value!.isEmpty
+                                                                ? 'Roll number is required'
+                                                                : validateRoll(
+                                                                    value),
+                                                        onChanged: (value) {
+                                                          roll = value;
+                                                        },
+                                                      ),
+                                                    )),
+                                                Padding(
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 25.0,
                                                           right: 25.0,
-                                                          top: 5.0,
+                                                          top: 20.0,
                                                           bottom: 5.0),
                                                   child: SizedBox(
                                                     height: 50.0,
@@ -347,388 +396,352 @@ class _RegisterPageState extends State<RegisterPage> {
                                                       decoration:
                                                           const InputDecoration(
                                                               hintText:
-                                                                  'Full Name (as per ID Card)'),
+                                                                  'Mobile Number'),
                                                       validator: (value) => value!
                                                               .isEmpty
-                                                          ? 'Name is required'
-                                                          : validateName(value),
-                                                      onChanged: (value) {
-                                                        name = value;
-                                                      },
-                                                    ),
-                                                  )),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 25.0,
-                                                          right: 25.0,
-                                                          top: 5.0,
-                                                          bottom: 5.0),
-                                                  child: SizedBox(
-                                                    height: 50.0,
-                                                    child: TextFormField(
-                                                      decoration:
-                                                          const InputDecoration(
-                                                              hintText:
-                                                                  'Roll Number/PF Number (as per ID Card)'),
-                                                      validator: (value) => value!
-                                                              .isEmpty
-                                                          ? 'Roll number is required'
+                                                          ? 'Mobile number is required'
                                                           : validateRoll(value),
                                                       onChanged: (value) {
-                                                        roll = value;
+                                                        phone = value;
                                                       },
                                                     ),
-                                                  )),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 25.0,
-                                                    right: 25.0,
-                                                    top: 20.0,
-                                                    bottom: 5.0),
-                                                child: SizedBox(
-                                                  height: 50.0,
-                                                  child: TextFormField(
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            hintText:
-                                                                'Mobile Number'),
-                                                    validator: (value) => value!
-                                                            .isEmpty
-                                                        ? 'Mobile number is required'
-                                                        : validateRoll(value),
-                                                    onChanged: (value) {
-                                                      phone = value;
-                                                    },
                                                   ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 25.0,
-                                                          right: 25.0,
-                                                          top: 5.0,
-                                                          bottom: 5.0),
-                                                  child: Container(
-                                                    color: submitValid == false
-                                                        ? Colors.transparent
-                                                        : Colors.grey,
-                                                    height: 50.0,
-                                                    child: TextFormField(
-                                                      enabled: !submitValid,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              suffix:
-                                                                  GestureDetector(
-                                                                child: InkWell(
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 25.0,
+                                                            right: 25.0,
+                                                            top: 5.0,
+                                                            bottom: 5.0),
+                                                    child: Container(
+                                                      color: submitValid ==
+                                                              false
+                                                          ? Colors.transparent
+                                                          : Colors.grey,
+                                                      height: 50.0,
+                                                      child: TextFormField(
+                                                        enabled: !submitValid,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                suffix:
+                                                                    GestureDetector(
                                                                   child:
-                                                                      const Text(
-                                                                    'Send OTP',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .blueAccent),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    sendOtp();
-                                                                    // if (shouldButtonEnabled ==
-                                                                    //     true) {
-                                                                    //   sendOtp();
-                                                                    // } else {
-                                                                    //   showError(
-                                                                    //       "Please wait for some time before sending another OTP");
-                                                                    // }
-                                                                    setState(
-                                                                        () {
-                                                                      shouldButtonEnabled =
-                                                                          false;
-                                                                      Timer(
-                                                                          const Duration(
-                                                                              seconds:
-                                                                                  30),
-                                                                          () => shouldButtonEnabled =
-                                                                              true);
-                                                                    });
-
-                                                                    String?
-                                                                        validate =
-                                                                        validateEmail(
-                                                                            email.toString());
-                                                                  },
-                                                                ),
-                                                              ),
-                                                              hintText:
-                                                                  'IITK Email'),
-                                                      validator: (value) => value!
-                                                              .isEmpty
-                                                          ? 'Email is required'
-                                                          : validateEmail(
-                                                              value.trim()),
-                                                      onChanged: (value) {
-                                                        email = value;
-                                                      },
-                                                    ),
-                                                  )),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 25.0,
-                                                          right: 25.0,
-                                                          top: 5.0,
-                                                          bottom: 5.0),
-                                                  child: Container(
-                                                    color: verified == false
-                                                        ? Colors.transparent
-                                                        : Colors.grey,
-                                                    height: 50.0,
-                                                    child: TextFormField(
-                                                      enabled: !verified,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              suffix:
-                                                                  GestureDetector(
-                                                                child: InkWell(
+                                                                      InkWell(
                                                                     child:
                                                                         const Text(
-                                                                      'Verify OTP',
+                                                                      'Send OTP',
                                                                       style: TextStyle(
                                                                           color:
                                                                               Colors.blueAccent),
                                                                     ),
                                                                     onTap: () {
-                                                                      verify(otp
-                                                                          .toString());
-                                                                      if (submitValid ==
-                                                                          true) {
-                                                                        bool
-                                                                            verifyOTP =
-                                                                            verify(otp.toString());
-                                                                        if (verifyOTP ==
-                                                                            true) {
-                                                                          showSuccess(
-                                                                              "OTP Verified");
-                                                                          setState(
-                                                                              () {
-                                                                            verified =
-                                                                                true;
-                                                                          });
-                                                                        } else {
-                                                                          showError(
-                                                                              "OTP not verified");
-                                                                        }
-                                                                      } else {
-                                                                        showError(
-                                                                            "OTP not yet sent.");
-                                                                      }
-                                                                    }),
-                                                              ),
-                                                              hintText:
-                                                                  'Enter OTP'),
-                                                      validator: (value) =>
-                                                          value!.isEmpty
-                                                              ? 'OTP is required'
-                                                              : validateOTP(),
-                                                      onChanged: (value) {
-                                                        otp = value;
-                                                      },
-                                                    ),
-                                                  )),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 25.0,
-                                                          right: 25.0,
-                                                          top: 5.0,
-                                                          bottom: 5.0),
-                                                  child: SizedBox(
-                                                    height: 50.0,
-                                                    child: TextFormField(
-                                                      obscureText:
-                                                          !showPassword,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              suffixIcon:
-                                                                  IconButton(
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    showPassword =
-                                                                        !showPassword;
-                                                                  });
-                                                                },
-                                                                icon: Icon(
-                                                                  showPassword
-                                                                      ? Icons
-                                                                          .visibility
-                                                                      : Icons
-                                                                          .visibility_off,
-                                                                ),
-                                                              ),
-                                                              hintText:
-                                                                  'Password'),
-                                                      validator: (value) => value!
-                                                              .isEmpty
-                                                          ? 'Password is required'
-                                                          : null,
-                                                      onChanged: (value) {
-                                                        password = value;
-                                                      },
-                                                    ),
-                                                  )),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 25.0,
-                                                          right: 25.0,
-                                                          top: 5.0,
-                                                          bottom: 5.0),
-                                                  child: SizedBox(
-                                                    height: 50.0,
-                                                    child: TextFormField(
-                                                      obscureText:
-                                                          !showPassword,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              suffixIcon:
-                                                                  IconButton(
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    showPassword =
-                                                                        !showPassword;
-                                                                  });
-                                                                },
-                                                                icon: Icon(
-                                                                  showPassword
-                                                                      ? Icons
-                                                                          .visibility
-                                                                      : Icons
-                                                                          .visibility_off,
-                                                                ),
-                                                              ),
-                                                              hintText:
-                                                                  'Confirm Password'),
-                                                      validator: (value) => value!
-                                                              .isEmpty
-                                                          ? 'Password is required'
-                                                          : null,
-                                                      onChanged: (value) {
-                                                        password1 = value;
-                                                      },
-                                                    ),
-                                                  )),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: DropdownButton<String>(
-                                                  value: category,
-                                                  //elevation: 5,
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
+                                                                      sendOtp();
+                                                                      // if (shouldButtonEnabled ==
+                                                                      //     true) {
+                                                                      //   sendOtp();
+                                                                      // } else {
+                                                                      //   showError(
+                                                                      //       "Please wait for some time before sending another OTP");
+                                                                      // }
+                                                                      setState(
+                                                                          () {
+                                                                        shouldButtonEnabled =
+                                                                            false;
+                                                                        Timer(
+                                                                            const Duration(seconds: 30),
+                                                                            () => shouldButtonEnabled = true);
+                                                                      });
 
-                                                  items: <String>[
-                                                    'Student',
-                                                    'Faculty/Staff',
-                                                    'Project Employee'
-                                                  ].map<
-                                                          DropdownMenuItem<
-                                                              String>>(
-                                                      (String value) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      value: value,
-                                                      child: Text(value),
-                                                    );
-                                                  }).toList(),
-                                                  hint: const Text(
-                                                    "Please choose a category",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  onChanged: (value) {
-                                                    assert(value != null);
-                                                    setState(() {
-                                                      category = value!;
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      const SizedBox(
-                                                        width: 10,
-                                                      ), //SizedBox
-                                                      //Text
-                                                      const SizedBox(
-                                                          width: 10), //SizedBox
-                                                      /** Checkbox Widget **/
-                                                      Checkbox(
-                                                        value: checkbox,
-                                                        onChanged:
-                                                            (bool? value) {
-                                                          setState(() {
-                                                            checkbox = value!;
-                                                          });
+                                                                      String?
+                                                                          validate =
+                                                                          validateEmail(
+                                                                              email.toString());
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                hintText:
+                                                                    'IITK Email'),
+                                                        validator: (value) => value!
+                                                                .isEmpty
+                                                            ? 'Email is required'
+                                                            : validateEmail(
+                                                                value.trim()),
+                                                        onChanged: (value) {
+                                                          email = value;
                                                         },
                                                       ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.25,
-                                                        height: 20,
-                                                        child: Marquee(
-                                                          text:
-                                                              ('         I hereby certify that the above information is true to the best of my knowledge. '),
-                                                          blankSpace: 20.0,
-                                                          velocity: 35.0,
-                                                          pauseAfterRound:
-                                                              const Duration(
-                                                                  seconds: 1),
-                                                          style: const TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ), //Checkbox
-                                                    ], //<Widget>[]
-                                                  )),
-                                              const SizedBox(
-                                                height: 50,
-                                              ),
-                                              InkWell(
-                                                  onTap: () {
-                                                    if (checkFields()) {
-                                                      signIn(email!, password!,
-                                                          roll!, name!, phone!);
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: 100.0,
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0xFF0029E2)
-                                                            .withOpacity(1),
+                                                    )),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 25.0,
+                                                            right: 25.0,
+                                                            top: 5.0,
+                                                            bottom: 5.0),
+                                                    child: Container(
+                                                      color: verified == false
+                                                          ? Colors.transparent
+                                                          : Colors.grey,
+                                                      height: 50.0,
+                                                      child: TextFormField(
+                                                        enabled: !verified,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                suffix:
+                                                                    GestureDetector(
+                                                                  child: InkWell(
+                                                                      child: const Text(
+                                                                        'Verify OTP',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.blueAccent),
+                                                                      ),
+                                                                      onTap: () {
+                                                                        verify(otp
+                                                                            .toString());
+                                                                        if (submitValid ==
+                                                                            true) {
+                                                                          bool
+                                                                              verifyOTP =
+                                                                              verify(otp.toString());
+                                                                          if (verifyOTP ==
+                                                                              true) {
+                                                                            showSuccess("OTP Verified");
+                                                                            setState(() {
+                                                                              verified = true;
+                                                                            });
+                                                                          } else {
+                                                                            showError("OTP not verified");
+                                                                          }
+                                                                        } else {
+                                                                          showError(
+                                                                              "OTP not yet sent.");
+                                                                        }
+                                                                      }),
+                                                                ),
+                                                                hintText:
+                                                                    'Enter OTP'),
+                                                        validator: (value) =>
+                                                            value!.isEmpty
+                                                                ? 'OTP is required'
+                                                                : validateOTP(),
+                                                        onChanged: (value) {
+                                                          otp = value;
+                                                        },
                                                       ),
-                                                      child: const Center(
-                                                          child: Text('Sign in',
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                              ))))),
-                                            ],
-                                          ),
-                                        ))
-                                  ],
+                                                    )),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 25.0,
+                                                            right: 25.0,
+                                                            top: 5.0,
+                                                            bottom: 5.0),
+                                                    child: SizedBox(
+                                                      height: 50.0,
+                                                      child: TextFormField(
+                                                        obscureText:
+                                                            !showPassword,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                suffixIcon:
+                                                                    IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      showPassword =
+                                                                          !showPassword;
+                                                                    });
+                                                                  },
+                                                                  icon: Icon(
+                                                                    showPassword
+                                                                        ? Icons
+                                                                            .visibility
+                                                                        : Icons
+                                                                            .visibility_off,
+                                                                  ),
+                                                                ),
+                                                                hintText:
+                                                                    'Password'),
+                                                        validator: (value) =>
+                                                            value!.isEmpty
+                                                                ? 'Password is required'
+                                                                : null,
+                                                        onChanged: (value) {
+                                                          password = value;
+                                                        },
+                                                      ),
+                                                    )),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 25.0,
+                                                            right: 25.0,
+                                                            top: 5.0,
+                                                            bottom: 5.0),
+                                                    child: SizedBox(
+                                                      height: 50.0,
+                                                      child: TextFormField(
+                                                        obscureText:
+                                                            !showPassword,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                suffixIcon:
+                                                                    IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      showPassword =
+                                                                          !showPassword;
+                                                                    });
+                                                                  },
+                                                                  icon: Icon(
+                                                                    showPassword
+                                                                        ? Icons
+                                                                            .visibility
+                                                                        : Icons
+                                                                            .visibility_off,
+                                                                  ),
+                                                                ),
+                                                                hintText:
+                                                                    'Confirm Password'),
+                                                        validator: (value) =>
+                                                            value!.isEmpty
+                                                                ? 'Password is required'
+                                                                : null,
+                                                        onChanged: (value) {
+                                                          password1 = value;
+                                                        },
+                                                      ),
+                                                    )),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: DropdownButton<String>(
+                                                    value: category,
+                                                    //elevation: 5,
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+
+                                                    items: <String>[
+                                                      'Student',
+                                                      'Faculty/Staff',
+                                                      'Project Employee'
+                                                    ].map<
+                                                            DropdownMenuItem<
+                                                                String>>(
+                                                        (String value) {
+                                                      return DropdownMenuItem<
+                                                          String>(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    hint: const Text(
+                                                      "Please choose a category",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    onChanged: (value) {
+                                                      assert(value != null);
+                                                      setState(() {
+                                                        category = value!;
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ), //SizedBox
+                                                        //Text
+                                                        const SizedBox(
+                                                            width:
+                                                                10), //SizedBox
+                                                        /** Checkbox Widget **/
+                                                        Checkbox(
+                                                          value: checkbox,
+                                                          onChanged:
+                                                              (bool? value) {
+                                                            setState(() {
+                                                              checkbox = value!;
+                                                            });
+                                                          },
+                                                        ),
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.25,
+                                                          height: 20,
+                                                          child: Marquee(
+                                                            text:
+                                                                ('         I hereby certify that the above information is true to the best of my knowledge. '),
+                                                            blankSpace: 20.0,
+                                                            velocity: 35.0,
+                                                            pauseAfterRound:
+                                                                const Duration(
+                                                                    seconds: 1),
+                                                            style: const TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                        ), //Checkbox
+                                                      ], //<Widget>[]
+                                                    )),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
+                                                InkWell(
+                                                    onTap: () {
+                                                      if (checkFields()) {
+                                                        signIn(
+                                                            email!,
+                                                            password!,
+                                                            roll!,
+                                                            name!,
+                                                            phone!);
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                        height: 40.0,
+                                                        width: 100.0,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color(
+                                                                  0xFF0029E2)
+                                                              .withOpacity(1),
+                                                        ),
+                                                        child: const Center(
+                                                            child: Text(
+                                                                'Sign in',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                ))))),
+                                              ],
+                                            ),
+                                          ))
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            )),
+                              )),
+                        ),
                         const SizedBox(
                           height: 20,
                         ),

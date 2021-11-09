@@ -204,6 +204,7 @@ class _RegisterContState extends State<RegisterCont> {
         for (int i = 0; i < cards.length; i++) {
           var name = nameTECs[i].text;
           var roll = rollTECs[i].text;
+          roll = roll.toLowerCase();
           if (name == null || name.isEmpty || roll == null || roll.isEmpty) {
             Fluttertoast.showToast(
               msg: 'Please fill all the details',
@@ -218,10 +219,10 @@ class _RegisterContState extends State<RegisterCont> {
               moveAhead = false;
             });
             return;
-          } else if (roll != 'Spouse' &&
-              roll != 'Parent' &&
-              roll != 'Children' &&
-              roll != 'Others') {
+          } else if (roll != 'spouse' &&
+              roll != 'parent' &&
+              roll != 'children' &&
+              roll != 'others') {
             showError(
                 'Please enter Spouse/Parent/Children/Others in relationship.');
             setState(() {

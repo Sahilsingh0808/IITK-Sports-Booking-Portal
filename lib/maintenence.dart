@@ -66,6 +66,16 @@ class _MaintenanceState extends State<Maintenance> {
           elevation: 5,
         ),
         appBar: AppBar(
+          // actions: [
+          //   Builder(builder: (context) {
+          //     return IconButton(
+          //         icon: const Icon(Icons.info_outline_rounded),
+          //         onPressed: () {
+          //           Navigator.push(context,
+          //               MaterialPageRoute(builder: (context) => const Info()));
+          //         });
+          //   }),
+          // ],
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: const Text("IITK Sports Facilities Booking Portal"),
@@ -81,7 +91,7 @@ class _MaintenanceState extends State<Maintenance> {
             ),
             child: const Center(
               child: Text(
-                'WEBSITE WILL GO LIVE TOMORROW 9AM.',
+                'WEBSITE IS UNDER MAINTENANCE.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 50,
