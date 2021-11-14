@@ -42,6 +42,7 @@ class _BookSlotState extends State<BookSlot> {
   List<String> depList = [];
   late SimpleFontelicoProgressDialog _dialog;
   DateTime currentDate1 = DateTime.now();
+
   bool? isStudent;
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
   var peopleCap = [
@@ -100,6 +101,7 @@ class _BookSlotState extends State<BookSlot> {
     if (picked != null) {
       setState(() {
         currentDate = picked;
+        print(currentDate.weekday.toString() + "Sunday");
         pickedDate = currentDate.day.toString() +
             "_" +
             currentDate.month.toString() +
@@ -513,7 +515,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '06.00-06.50 AM' &&
+    } else if (_chosenValue2.toString() == '06.30-07.20 AM' &&
         hr >= 7 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -523,7 +525,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '07.00-07.50 AM' &&
+    } else if (_chosenValue2.toString() == '07.30-08.20 AM' &&
         hr >= 8 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -533,7 +535,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '08.00-08.50 AM' &&
+    } else if (_chosenValue2.toString() == '08.30-09.20 AM' &&
         hr >= 9 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -543,7 +545,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '09.00-09.50 AM' &&
+    } else if (_chosenValue2.toString() == '09.30-10.20 AM' &&
         hr >= 10 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -553,7 +555,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '10.00-10.50 AM' &&
+    } else if (_chosenValue2.toString() == '10.30-11.20 AM' &&
         hr >= 11 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -563,7 +565,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '11.00-11.50 AM' &&
+    } else if (_chosenValue2.toString() == '11.30-12.20 AM' &&
         hr >= 12 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -670,8 +672,34 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
+    } else if ((_chosenValue.toString().contains('Tennis Courts') &&
+        currentDate.weekday == 1)) {
+      Fluttertoast.showToast(
+        msg: "Tennis Courts are closed on Sundays.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString().contains('New Sports Complex') &&
+        currentDate.weekday == 1)) {
+      Fluttertoast.showToast(
+        msg: "New Sports Complex is closed on Sundays.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString().contains('Old Sports Complex') &&
+        currentDate.weekday == 1)) {
+      Fluttertoast.showToast(
+        msg: "Old Sports Complex is closed on Sundays.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
     } else {
-      
       String? userEmail = '';
       var list;
       try {
@@ -866,7 +894,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '06.00-06.50 AM' &&
+    } else if (_chosenValue2.toString() == '06.30-07.20 AM' &&
         hr >= 7 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -876,7 +904,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '07.00-07.50 AM' &&
+    } else if (_chosenValue2.toString() == '07.30-08.20 AM' &&
         hr >= 8 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -886,7 +914,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '08.00-08.50 AM' &&
+    } else if (_chosenValue2.toString() == '08.30-09.20 AM' &&
         hr >= 9 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -896,7 +924,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '09.00-09.50 AM' &&
+    } else if (_chosenValue2.toString() == '09.30-10.20 AM' &&
         hr >= 10 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -906,7 +934,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '10.00-10.50 AM' &&
+    } else if (_chosenValue2.toString() == '10.30-11.20 AM' &&
         hr >= 11 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -916,7 +944,7 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (_chosenValue2.toString() == '11.00-11.50 AM' &&
+    } else if (_chosenValue2.toString() == '11.30-12.20 AM' &&
         hr >= 12 &&
         date == picked) {
       Fluttertoast.showToast(
@@ -995,6 +1023,33 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
+    } else if ((_chosenValue.toString().contains('Tennis Courts') &&
+        currentDate.weekday == 1)) {
+      Fluttertoast.showToast(
+        msg: "Tennis Courts are closed on Sundays.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString().contains('New Sports Complex') &&
+        currentDate.weekday == 1)) {
+      Fluttertoast.showToast(
+        msg: "New Sports Complex is closed on Sundays.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if ((_chosenValue.toString().contains('Old Sports Complex') &&
+        currentDate.weekday == 1)) {
+      Fluttertoast.showToast(
+        msg: "Old Sports Complex is closed on Sundays.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
     } else if ((_chosenValue.toString() ==
                 'Basketball 1 (Main Sports Stadium)' ||
             _chosenValue.toString() == 'Basketball 2 (Main Sports Stadium)' ||
@@ -1053,7 +1108,7 @@ class _BookSlotState extends State<BookSlot> {
           //         currentDate.day.toString() +
           //             "_" +
           //             currentDate.month.toString() +
-          //             "_" + 
+          //             "_" +
           //             currentDate.year.toString() &&
           //     ground == chosenValue) {
           //   Fluttertoast.showToast(
