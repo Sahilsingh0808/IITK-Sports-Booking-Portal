@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/profile.dart';
+import 'package:gnsdev/section.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -28,6 +29,7 @@ class _DashboardState extends State<Dashboard> {
   String? userEmail = "";
   var bookingList = [];
   var mapData = {};
+  late SimpleFontelicoProgressDialog _dialog;
   var bookedData = [];
   bool isStudent = false;
 
@@ -36,8 +38,19 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     inputData();
     fetch();
+    // Student();
 
     print("Bookings " + bookingList.length.toString());
+  }
+
+  Future<void> Student() async {
+    var res = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .get();
+    setState(() {
+      isStudent = (res.data()!['category'] == 'Student') ? true : false;
+    });
   }
 
   Future<void> fetch() async {
@@ -262,7 +275,7 @@ class _DashboardState extends State<Dashboard> {
                             child: InkWell(
                               onTap: () {
                                 view(number, ground, accompany, date, time,
-                                    desc, accDetails, isStudent);
+                                    desc, accDetails);
                               },
                               child: Container(
                                 height: 30.0,
@@ -352,7 +365,7 @@ class _DashboardState extends State<Dashboard> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           bottomNavigationBar: BottomAppBar(
-            color: Colors.blueAccent,
+            color: Colors.black,
             child: SizedBox(
                 height: 26,
                 child: FittedBox(
@@ -455,9 +468,7 @@ class _DashboardState extends State<Dashboard> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const BookSlot(
-                                      title: 'Book your slot',
-                                    ),
+                                    builder: (context) => const Section(),
                                   ),
                                 );
                               },
@@ -543,8 +554,7 @@ class _DashboardState extends State<Dashboard> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const BookSlot(
-                                      title: 'Book your slot',
+                                    builder: (context) => const Section(
                                     ),
                                   ),
                                 );
@@ -581,7 +591,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> view(String heading, String desc, String id, String date,
-      String time, String important, String accDetails, bool isStudent) async {
+      String time, String important, String accDetails) async {
     String desc1 = "";
 
     List<String> temp = accDetails.split('%');
@@ -614,9 +624,11 @@ class _DashboardState extends State<Dashboard> {
     }
     int x = 0;
 
-    if (isStudent) {
-      x = int.parse(id) + 1;
-    }
+    x = int.parse(id) + 1;
+
+    // if (!isStudent) {
+    //   x -= 1;
+    // }
 
     AwesomeDialog(
       context: context,
@@ -631,8 +643,6 @@ class _DashboardState extends State<Dashboard> {
       btnOkIcon: Icons.check_circle,
     ).show();
   }
-
-  late SimpleFontelicoProgressDialog _dialog;
 
   void _showDialog(BuildContext context, SimpleFontelicoProgressDialogType type,
       String text) async {
@@ -743,16 +753,7 @@ class _DashboardState extends State<Dashboard> {
             // print("Email List " + emailList);
             seats += accompany;
 
-            var res = await FirebaseFirestore.instance
-                .collection('users')
-                .doc(userEmail)
-                .get();
-            setState(() {
-              isStudent = (res.data()!['category'] == 'Student') ? true : false;
-            });
-
-            print("Student " + isStudent.toString());
-            if (isStudent) seats++;
+            seats++;
             await FirebaseFirestore.instance
                 .collection("bookings")
                 .doc(ground)

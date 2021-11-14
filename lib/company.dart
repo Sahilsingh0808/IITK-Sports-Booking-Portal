@@ -289,7 +289,7 @@ class _SOFState extends State<SOF> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomAppBar(
-          color: Colors.blueAccent,
+          color: Colors.black,
           child: SizedBox(
               height: 26,
               child: FittedBox(
@@ -402,7 +402,7 @@ class _SOFState extends State<SOF> {
                         }
                       }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 30,
                     ),
                     RaisedButton(
@@ -413,7 +413,9 @@ class _SOFState extends State<SOF> {
                                 builder: (context) => const Dashboard()))),
                   ],
                 ),
-              )
+              ),
+              const Text(
+                  'Press the OK button once and wait for your booking confirmation')
             ],
           ),
         ),
@@ -442,6 +444,17 @@ class _SOFState extends State<SOF> {
 
   Future<void> getSeats(
       String date, String ground, String people, String time) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 7), () {
+            Navigator.of(context).pop(true);
+          });
+          return const AlertDialog(
+            title: Text('Please wait while your booking is being confirmed'),
+          );
+        });
     var seats;
     print("REACHING");
     if (int.parse(widget.people) > 0) {
@@ -478,6 +491,9 @@ class _SOFState extends State<SOF> {
         }
       }
     }
+
+    // _showDialog(
+    //     context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
 
     var collection = FirebaseFirestore.instance.collection('bookings');
     var docSnapshot = await collection
@@ -705,15 +721,14 @@ class _SOFState extends State<SOF> {
 
           showSuccess('Booking Confirmed');
 
-          // _dialog.hide();
+          //
         } catch (e) {
           showError(e.toString());
         }
-        // _dialog.hide();
+
         // showSuccess("Booking Confirmed");
-        // _dialog.hide();
+        //
       } else {
-        // _dialog.hide();
         showError("Enough Seats not available in this slot");
         print("Error");
         return;
@@ -721,7 +736,6 @@ class _SOFState extends State<SOF> {
     } else {
       print("Snapshot empty");
     }
-    // _dialog.hide();
 
     //   await FirebaseFirestore.instance
     //       .doc("bookings/Football Main Ground/21_10_2021/6-7 AM")

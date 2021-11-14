@@ -29,7 +29,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomAppBar(
-          color: Colors.blueAccent,
+          color: Colors.black,
           child: SizedBox(
               height: 26,
               child: FittedBox(
@@ -143,7 +143,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   Future<void> refreshSeats() async {
     DateTime today = DateTime.now();
-    for (int i = 2; i < 6; i++) {
+    for (int i = 2; i < 10; i++) {
       DateTime next = today.add(Duration(days: i));
 
       String date = today.day.toString() +

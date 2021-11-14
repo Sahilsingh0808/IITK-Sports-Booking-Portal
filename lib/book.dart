@@ -148,7 +148,7 @@ class _BookSlotState extends State<BookSlot> {
       navigatorKey: navigatorKey,
       home: Scaffold(
         bottomNavigationBar: BottomAppBar(
-          color: Colors.blueAccent,
+          color: Colors.black,
           child: SizedBox(
               height: 26,
               child: FittedBox(
@@ -671,6 +671,7 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else {
+      
       String? userEmail = '';
       var list;
       try {
@@ -1052,7 +1053,7 @@ class _BookSlotState extends State<BookSlot> {
           //         currentDate.day.toString() +
           //             "_" +
           //             currentDate.month.toString() +
-          //             "_" +
+          //             "_" + 
           //             currentDate.year.toString() &&
           //     ground == chosenValue) {
           //   Fluttertoast.showToast(

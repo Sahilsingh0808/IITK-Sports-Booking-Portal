@@ -61,7 +61,7 @@ class _SOF1State extends State<SOF1> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           bottomNavigationBar: BottomAppBar(
-            color: Colors.blueAccent,
+            color: Colors.black,
             child: SizedBox(
                 height: 26,
                 child: FittedBox(
@@ -167,6 +167,8 @@ class _SOF1State extends State<SOF1> {
                       height: 400, width: 200, child: buildList(context)),
                 ),
                 const SizedBox(height: 20),
+                const Text(
+                    'Press the OK button once and wait for your booking confirmation'),
                 FloatingActionButton(
                     child: const Icon(Icons.done),
                     onPressed: () {
@@ -243,6 +245,17 @@ class _SOF1State extends State<SOF1> {
   }
 
   Future<void> _onDone() async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 7), () {
+            Navigator.of(context).pop(true);
+          });
+          return const AlertDialog(
+            title: Text('Please wait while your booking is being confirmed'),
+          );
+        });
     var collection = FirebaseFirestore.instance.collection('bookings');
     var docSnapshot = await collection
         .doc(widget.ground)
@@ -289,6 +302,8 @@ class _SOF1State extends State<SOF1> {
               accompanyDetails += widget.depList[i] + "%";
             }
           }
+
+          people = (people! - 1);
 
           await FirebaseFirestore.instance
               .collection("users")

@@ -205,6 +205,7 @@ class _RegisterContState extends State<RegisterCont> {
           var name = nameTECs[i].text;
           var roll = rollTECs[i].text;
           roll = roll.toLowerCase();
+          roll = roll.trim();
           if (name == null || name.isEmpty || roll == null || roll.isEmpty) {
             Fluttertoast.showToast(
               msg: 'Please fill all the details',

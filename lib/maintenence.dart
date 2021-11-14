@@ -28,7 +28,7 @@ class _MaintenanceState extends State<Maintenance> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomAppBar(
-          color: Colors.blueAccent,
+          color: Colors.black,
           child: SizedBox(
               height: 26,
               child: FittedBox(

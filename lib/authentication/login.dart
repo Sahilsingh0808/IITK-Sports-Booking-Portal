@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           bottomNavigationBar: BottomAppBar(
-            color: Colors.blueAccent,
+            color: Colors.black,
             child: SizedBox(
                 height: 26,
                 child: FittedBox(
@@ -304,6 +304,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> signIn(String email, String password) async {
+    email=email.trim();
     if (email == '123456' && password == '123456') {
       Navigator.pushReplacement(
           context,

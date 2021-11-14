@@ -80,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'template_id': templateID,
           'user_id': userID,
           'template_params': {
-            'user_email': email,
+            'user_email': email.toLowerCase(),
             'user_subject': subject,
             'user_message': message,
             'reply_to': '',
@@ -145,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       sendEmail(
           name: 'Games and Sports Council, IITK',
-          email: email.toString(),
+          email: email!.toLowerCase(),
           message:
               'Your OTP for regestering on the Sports Facilities, IITK is ' +
                   otpNo.toString() +
@@ -227,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               Scaffold(
                   bottomNavigationBar: BottomAppBar(
-                    color: Colors.blueAccent,
+                    color: Colors.black,
                     child: SizedBox(
                         height: 26,
                         width: MediaQuery.of(context).size.width,
@@ -456,7 +456,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                                       String?
                                                                           validate =
                                                                           validateEmail(
-                                                                              email.toString());
+                                                                              email!.toLowerCase());
                                                                     },
                                                                   ),
                                                                 ),
@@ -468,7 +468,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                                             : validateEmail(
                                                                 value.trim()),
                                                         onChanged: (value) {
-                                                          email = value;
+                                                          email = value
+                                                              .toLowerCase();
                                                         },
                                                       ),
                                                     )),
@@ -757,6 +758,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> signIn(String email, String password, String roll, String name,
       String phone) async {
+    email = email.trim();
     if (checkbox == false) {
       showError("Please agree to the terms and conditions");
       return;
@@ -773,7 +775,7 @@ class _RegisterPageState extends State<RegisterPage> {
       _showDialog(
           context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
       (await _auth.createUserWithEmailAndPassword(
-          email: email, password: password));
+          email: email.toLowerCase(), password: password));
 
       try {
         print("Registration");
@@ -786,9 +788,9 @@ class _RegisterPageState extends State<RegisterPage> {
         //   'phone': phone,
         //   'password': password
         // });
-        await users.doc(email).set({
+        await users.doc(email.toLowerCase()).set({
           'name': name,
-          'email': email,
+          'email': email.toLowerCase(),
           'roll': roll,
           'phone': phone,
           'category': category.toString()

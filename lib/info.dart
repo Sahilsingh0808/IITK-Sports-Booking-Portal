@@ -159,6 +159,13 @@ class _InfoState extends State<Info> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
                       textAlign: TextAlign.center,
                     ),
+                    SizedBox(height: 20),
+                    Text(
+                      'Contact us at shilpas@iitk.ac.in',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
