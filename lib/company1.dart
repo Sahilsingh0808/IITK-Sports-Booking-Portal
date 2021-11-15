@@ -160,42 +160,44 @@ class _SOF1State extends State<SOF1> {
               ),
             ),
             child: Center(
-              child: Column(children: [
-                const SizedBox(height: 20),
-                SingleChildScrollView(
-                  child: Container(
-                      height: 400, width: 200, child: buildList(context)),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                    'Press the OK button once and wait for your booking confirmation'),
-                FloatingActionButton(
-                    child: const Icon(Icons.done),
-                    onPressed: () {
-                      int check = 0;
-                      for (int i = 0; i < _isChecked.length; i++) {
-                        if (_isChecked[i] == true) {
-                          check++;
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  const SizedBox(height: 20),
+                  SingleChildScrollView(
+                    child: Container(
+                        height: 300, width: 200, child: buildList(context)),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                      'Press the OK button once and wait for your booking confirmation'),
+                  FloatingActionButton(
+                      child: const Icon(Icons.done),
+                      onPressed: () {
+                        int check = 0;
+                        for (int i = 0; i < _isChecked.length; i++) {
+                          if (_isChecked[i] == true) {
+                            check++;
+                          }
                         }
-                      }
-                      setState(() {
-                        people = check;
-                        print("PEOPLE " + people.toString());
-                      });
-                      if (check == 0) {
-                        Fluttertoast.showToast(
-                          msg: "Please select at least one people",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity
-                              .BOTTOM, // also possible "TOP" and "CENTER"
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                        );
-                      } else {
-                        _onDone();
-                      }
-                    }),
-              ]),
+                        setState(() {
+                          people = check;
+                          print("PEOPLE " + people.toString());
+                        });
+                        if (check == 0) {
+                          Fluttertoast.showToast(
+                            msg: "Please select at least one people",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity
+                                .BOTTOM, // also possible "TOP" and "CENTER"
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                          );
+                        } else {
+                          _onDone();
+                        }
+                      }),
+                ]),
+              ),
             ),
           ),
         ));
@@ -283,7 +285,6 @@ class _SOF1State extends State<SOF1> {
         //   }
         // }
         print(a);
-
         try {
           var collection = FirebaseFirestore.instance.collection('bookings');
           var docSnapshot = await collection
@@ -303,8 +304,6 @@ class _SOF1State extends State<SOF1> {
             }
           }
 
-          people = (people! - 1);
-
           await FirebaseFirestore.instance
               .collection("users")
               .doc(userEmail)
@@ -319,7 +318,8 @@ class _SOF1State extends State<SOF1> {
             'ground': widget.ground,
             'date': widget.date,
             'slot': widget.time,
-            'accompany': people.toString(),
+            'emails': userEmail,
+            'accompany': (people! - 1).toString(),
             'accompany details': accompanyDetails,
           });
 
@@ -365,6 +365,7 @@ class _SOF1State extends State<SOF1> {
               subject: 'Booking Confirmation for Sports Facilities IITK');
 
           //email sent to daughter users(s)
+          print(people.toString() + " People");
           for (int i = 0; i < (people!); i++) {
             if (_isChecked[i] == true) {
               print("Sending Email to users");

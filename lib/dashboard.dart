@@ -67,6 +67,7 @@ class _DashboardState extends State<Dashboard> {
 
   fetchBookings() async {
     inputData();
+
     int i = 0;
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("users")
@@ -554,8 +555,7 @@ class _DashboardState extends State<Dashboard> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const Section(
-                                    ),
+                                    builder: (context) => const Section(),
                                   ),
                                 );
                               },

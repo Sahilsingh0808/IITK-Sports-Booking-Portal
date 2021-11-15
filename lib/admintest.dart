@@ -92,7 +92,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
                 const SizedBox(height: 50),
                 InkWell(
                     onTap: () {
-                      refreshSeats();
+                      // addPaid();
                     },
                     child: Container(
                         height: 50.0,
@@ -138,6 +138,17 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
           height: 75.0,
           hideText: true,
           indicatorColor: Colors.red);
+    }
+  }
+
+  addPaid() async {
+    final db = FirebaseFirestore.instance;
+    var result = await db.collection('users').get();
+    for (var res in result.docs) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(res.id.toString())
+          .update({'paid': '-1'});
     }
   }
 

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:gnsdev/admin.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/dashboardstaff.dart';
+import 'package:gnsdev/remedy.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -304,7 +305,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> signIn(String email, String password) async {
-    email=email.trim();
+    email = email.trim();
     if (email == '123456' && password == '123456') {
       Navigator.pushReplacement(
           context,
@@ -315,20 +316,32 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => const DashboardAdmin()));
     } else {
       try {
-        _showDialog(
-            context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
+        // showDialog(
+        //     barrierDismissible: false,
+        //     context: context,
+        //     builder: (context) {
+        //       Future.delayed(const Duration(seconds: 1), () {
+        //         Navigator.of(context).pop(true);
+        //       });
+        //       return const AlertDialog(
+        //         title: Text('Please wait. This may take some time.'),
+        //       );
+        //     });
+        // _showDialog(
+        //     context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
         (await _auth.signInWithEmailAndPassword(
             email: email, password: password));
-        _dialog.hide();
+        // _dialog.hide();
 
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const Dashboard()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const Remedy()));
+        // _dialog.hide();
       } catch (e) {
-        _dialog.hide();
+        // _dialog.hide();
         showError(e.toString());
-        _dialog.hide();
+        // _dialog.hide();
       }
-      _dialog.hide();
+      // _dialog.hide();
     }
   }
 

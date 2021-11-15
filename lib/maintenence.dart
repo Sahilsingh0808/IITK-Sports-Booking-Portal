@@ -79,6 +79,7 @@ class _MaintenanceState extends State<Maintenance> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: const Text("IITK Sports Facilities Booking Portal"),
+          backgroundColor: Colors.black,
         ),
         body: Container(
             height: double.infinity,
@@ -91,11 +92,11 @@ class _MaintenanceState extends State<Maintenance> {
             ),
             child: const Center(
               child: Text(
-                'WEBSITE IS UNDER MAINTENANCE.',
+                'WEBSITE IS UNDER MAINTENANCE\n\nTHANK YOU FOR YOUR PATIENCE',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 50,
-                    color: Colors.red,
+                    fontSize: 40,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
             )),

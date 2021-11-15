@@ -673,7 +673,7 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else if ((_chosenValue.toString().contains('Tennis Courts') &&
-        currentDate.weekday == 1)) {
+        currentDate.weekday == DateTime.sunday)) {
       Fluttertoast.showToast(
         msg: "Tennis Courts are closed on Sundays.",
         toastLength: Toast.LENGTH_LONG,
@@ -682,7 +682,7 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else if ((_chosenValue.toString().contains('New Sports Complex') &&
-        currentDate.weekday == 1)) {
+        currentDate.weekday == DateTime.sunday)) {
       Fluttertoast.showToast(
         msg: "New Sports Complex is closed on Sundays.",
         toastLength: Toast.LENGTH_LONG,
@@ -691,7 +691,7 @@ class _BookSlotState extends State<BookSlot> {
         textColor: Colors.white,
       );
     } else if ((_chosenValue.toString().contains('Old Sports Complex') &&
-        currentDate.weekday == 1)) {
+        currentDate.weekday == DateTime.sunday)) {
       Fluttertoast.showToast(
         msg: "Old Sports Complex is closed on Sundays.",
         toastLength: Toast.LENGTH_LONG,

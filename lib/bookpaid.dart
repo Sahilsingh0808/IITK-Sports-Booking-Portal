@@ -530,46 +530,65 @@ class _BookPaidState extends State<BookPaid> {
                       _chosenValue2.toString() +
                       " " +
                       pickedDate.toString());
-                  await FirebaseFirestore.instance
-                      .collection("users")
+                  var res1 = await FirebaseFirestore.instance
+                      .collection('users')
                       .doc(userEmail)
-                      .collection('user bookings')
-                      .doc('Booking%%' +
-                          _chosenValue.toString() +
-                          "%%" +
-                          pickedDate! +
-                          "%%" +
-                          _chosenValue2.toString())
-                      .set({
-                    'ground': _chosenValue.toString(),
-                    'date': pickedDate,
-                    'slot': _chosenValue2.toString(),
-                    'accompany': 0,
-                    'emails': userEmail,
-                    'accompany details': userName
-                  });
-                  await FirebaseFirestore.instance
-                      .collection("bookings")
-                      .doc(_chosenValue.toString())
-                      .collection(pickedDate!)
-                      .doc(_chosenValue2.toString())
-                      .update({
-                    'seats': seats! - 1,
-                  });
-                  await FirebaseFirestore.instance
-                      .collection("bookings")
-                      .doc(_chosenValue.toString())
-                      .collection(pickedDate!)
-                      .doc(_chosenValue2.toString())
-                      .collection('names')
-                      .doc(userEmail! + '%' + userName!)
-                      .set({
-                    'name': userName,
-                    'email': userEmail,
-                  });
-                  showSuccess(
-                      'Booking Successful', 'Your booking has been confirmed');
-                  Navigator.of(context).pop();
+                      .get();
+                  String paid = '';
+                  paid = res1.data()!['paid'];
+                  if (paid.length == 1) {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userEmail)
+                        .update({
+                      'paid': currentDate.month.toString() +
+                          "_" +
+                          currentDate.year.toString()
+                    });
+                    await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(userEmail)
+                        .collection('user bookings')
+                        .doc('Booking%%' +
+                            _chosenValue.toString() +
+                            "%%" +
+                            pickedDate! +
+                            "%%" +
+                            _chosenValue2.toString())
+                        .set({
+                      'ground': _chosenValue.toString(),
+                      'date': pickedDate,
+                      'slot': _chosenValue2.toString(),
+                      'accompany': '0',
+                      'emails': userEmail,
+                      'accompany details': userName
+                    });
+                    await FirebaseFirestore.instance
+                        .collection("bookings")
+                        .doc(_chosenValue.toString())
+                        .collection(pickedDate!)
+                        .doc(_chosenValue2.toString())
+                        .update({
+                      'seats': seats! - 1,
+                    });
+                    await FirebaseFirestore.instance
+                        .collection("bookings")
+                        .doc(_chosenValue.toString())
+                        .collection(pickedDate!)
+                        .doc(_chosenValue2.toString())
+                        .collection('names')
+                        .doc(userEmail! + '%' + userName!)
+                        .set({
+                      'name': userName,
+                      'email': userEmail,
+                    });
+                    showSuccess('Booking Successful',
+                        'Your booking has been confirmed');
+                    Navigator.of(context).pop();
+                  } else {
+                    showError(
+                        "You have already registered for a facility for this month");
+                  }
                 }
               } else {
                 showError("No slots available");
