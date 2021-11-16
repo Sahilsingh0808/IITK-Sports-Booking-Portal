@@ -793,6 +793,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'email': email.toLowerCase(),
           'roll': roll,
           'phone': phone,
+          'paid': '-1',
           'category': category.toString()
         }).then((value) => print("Registered"));
 

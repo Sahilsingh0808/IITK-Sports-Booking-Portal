@@ -176,9 +176,9 @@ class _SOFState extends State<SOF> {
   @override
   void initState() {
     super.initState();
-    cards.add(createCard());
+    // cards.add(createCard());
     if (int.parse(widget.people) == 0) {
-      getSeats(widget.date, widget.ground, widget.people, widget.time);
+      _onDone();
     }
     inputData();
     print("DATA " + widget.people);
@@ -448,7 +448,7 @@ class _SOFState extends State<SOF> {
         barrierDismissible: false,
         context: context,
         builder: (context) {
-          Future.delayed(const Duration(seconds: 7), () {
+          Future.delayed(const Duration(seconds: 6), () {
             Navigator.of(context).pop(true);
           });
           return const AlertDialog(

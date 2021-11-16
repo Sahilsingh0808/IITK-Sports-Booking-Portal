@@ -367,43 +367,43 @@ class _BookSlotState extends State<BookSlot> {
                           const SizedBox(
                             height: 25,
                           ),
-                          (isStudent == true)
-                              ? const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                      "Number of people accompanying you (excluding yourself):"),
-                                )
-                              : const SizedBox(
-                                  width: 0,
-                                ),
-                          (isStudent == true)
-                              ? NumberPicker(
-                                  value: _currentValue,
-                                  minValue: 0,
-                                  maxValue: 10,
-                                  step: 1,
-                                  haptics: true,
-                                  onChanged: (value) => setState(() {
-                                    _currentValue = value;
-                                    if (_currentValue > 0) {
-                                      temp = "Next";
-                                    } else {
-                                      temp = "Confirm Seat";
-                                    }
-                                  }),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(color: Colors.black26),
-                                  ),
-                                )
-                              : Container(),
-                          (isStudent == true)
-                              ? Text(
-                                  'Selected Number of People: $_currentValue')
-                              : Container(),
-                          const SizedBox(
-                            height: 25,
-                          ),
+                          // (isStudent == true)
+                          //     ? const Padding(
+                          //         padding: EdgeInsets.all(8.0),
+                          //         child: Text(
+                          //             "Number of people accompanying you (excluding yourself):"),
+                          //       )
+                          //     : const SizedBox(
+                          //         width: 0,
+                          //       ),
+                          // (isStudent == true)
+                          //     ? NumberPicker(
+                          //         value: _currentValue,
+                          //         minValue: 0,
+                          //         maxValue: 10,
+                          //         step: 1,
+                          //         haptics: true,
+                          //         onChanged: (value) => setState(() {
+                          //           _currentValue = value;
+                          //           if (_currentValue > 0) {
+                          //             temp = "Next";
+                          //           } else {
+                          //             temp = "Confirm Seat";
+                          //           }
+                          //         }),
+                          //         decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(16),
+                          //           border: Border.all(color: Colors.black26),
+                          //         ),
+                          //       )
+                          //     : Container(),
+                          // (isStudent == true)
+                          //     ? Text(
+                          //         'Selected Number of People: $_currentValue')
+                          //     : Container(),
+                          // const SizedBox(
+                          //   height: 25,
+                          // ),
                           Builder(builder: (context) {
                             return InkWell(
                               borderRadius: BorderRadius.circular(10),
@@ -776,17 +776,58 @@ class _BookSlotState extends State<BookSlot> {
         }
       }
       if (isStudent == true) {
-        navigatorKey.currentState!.push(MaterialPageRoute(
-            builder: (context) => SOF(
-                  currentDate.day.toString() +
-                      "_" +
-                      currentDate.month.toString() +
-                      "_" +
-                      currentDate.year.toString(),
-                  _chosenValue!,
-                  _chosenValue2!,
-                  _currentValue.toString(),
-                )));
+        AwesomeDialog(
+            context: context,
+            dialogType: DialogType.WARNING,
+            headerAnimationLoop: false,
+            animType: AnimType.TOPSLIDE,
+            showCloseIcon: true,
+            closeIcon: const Icon(Icons.close_fullscreen_outlined),
+            title: 'WARNING',
+            btnOkColor: const Color(0xFF0029E2),
+            btnCancelColor: const Color(0xFF353B57),
+            desc: 'Are you sure you want to book this slot for yourself?',
+            btnCancelOnPress: () {},
+            onDissmissCallback: (type) {
+              debugPrint('Dialog Dissmiss from callback $type');
+            },
+            btnOkOnPress: () async {
+              try {
+                //  _showDialog(context, SimpleFontelicoProgressDialogType.multiHurricane,
+                //       'MultiHurricane');
+                //  _showDialog(
+                //       context, SimpleFontelicoProgressDialogType.bullets, 'Bullets');
+                //  _showDialog(context, SimpleFontelicoProgressDialogType.cog, 'Cog');
+                // _showDialog(
+                //       context, SimpleFontelicoProgressDialogType.spinner, 'Spinner');
+                //  _showDialog(context, SimpleFontelicoProgressDialogType.normal, 'Normal');
+                // _showDialog(
+                //       context, SimpleFontelicoProgressDialogType.threelines, 'Three Lines');
+                //       _showDialog(
+                // context, SimpleFontelicoProgressDialogType.multilines, 'Multilines');
+                //       _showDialog(
+                // context, SimpleFontelicoProgressDialogType.refresh, 'Refresh');
+                //                 _showDialog(
+                // context, SimpleFontelicoProgressDialogType.phoenix, 'Phoenix');
+                // _showDialog(context, SimpleFontelicoProgressDialogType.hurricane,
+                //     'Hurricane');
+                //  _showDialog(context, SimpleFontelicoProgressDialogType.iphone, 'Iphone');
+                navigatorKey.currentState!.push(MaterialPageRoute(
+                    builder: (context) => SOF(
+                          currentDate.day.toString() +
+                              "_" +
+                              currentDate.month.toString() +
+                              "_" +
+                              currentDate.year.toString(),
+                          _chosenValue!,
+                          _chosenValue2!,
+                          _currentValue.toString(),
+                        )));
+              } catch (e) {
+                showError(e.toString());
+                // _dialog.hide();
+              }
+            }).show();
       } else {
         navigatorKey.currentState!.push(MaterialPageRoute(
             builder: (context) => SOF1(
