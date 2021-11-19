@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:gnsdev/admin.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/dashboardstaff.dart';
+import 'package:gnsdev/export.dart';
 import 'package:gnsdev/remedy.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -311,6 +312,9 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(
               builder: (context) => const DashboardStaff('football')));
+    } else if (email == '123456' && password == 'exportData') {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Export()));
     } else if (email == 'admin@iitk.ac.in' && password == 'IITKadmin') {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const DashboardAdmin()));

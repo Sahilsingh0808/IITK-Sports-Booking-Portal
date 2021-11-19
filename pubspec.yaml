@@ -50,6 +50,7 @@ dependencies:
   simpleprogressdialog: ^1.0.8
   simple_fontellico_progress_dialog: ^0.2.0
   awesome_dialog: ^2.1.0
+  csv: ^5.0.0
   flutter_native_splash: 
   flutter_launcher_icons:
   flutter_datetime_picker: ^1.5.1

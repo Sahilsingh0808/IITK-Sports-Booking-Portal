@@ -699,6 +699,19 @@ class _BookSlotState extends State<BookSlot> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
+    } else if (_chosenValue
+            .toString()
+            .contains('Badminton 1 (New Sports Complex)') &&
+        (_chosenValue2.toString() == '06.00-06.50 PM' ||
+            _chosenValue2.toString() == '07.00-07.50 PM' ||
+            _chosenValue2.toString() == '08.00-08.50 PM')) {
+      Fluttertoast.showToast(
+        msg: "This is reserved for the Badminton Institute Team.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
     } else {
       String? userEmail = '';
       var list;
@@ -1115,6 +1128,19 @@ class _BookSlotState extends State<BookSlot> {
             _chosenValue2.toString() == '11.30-12.20 PM')) {
       Fluttertoast.showToast(
         msg: "This combination for booking is not available.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (_chosenValue
+            .toString()
+            .contains('Badminton 1 (New Sports Complex)') &&
+        (_chosenValue2.toString() == '06.00-06.50 PM' ||
+            _chosenValue2.toString() == '07.00-07.50 PM' ||
+            _chosenValue2.toString() == '08.00-08.50 PM')) {
+      Fluttertoast.showToast(
+        msg: "This is reserved for the Badminton Institute Team.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
         backgroundColor: Colors.black,
