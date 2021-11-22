@@ -143,7 +143,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   Future<void> refreshSeats() async {
     DateTime today = DateTime.now();
-    for (int i = 2; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
       DateTime next = today.add(Duration(days: i));
 
       String date = today.day.toString() +

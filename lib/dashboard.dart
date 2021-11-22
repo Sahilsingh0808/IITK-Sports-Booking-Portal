@@ -516,8 +516,13 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             );
                           }),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.4,
+                          Container(
+                            margin: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.blue, width: 3)),
+                            height: MediaQuery.of(context).size.height * 0.5,
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
