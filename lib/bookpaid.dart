@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/profile.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
@@ -234,8 +235,10 @@ class _BookPaidState extends State<BookPaid> {
                                 'Gym TThS (New Sports Complex)',
                                 'Gym MWF (Old Sports Complex)',
                                 'Gym TThS (Old Sports Complex)',
-                                'Cardio MWF (Old Sports Complex)',
-                                'Cardio TThS (Old Sports Complex)'
+                                'Wall Climbing MWF (New Sports Complex)',
+                                'Wall Climbing TThS (New Sports Complex)',
+                                'Billiards Room MWF (New sports Complex)',
+                                'Billiards Room TThS (New sports Complex)'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -346,6 +349,13 @@ class _BookPaidState extends State<BookPaid> {
                           const SizedBox(
                             height: 50,
                           ),
+                          const Text(
+                            'Timings:\n\nGym: 6:30 AM - 12:20 PM and 03:00 PM - 08:50 PM\nWall Climbing: 06:30 AM - 08:20 AM and 05:00 PM - 07:00 PM\nBilliards: 06:30 AM - 08:20 AM and 05:00 PM - 07:00 PM',
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          )
                         ],
                       ),
                     ),
@@ -375,7 +385,7 @@ class _BookPaidState extends State<BookPaid> {
       // ));
     } else if (chosenValue == null && chosenValue2 != null) {
       Fluttertoast.showToast(
-        msg: "Please select ground",
+        msg: "Please select facility",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
         backgroundColor: Colors.black,
@@ -384,6 +394,38 @@ class _BookPaidState extends State<BookPaid> {
     } else if (chosenValue2 == null && chosenValue != null) {
       Fluttertoast.showToast(
         msg: "Please select time slot",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (chosenValue!.contains('Wall Climbing') &&
+        (chosenValue2!.contains('08.30-09.20 AM') ||
+            chosenValue2!.contains('09.30-10.20 AM') ||
+            chosenValue2!.contains('10.30-11.20 AM') ||
+            chosenValue2!.contains('11.30-12.20 PM') ||
+            chosenValue2!.contains('03.00-03.50 PM') ||
+            chosenValue2!.contains('04.00-04.50 PM') ||
+            chosenValue2!.contains('07.00-07.50 PM') ||
+            chosenValue2!.contains('08.00-08.50 PM'))) {
+      Fluttertoast.showToast(
+        msg: "This slot is not available for booking",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (chosenValue!.contains('Billiards Room') &&
+        (chosenValue2!.contains('08.30-09.20 AM') ||
+            chosenValue2!.contains('09.30-10.20 AM') ||
+            chosenValue2!.contains('10.30-11.20 AM') ||
+            chosenValue2!.contains('11.30-12.20 PM') ||
+            chosenValue2!.contains('03.00-03.50 PM') ||
+            chosenValue2!.contains('04.00-04.50 PM') ||
+            chosenValue2!.contains('07.00-07.50 PM') ||
+            chosenValue2!.contains('08.00-08.50 PM'))) {
+      Fluttertoast.showToast(
+        msg: "This slot is not available for booking",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
         backgroundColor: Colors.black,
@@ -441,6 +483,7 @@ class _BookPaidState extends State<BookPaid> {
   }
 
   Future<void> validate(String? chosenValue, String? chosenValue2) async {
+    print(chosenValue! + chosenValue2! + "   CHECK");
     if (chosenValue == null && chosenValue2 == null) {
       print("hello");
       Fluttertoast.showToast(
@@ -470,6 +513,38 @@ class _BookPaidState extends State<BookPaid> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
+    } else if (chosenValue!.contains('Wall Climbing') &&
+            (chosenValue2!.contains('08.30-09.20 AM') ||
+                chosenValue2!.contains('09.30-10.20 AM')) ||
+        chosenValue2!.contains('10.30-11.20 AM') ||
+        chosenValue2!.contains('11.30-12.20 PM') ||
+        chosenValue2!.contains('03.00-03.50 PM') ||
+        chosenValue2!.contains('04.00-04.50 PM') ||
+        chosenValue2!.contains('07.00-07.50 PM') ||
+        chosenValue2!.contains('08.00-08.50 PM')) {
+      Fluttertoast.showToast(
+        msg: "This slot is not available for booking",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (chosenValue!.contains('Billiards Room') &&
+            (chosenValue2!.contains('08.30-09.20 AM') ||
+                chosenValue2!.contains('09.30-10.20 AM')) ||
+        chosenValue2!.contains('10.30-11.20 AM') ||
+        chosenValue2!.contains('11.30-12.20 PM') ||
+        chosenValue2!.contains('03.00-03.50 PM') ||
+        chosenValue2!.contains('04.00-04.50 PM') ||
+        chosenValue2!.contains('07.00-07.50 PM') ||
+        chosenValue2!.contains('08.00-08.50 PM')) {
+      Fluttertoast.showToast(
+        msg: "This slot is not available for booking",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
     } else {
       try {
         DateTime date1 = DateTime.now();
@@ -494,18 +569,18 @@ class _BookPaidState extends State<BookPaid> {
           } else {
             print("Reached 3");
             try {
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) {
-                    Future.delayed(const Duration(seconds: 2), () {
-                      Navigator.of(context).pop(true);
-                    });
-                    return const AlertDialog(
-                      title: Text(
-                          'Please wait while your booking is being confirmed'),
-                    );
-                  });
+              // showDialog(
+              //     barrierDismissible: false,
+              //     context: context,
+              //     builder: (context) {
+              //       Future.delayed(const Duration(seconds: 2), () {
+              //         Navigator.of(context).pop(true);
+              //       });
+              //       return const AlertDialog(
+              //         title: Text(
+              //             'Please wait while your booking is being confirmed'),
+              //       );
+              //     });
               var collection =
                   FirebaseFirestore.instance.collection('bookings');
               var docSnapshot = await collection
@@ -535,59 +610,195 @@ class _BookPaidState extends State<BookPaid> {
                       .doc(userEmail)
                       .get();
                   String paid = '';
+                  String paidWC = '';
+                  String paidB = '';
                   paid = res1.data()!['paid'];
-                  if (paid.length == 1) {
-                    await FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(userEmail)
-                        .update({
-                      'paid': currentDate.month.toString() +
-                          "_" +
-                          currentDate.year.toString()
-                    });
-                    await FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(userEmail)
-                        .collection('user bookings')
-                        .doc('Booking%%' +
-                            _chosenValue.toString() +
-                            "%%" +
-                            pickedDate! +
-                            "%%" +
-                            _chosenValue2.toString())
-                        .set({
-                      'ground': _chosenValue.toString(),
-                      'date': pickedDate,
-                      'slot': _chosenValue2.toString(),
-                      'accompany': '0',
-                      'emails': userEmail,
-                      'accompany details': userName
-                    });
-                    await FirebaseFirestore.instance
-                        .collection("bookings")
-                        .doc(_chosenValue.toString())
-                        .collection(pickedDate!)
-                        .doc(_chosenValue2.toString())
-                        .update({
-                      'seats': seats! - 1,
-                    });
-                    await FirebaseFirestore.instance
-                        .collection("bookings")
-                        .doc(_chosenValue.toString())
-                        .collection(pickedDate!)
-                        .doc(_chosenValue2.toString())
-                        .collection('names')
-                        .doc(userEmail! + '%' + userName!)
-                        .set({
-                      'name': userName,
-                      'email': userEmail,
-                    });
-                    showSuccess('Booking Successful',
-                        'Your booking has been confirmed');
-                    Navigator.of(context).pop();
-                  } else {
-                    showError(
-                        "You have already registered for a facility for this month");
+                  paidWC = res1.data()!['paidWC'];
+                  paidB = res1.data()!['paidB'];
+                  if (chosenValue!.contains('Gym') ||
+                      chosenValue!.contains('Cardio')) {
+                    if (paid.length <= 2) {
+                      showSuccess('Booking Successful',
+                          'Your booking has been confirmed');
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(userEmail)
+                          .update({
+                        'paid': currentDate.month.toString() +
+                            "_" +
+                            currentDate.year.toString()
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(userEmail)
+                          .collection('user bookings')
+                          .doc('Booking%%' +
+                              _chosenValue.toString() +
+                              "%%" +
+                              pickedDate! +
+                              "%%" +
+                              _chosenValue2.toString())
+                          .set({
+                        'ground': _chosenValue.toString(),
+                        'date': pickedDate,
+                        'slot': _chosenValue2.toString(),
+                        'accompany': '0',
+                        'emails': userEmail,
+                        'accompany details': userName
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("bookings")
+                          .doc(_chosenValue.toString())
+                          .collection(pickedDate!)
+                          .doc(_chosenValue2.toString())
+                          .update({
+                        'seats': seats! - 1,
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("bookings")
+                          .doc(_chosenValue.toString())
+                          .collection(pickedDate!)
+                          .doc(_chosenValue2.toString())
+                          .collection('names')
+                          .doc(userEmail! + '%' + userName!)
+                          .set({
+                        'name': userName,
+                        'email': userEmail,
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()));
+                    } else {
+                      showError(
+                          "You have already registered for a Gym/Cardio facility this month");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()));
+                    }
+                  } else if ((chosenValue!.contains('Wall Climbing'))) {
+                    if (paidWC.length <= 2) {
+                      showSuccess('Booking Successful',
+                          'Your booking has been confirmed');
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(userEmail)
+                          .update({
+                        'paidWC': currentDate.month.toString() +
+                            "_" +
+                            currentDate.year.toString()
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(userEmail)
+                          .collection('user bookings')
+                          .doc('Booking%%' +
+                              _chosenValue.toString() +
+                              "%%" +
+                              pickedDate! +
+                              "%%" +
+                              _chosenValue2.toString())
+                          .set({
+                        'ground': _chosenValue.toString(),
+                        'date': pickedDate,
+                        'slot': _chosenValue2.toString(),
+                        'accompany': '0',
+                        'emails': userEmail,
+                        'accompany details': userName
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("bookings")
+                          .doc(_chosenValue.toString())
+                          .collection(pickedDate!)
+                          .doc(_chosenValue2.toString())
+                          .update({
+                        'seats': seats! - 1,
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("bookings")
+                          .doc(_chosenValue.toString())
+                          .collection(pickedDate!)
+                          .doc(_chosenValue2.toString())
+                          .collection('names')
+                          .doc(userEmail! + '%' + userName!)
+                          .set({
+                        'name': userName,
+                        'email': userEmail,
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()));
+                    } else {
+                      showError(
+                          "You have already registered for a Wall Climbing facility this month");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()));
+                    }
+                  } else if ((chosenValue!.contains('Billiards'))) {
+                    if (paidB.length <= 2) {
+                      showSuccess('Booking Successful',
+                          'Your booking has been confirmed');
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(userEmail)
+                          .update({
+                        'paidB': currentDate.month.toString() +
+                            "_" +
+                            currentDate.year.toString()
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(userEmail)
+                          .collection('user bookings')
+                          .doc('Booking%%' +
+                              _chosenValue.toString() +
+                              "%%" +
+                              pickedDate! +
+                              "%%" +
+                              _chosenValue2.toString())
+                          .set({
+                        'ground': _chosenValue.toString(),
+                        'date': pickedDate,
+                        'slot': _chosenValue2.toString(),
+                        'accompany': '0',
+                        'emails': userEmail,
+                        'accompany details': userName
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("bookings")
+                          .doc(_chosenValue.toString())
+                          .collection(pickedDate!)
+                          .doc(_chosenValue2.toString())
+                          .update({
+                        'seats': seats! - 1,
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("bookings")
+                          .doc(_chosenValue.toString())
+                          .collection(pickedDate!)
+                          .doc(_chosenValue2.toString())
+                          .collection('names')
+                          .doc(userEmail! + '%' + userName!)
+                          .set({
+                        'name': userName,
+                        'email': userEmail,
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()));
+                    } else {
+                      showError(
+                          "You have already registered for a Billiards facility this month");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard()));
+                    }
                   }
                 }
               } else {

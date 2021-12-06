@@ -214,7 +214,7 @@ class _SectionState extends State<Section> {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Gym\nCardio',
+                                  'Gym\nWall Climbing\nBilliards',
                                   textAlign: TextAlign.center,
                                 ),
                               ),

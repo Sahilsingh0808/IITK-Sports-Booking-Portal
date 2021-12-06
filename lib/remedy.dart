@@ -422,7 +422,9 @@ class _RemedyState extends State<Remedy> {
         'roll': roll,
         'phone': phone,
         'category': category,
-        'paid': '-1'
+        'paid': '-1',
+        'paidWC': '-1',
+        'paidB': '-1'
       });
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Dashboard()));

@@ -19,6 +19,7 @@ import 'package:gnsdev/home.dart';
 import 'package:gnsdev/info.dart';
 import 'package:gnsdev/maintenence.dart';
 import 'package:gnsdev/splash.dart';
+import 'package:gnsdev/test.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
@@ -27,6 +28,7 @@ Future<void> main() async {
   runApp(const MyHomePage(
     title: 'IITK Sports Facilities Booking Portal',
   ));
+  // runApp(MaterialApp(home: Test()));
   // runApp(Export());
   // runApp(Splash());
   // runApp(Maintenance());
