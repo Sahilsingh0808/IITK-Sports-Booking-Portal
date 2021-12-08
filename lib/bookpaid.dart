@@ -563,15 +563,15 @@ class _BookPaidState extends State<BookPaid> {
         textColor: Colors.white,
       );
     } else if (chosenValue!.contains('Billiards Room') &&
-            (chosenValue2!.contains('08.30-09.20 AM') ||
-                chosenValue2!.contains('09.30-10.20 AM')) ||
-        chosenValue2!.contains('10.30-11.20 AM') ||
-        chosenValue2!.contains('11.30-12.20 PM') ||
-        chosenValue2!.contains('03.00-03.50 PM') ||
-        chosenValue2!.contains('04.00-04.50 PM') ||
-        chosenValue2!.contains('06.00-06.50 PM') ||
-        chosenValue2!.contains('07.00-07.50 PM') ||
-        chosenValue2!.contains('08.00-08.50 PM')) {
+        (chosenValue2!.contains('08.30-09.20 AM') ||
+            chosenValue2!.contains('09.30-10.20 AM') ||
+            chosenValue2!.contains('10.30-11.20 AM') ||
+            chosenValue2!.contains('11.30-12.20 PM') ||
+            chosenValue2!.contains('03.00-03.50 PM') ||
+            chosenValue2!.contains('04.00-04.50 PM') ||
+            chosenValue2!.contains('06.00-06.50 PM') ||
+            chosenValue2!.contains('07.00-07.50 PM') ||
+            chosenValue2!.contains('08.00-08.50 PM'))) {
       Fluttertoast.showToast(
         msg: "This slot is not available for booking",
         toastLength: Toast.LENGTH_LONG,
