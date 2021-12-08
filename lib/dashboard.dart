@@ -696,11 +696,12 @@ class _DashboardState extends State<Dashboard> {
         },
         btnOkOnPress: () async {
           try {
-            if (date.length == 7) {
-              showError('You cannot delete paid facilities bookings for now');
-              return;
-            }
-            bool check = checkDelete(slot, date);
+            // if (date.length == 7) {
+            //   showError('You cannot delete paid facilities bookings for now');
+            //   return;
+            // }
+            bool check = true;
+            if (date.length == 10) check = checkDelete(slot, date);
             if (check == false) {
               showError('You cannot delete past bookings');
               return;
@@ -810,6 +811,20 @@ class _DashboardState extends State<Dashboard> {
                 .doc(userEmail)
                 .get();
             String userName = res1.data()!['name'];
+
+            if (ground.contains('Gym')) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userEmail)
+                  .update({'paid': '-1'});
+            }
+            else if (ground.contains('Wall')) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userEmail)
+                  .update({'paidWC': '-1'});
+            }
+            
 
             // _dialog.hide();
             sendEmail(
