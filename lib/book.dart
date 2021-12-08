@@ -288,6 +288,7 @@ class _BookSlotState extends State<BookSlot> {
                                 'Volleyball 3 (Old Sports Complex)',
                                 'Volleyball 4 (Old Sports Complex)',
                                 'Tennis Wall (Old Sports Complex)',
+                                'Billiards Room (New Sports Complex)',
                                 'Badminton 1 (New Sports Complex)',
                                 'Badminton 2 (New Sports Complex)',
                                 'Badminton 3 (New Sports Complex)',
@@ -312,7 +313,7 @@ class _BookSlotState extends State<BookSlot> {
                                 );
                               }).toList(),
                               hint: const Text(
-                                "Please choose a sports ground",
+                                "Please choose a facility",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,

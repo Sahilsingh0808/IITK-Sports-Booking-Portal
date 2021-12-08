@@ -93,7 +93,7 @@ class _SectionState extends State<Section> {
             }),
             const SizedBox(width: 50),
           ],
-          title: const Text("Free/Paid Facility"),
+          title: const Text("Daily/Monthly Booking"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pushReplacement(context,
@@ -140,7 +140,7 @@ class _SectionState extends State<Section> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: const Text(
-                                  'Free Facilities',
+                                  'Daily Bookings',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 25,
@@ -154,7 +154,7 @@ class _SectionState extends State<Section> {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Basketball\nBadminton\nTable Tennis\nTennis\nSquash\nand many more',
+                                  'Free Facilities:\nBasketball\nBadminton\nTable Tennis\nTennis\nSquash\nTennis Wall\n\nPaid Facility:\nBilliards',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -182,25 +182,25 @@ class _SectionState extends State<Section> {
                                 height: MediaQuery.of(context).size.height / 5),
                             ElevatedButton(
                               onPressed: () {
-                                Fluttertoast.showToast(
-                                  msg:
-                                      "Paid Facilities are coming soon. Stay tuned.",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity
-                                      .BOTTOM, // also possible "TOP" and "CENTER"
-                                  backgroundColor: Colors.black,
-                                  textColor: Colors.white,
-                                );
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             const BookPaid()));
+                                // Fluttertoast.showToast(
+                                //   msg:
+                                //       "Monthly Bookings are coming soon. Stay tuned.",
+                                //   toastLength: Toast.LENGTH_LONG,
+                                //   gravity: ToastGravity
+                                //       .BOTTOM, // also possible "TOP" and "CENTER"
+                                //   backgroundColor: Colors.black,
+                                //   textColor: Colors.white,
+                                // );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BookPaid()));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: const Text(
-                                  'Coming Soon',
+                                  'Monthly Bookings',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 25,
@@ -214,7 +214,7 @@ class _SectionState extends State<Section> {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Gym\nWall Climbing\nBilliards',
+                                  'Paid Facilities:\nGym\nWall Climbing',
                                   textAlign: TextAlign.center,
                                 ),
                               ),

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/profile.dart';
+import 'package:gnsdev/remedy.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 import 'info.dart';
 
@@ -65,6 +69,34 @@ class _BookPaidState extends State<BookPaid> {
         _dateController.text = DateFormat.yMd().format(currentDate);
       });
     }
+  }
+
+  Future sendEmail(
+      {required String name,
+      required String email,
+      required String subject,
+      required String message}) async {
+    const String serviceID = 'service_t1yuekz';
+    const String templateID = 'template_ydlj5s4';
+    const String userID = 'user_Rgq3HtaCMu8ckNNNPVR0T';
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'service_id': serviceID,
+          'template_id': templateID,
+          'user_id': userID,
+          'template_params': {
+            'user_email': email,
+            'user_subject': subject,
+            'user_message': message,
+            'reply_to': '',
+          }
+        }));
+    // ignore: avoid_print
+    print(response.body);
   }
 
   void showAlert(BuildContext context) {
@@ -237,8 +269,6 @@ class _BookPaidState extends State<BookPaid> {
                                 'Gym TThS (Old Sports Complex)',
                                 'Wall Climbing MWF (New Sports Complex)',
                                 'Wall Climbing TThS (New Sports Complex)',
-                                'Billiards Room MWF (New sports Complex)',
-                                'Billiards Room TThS (New sports Complex)'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -350,7 +380,7 @@ class _BookPaidState extends State<BookPaid> {
                             height: 50,
                           ),
                           const Text(
-                            'Timings:\n\nGym: 6:30 AM - 12:20 PM and 03:00 PM - 08:50 PM\nWall Climbing: 06:30 AM - 08:20 AM and 05:00 PM - 07:00 PM\nBilliards: 06:30 AM - 08:20 AM and 05:00 PM - 07:00 PM',
+                            'Timings:\n\nGym: 6:30 AM - 12:20 PM and 03:00 PM - 08:50 PM\nWall Climbing: 06:30 AM - 07:20 AM and 05:00 PM - 05:50 PM',
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(
@@ -400,13 +430,15 @@ class _BookPaidState extends State<BookPaid> {
         textColor: Colors.white,
       );
     } else if (chosenValue!.contains('Wall Climbing') &&
-        (chosenValue2!.contains('08.30-09.20 AM') ||
+        (chosenValue2!.contains('07.30-08.20 AM') ||
+            chosenValue2!.contains('08.30-09.20 AM') ||
             chosenValue2!.contains('09.30-10.20 AM') ||
             chosenValue2!.contains('10.30-11.20 AM') ||
             chosenValue2!.contains('11.30-12.20 PM') ||
             chosenValue2!.contains('03.00-03.50 PM') ||
             chosenValue2!.contains('04.00-04.50 PM') ||
             chosenValue2!.contains('07.00-07.50 PM') ||
+            chosenValue2!.contains('06.00-06.50 PM') ||
             chosenValue2!.contains('08.00-08.50 PM'))) {
       Fluttertoast.showToast(
         msg: "This slot is not available for booking",
@@ -514,14 +546,15 @@ class _BookPaidState extends State<BookPaid> {
         textColor: Colors.white,
       );
     } else if (chosenValue!.contains('Wall Climbing') &&
-            (chosenValue2!.contains('08.30-09.20 AM') ||
-                chosenValue2!.contains('09.30-10.20 AM')) ||
-        chosenValue2!.contains('10.30-11.20 AM') ||
-        chosenValue2!.contains('11.30-12.20 PM') ||
-        chosenValue2!.contains('03.00-03.50 PM') ||
-        chosenValue2!.contains('04.00-04.50 PM') ||
-        chosenValue2!.contains('07.00-07.50 PM') ||
-        chosenValue2!.contains('08.00-08.50 PM')) {
+        (chosenValue2!.contains('07.30-08.20 AM') ||
+            chosenValue2!.contains('08.30-09.20 AM') ||
+            chosenValue2!.contains('09.30-10.20 AM') ||
+            chosenValue2!.contains('10.30-11.20 AM') ||
+            chosenValue2!.contains('11.30-12.20 PM') ||
+            chosenValue2!.contains('03.00-03.50 PM') ||
+            chosenValue2!.contains('04.00-04.50 PM') ||
+            chosenValue2!.contains('07.00-07.50 PM') ||
+            chosenValue2!.contains('08.00-08.50 PM'))) {
       Fluttertoast.showToast(
         msg: "This slot is not available for booking",
         toastLength: Toast.LENGTH_LONG,
@@ -536,6 +569,7 @@ class _BookPaidState extends State<BookPaid> {
         chosenValue2!.contains('11.30-12.20 PM') ||
         chosenValue2!.contains('03.00-03.50 PM') ||
         chosenValue2!.contains('04.00-04.50 PM') ||
+        chosenValue2!.contains('06.00-06.50 PM') ||
         chosenValue2!.contains('07.00-07.50 PM') ||
         chosenValue2!.contains('08.00-08.50 PM')) {
       Fluttertoast.showToast(
@@ -620,6 +654,27 @@ class _BookPaidState extends State<BookPaid> {
                     if (paid.length <= 2) {
                       showSuccess('Booking Successful',
                           'Your booking has been confirmed');
+                      sendEmail(
+                          name: 'Games and Sports Council, IITK',
+                          email: userEmail!,
+                          message: 'Dear ' +
+                              userName! +
+                              ' (' +
+                              userEmail! +
+                              ') \nyour registration for ' +
+                              chosenValue.toString() +
+                              ' for ' +
+                              currentDate.month.toString() +
+                              " month " +
+                              ' at ' +
+                              chosenValue2.toString() +
+                              ' has been confirmed ' +
+                              ' (' +
+                              userEmail! +
+                              ').\nRegards\nSPEC Office',
+                          subject:
+                              'Booking Confirmation for Sports Facilities IITK');
+
                       await FirebaseFirestore.instance
                           .collection('users')
                           .doc(userEmail)
@@ -681,6 +736,26 @@ class _BookPaidState extends State<BookPaid> {
                     if (paidWC.length <= 2) {
                       showSuccess('Booking Successful',
                           'Your booking has been confirmed');
+                      sendEmail(
+                          name: 'Games and Sports Council, IITK',
+                          email: userEmail!,
+                          message: 'Dear ' +
+                              userName! +
+                              ' (' +
+                              userEmail! +
+                              ') \nyour registration for ' +
+                              chosenValue.toString() +
+                              ' for ' +
+                              currentDate.month.toString() +
+                              " month " +
+                              ' at ' +
+                              chosenValue2.toString() +
+                              ' has been confirmed ' +
+                              ' (' +
+                              userEmail! +
+                              ').\nRegards\nSPEC Office',
+                          subject:
+                              'Booking Confirmation for Sports Facilities IITK');
                       await FirebaseFirestore.instance
                           .collection('users')
                           .doc(userEmail)
@@ -742,6 +817,26 @@ class _BookPaidState extends State<BookPaid> {
                     if (paidB.length <= 2) {
                       showSuccess('Booking Successful',
                           'Your booking has been confirmed');
+                      sendEmail(
+                          name: 'Games and Sports Council, IITK',
+                          email: userEmail!,
+                          message: 'Dear ' +
+                              userName! +
+                              ' (' +
+                              userEmail! +
+                              ') \nyour registration for ' +
+                              chosenValue.toString() +
+                              ' for ' +
+                              currentDate.month.toString() +
+                              " month " +
+                              ' at ' +
+                              chosenValue2.toString() +
+                              ' has been confirmed ' +
+                              ' (' +
+                              userEmail! +
+                              ').\nRegards\nSPEC Office',
+                          subject:
+                              'Booking Confirmation for Sports Facilities IITK');
                       await FirebaseFirestore.instance
                           .collection('users')
                           .doc(userEmail)

@@ -166,8 +166,14 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
     print(date);
     _showDialog(
         context, SimpleFontelicoProgressDialogType.hurricane, 'Hurricane');
+    DateTime next = today.add(Duration(days: 1));
+    String nextDate = next.day.toString() +
+        '_' +
+        next.month.toString() +
+        '_' +
+        next.year.toString();
     await addSeats(date);
-    // await addSeats(nextDate1);
+    // await addSeats(nextDate);
     _dialog.hide();
   }
 
@@ -182,7 +188,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.30-07.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 06.30-07.20 AM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -190,7 +196,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.30-08.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 07.30-08.20 AM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -198,7 +204,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.30-09.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 08.30-09.20 AM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -206,7 +212,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('09.30-10.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 09.30-10.20 AM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -214,7 +220,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('10.30-11.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 10.30-11.20 AM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -222,7 +228,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('11.30-12.20 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 11.30-12.20 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -230,7 +236,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('12.00-12.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 12.00-12.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -238,7 +244,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('01.00-01.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 01.00-01.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -246,7 +252,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('02.00-02.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 02.00-02.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -254,7 +260,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('03.00-03.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 03.00-03.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -262,7 +268,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('04.00-04.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 04.00-04.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -270,7 +276,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('05.00-05.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 05.00-05.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -278,7 +284,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.00-06.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 06.00-06.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -286,7 +292,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.00-07.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 07.00-07.50 PM"));
     await users
         .doc('Gym MWF (New Sports Complex)')
@@ -294,7 +300,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.00-08.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym MWF (New Sports Complex) 08.00-08.50 PM"));
 
     //Gym TThS (New Sports Complex)
@@ -304,7 +310,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.30-07.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 06.30-07.20 AM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -312,7 +318,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.30-08.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 07.30-08.20 AM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -320,7 +326,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.30-09.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 08.30-09.20 AM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -328,7 +334,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('09.30-10.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 09.30-10.20 AM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -336,7 +342,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('10.30-11.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 10.30-11.20 AM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -344,7 +350,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('11.30-12.20 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 11.30-12.20 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -352,7 +358,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('12.00-12.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 12.00-12.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -360,7 +366,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('01.00-01.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 01.00-01.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -368,7 +374,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('02.00-02.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 02.00-02.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -376,7 +382,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('03.00-03.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 03.00-03.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -384,7 +390,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('04.00-04.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 04.00-04.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -392,7 +398,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('05.00-05.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 05.00-05.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -400,7 +406,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.00-06.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 06.00-06.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -408,7 +414,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.00-07.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 07.00-07.50 PM"));
     await users
         .doc('Gym TThS (New Sports Complex)')
@@ -416,7 +422,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.00-08.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 8,
     }).then((value) => print("Gym TThS (New Sports Complex) 08.00-08.50 PM"));
 
     //Gym MWF (Old Sports Complex)
@@ -426,7 +432,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.30-07.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 06.30-07.20 AM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -434,7 +440,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.30-08.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 07.30-08.20 AM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -442,7 +448,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.30-09.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 08.30-09.20 AM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -450,7 +456,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('09.30-10.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 09.30-10.20 AM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -458,7 +464,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('10.30-11.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 10.30-11.20 AM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -466,7 +472,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('11.30-12.20 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 11.30-12.20 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -474,7 +480,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('12.00-12.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 12.00-12.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -482,7 +488,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('01.00-01.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 01.00-01.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -490,7 +496,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('02.00-02.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 02.00-02.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -498,7 +504,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('03.00-03.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 03.00-03.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -506,7 +512,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('04.00-04.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 04.00-04.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -514,7 +520,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('05.00-05.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 05.00-05.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -522,7 +528,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.00-06.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 06.00-06.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -530,7 +536,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.00-07.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 07.00-07.50 PM"));
     await users
         .doc('Gym MWF (Old Sports Complex)')
@@ -538,7 +544,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.00-08.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym MWF (Old Sports Complex) 08.00-08.50 PM"));
 
     //Gym TThS (Old Sports Complex)
@@ -548,7 +554,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.30-07.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 06.30-07.20 AM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -556,7 +562,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.30-08.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 07.30-08.20 AM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -564,7 +570,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.30-09.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 08.30-09.20 AM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -572,7 +578,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('09.30-10.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 09.30-10.20 AM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -580,7 +586,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('10.30-11.20 AM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 10.30-11.20 AM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -588,7 +594,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('11.30-12.20 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 11.30-12.20 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -596,7 +602,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('12.00-12.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 12.00-12.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -604,7 +610,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('01.00-01.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 01.00-01.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -612,7 +618,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('02.00-02.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 02.00-02.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -620,7 +626,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('03.00-03.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 03.00-03.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -628,7 +634,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('04.00-04.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 04.00-04.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -636,7 +642,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('05.00-05.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 05.00-05.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -644,7 +650,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.00-06.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 06.00-06.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -652,7 +658,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.00-07.50 PM')
         .set({
       'email': '',
-      'seats': 36,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 07.00-07.50 PM"));
     await users
         .doc('Gym TThS (Old Sports Complex)')
@@ -660,7 +666,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('08.00-08.50 PM')
         .set({
       'email': '',
-      'seats': 30,
+      'seats': 35,
     }).then((value) => print("Gym TThS (Old Sports Complex) 08.00-08.50 PM"));
 
     // //Cardio MWF (Old Sports Complex)
@@ -929,7 +935,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.30-07.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing MWF (New Sports Complex) 06.30-07.20 AM"));
     await users
@@ -938,7 +944,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.30-08.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing MWF (New Sports Complex) 07.30-08.20 AM"));
     await users
@@ -947,7 +953,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('05.00-05.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing MWF (New Sports Complex) 05.00-05.50 PM"));
     await users
@@ -956,7 +962,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.00-06.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing MWF (New Sports Complex) 06.00-06.50 PM"));
     await users
@@ -965,7 +971,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.30-07.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing TThS (New Sports Complex) 06.30-07.20 AM"));
     await users
@@ -974,7 +980,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('07.30-08.20 AM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing TThS (New Sports Complex) 07.30-08.20 AM"));
     await users
@@ -983,7 +989,7 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('05.00-05.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing TThS (New Sports Complex) 05.00-05.50 PM"));
     await users
@@ -992,82 +998,8 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
         .doc('06.00-06.50 PM')
         .set({
       'email': '',
-      'seats': 10,
+      'seats': 5,
     }).then((value) =>
             print("Wall Climbing TThS (New Sports Complex) 06.00-06.50 PM"));
-
-    await users
-        .doc('Billiards Room MWF (New sports Complex)')
-        .collection(date)
-        .doc('06.30-07.20 AM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room MWF (New sports Complex) 06.30-07.20 AM"));
-    await users
-        .doc('Billiards Room MWF (New sports Complex)')
-        .collection(date)
-        .doc('07.30-08.20 AM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room MWF (New sports Complex) 07.30-08.20 AM"));
-    await users
-        .doc('Billiards Room MWF (New sports Complex)')
-        .collection(date)
-        .doc('05.00-05.50 PM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room MWF (New sports Complex) 05.00-05.50 PM"));
-    await users
-        .doc('Billiards Room MWF (New sports Complex)')
-        .collection(date)
-        .doc('06.00-06.50 PM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room MWF (New sports Complex) 06.00-06.50 PM"));
-
-    await users
-        .doc('Billiards Room TThS (New sports Complex)')
-        .collection(date)
-        .doc('06.30-07.20 AM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room TThS (New sports Complex) 06.30-07.20 AM"));
-    await users
-        .doc('Billiards Room TThS (New sports Complex)')
-        .collection(date)
-        .doc('07.30-08.20 AM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room TThS (New sports Complex) 07.30-08.20 AM"));
-    await users
-        .doc('Billiards Room TThS (New sports Complex)')
-        .collection(date)
-        .doc('05.00-05.50 PM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room TThS (New sports Complex) 05.00-05.50 PM"));
-    await users
-        .doc('Billiards Room TThS (New sports Complex)')
-        .collection(date)
-        .doc('06.00-06.50 PM')
-        .set({
-      'email': '',
-      'seats': 10,
-    }).then((value) =>
-            print("Billiards Room TThS (New sports Complex) 06.00-06.50 PM"));
   }
 }

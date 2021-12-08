@@ -174,6 +174,128 @@ class _DashboardAdminState extends State<DashboardAdmin> {
   Future<void> addSeats(date) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('bookings');
+
+    //Billiards Room (New Sports Complex)
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('06.30-07.20 AM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 06.30-07.20 AM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('07.30-08.20 AM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 07.30-08.20 AM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('08.30-09.20 AM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 08.30-09.20 AM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('09.30-10.20 AM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 09.30-10.20 AM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('10.30-11.20 AM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 10.30-11.20 AM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('11.30-12.20 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 11.30-12.20 PM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('03:00-03:50 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 03:00-03:50 PM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('04:00-04:50 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 04:00-04:50 PM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('05.00-05.50 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 05.00-05.50 PM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('06.00-06.50 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 06.00-06.50 PM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('07.00-07.50 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 07.00-07.50 PM"));
+
+    await users
+        .doc('Billiards Room (New Sports Complex)')
+        .collection(date)
+        .doc('08.00-08.50 PM')
+        .set({
+      'email': '',
+      'seats': 10,
+    }).then((value) =>
+            print("Billiards Room (New Sports Complex) 08.00-08.50 PM"));
+
     //Basketball 2 Mian Stadium
     await users
         .doc('Basketball 1 (Main Sports Stadium)')

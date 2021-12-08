@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
 
 import 'dart:convert';
 
@@ -678,6 +678,7 @@ class _DashboardState extends State<Dashboard> {
 
   deleteData(String desc, String ground, String date, String slot,
       int accompany, String accDetails, String emails) async {
+    // showError(date);
     AwesomeDialog(
         context: context,
         dialogType: DialogType.WARNING,
@@ -695,11 +696,16 @@ class _DashboardState extends State<Dashboard> {
         },
         btnOkOnPress: () async {
           try {
+            if (date.length == 7) {
+              showError('You cannot delete paid facilities bookings for now');
+              return;
+            }
             bool check = checkDelete(slot, date);
             if (check == false) {
               showError('You cannot delete past bookings');
               return;
             }
+
             //  _showDialog(context, SimpleFontelicoProgressDialogType.multiHurricane,
             //       'MultiHurricane');
             //  _showDialog(
