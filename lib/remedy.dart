@@ -453,8 +453,8 @@ class _RemedyState extends State<Remedy> {
         .collection('users')
         .doc(userEmail)
         .get();
-    String paid = res.data()!['paid'];
-    if (paid != '0') {
+    String category = res.data()!['category'];
+    if (category.isNotEmpty || category != null) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),

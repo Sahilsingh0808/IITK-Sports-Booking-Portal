@@ -646,14 +646,59 @@ class _BookPaidState extends State<BookPaid> {
                   String paid = '';
                   String paidWC = '';
                   String paidB = '';
-                  paid = res1.data()!['paid'];
-                  paidWC = res1.data()!['paidWC'];
+                  paid = res1.data()!['paid'] == null
+                      ? 'NULL'
+                      : res1.data()!['paid'];
+                  paidWC = res1.data()!['paidWC'] == null
+                      ? 'NULL'
+                      : res1.data()!['paidWC'];
+                  if (paid.isEmpty || paid == null || paid == 'NULL') {
+                    paid = '-1';
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userEmail)
+                        .update({'paid': '-1'});
+                  }
+                  if (paidWC.isEmpty || paidWC == null || paidWC == 'NULL') {
+                    paidWC = '-1';
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userEmail)
+                        .update({'paidWC': '-1'});
+                  }
                   paidB = res1.data()!['paidB'];
                   if (chosenValue!.contains('Gym') ||
                       chosenValue!.contains('Cardio')) {
                     if (paid.length <= 2) {
                       showSuccess('Booking Successful',
                           'Your booking has been confirmed');
+                      String month = '';
+                      if (currentDate.month.toString() == '12') {
+                        month = 'December';
+                      } else if (currentDate.month.toString() == '1') {
+                        month = 'January';
+                      } else if (currentDate.month.toString() == '2') {
+                        month = 'February';
+                      } else if (currentDate.month.toString() == '3') {
+                        month = 'March';
+                      } else if (currentDate.month.toString() == '4') {
+                        month = 'April';
+                      } else if (currentDate.month.toString() == '5') {
+                        month = 'May';
+                      } else if (currentDate.month.toString() == '6') {
+                        month = 'June';
+                      } else if (currentDate.month.toString() == '7') {
+                        month = 'July';
+                      } else if (currentDate.month.toString() == '8') {
+                        month = 'August';
+                      } else if (currentDate.month.toString() == '9') {
+                        month = 'September';
+                      } else if (currentDate.month.toString() == '10') {
+                        month = 'October';
+                      } else if (currentDate.month.toString() == '11') {
+                        month = 'November';
+                      }
+
                       sendEmail(
                           name: 'Games and Sports Council, IITK',
                           email: userEmail!,
@@ -664,8 +709,7 @@ class _BookPaidState extends State<BookPaid> {
                               ') \nyour registration for ' +
                               chosenValue.toString() +
                               ' for ' +
-                              currentDate.month.toString() +
-                              " month " +
+                              month +
                               ' at ' +
                               chosenValue2.toString() +
                               ' has been confirmed ' +
