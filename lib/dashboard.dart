@@ -186,6 +186,7 @@ class _DashboardState extends State<Dashboard> {
   Widget _builderList(String number, String ground, String accompany,
       String date, String time, String desc, String accDetails, String emails) {
     {
+      String date1 = date.replaceAll("_", "-");
       print(accDetails);
       print(desc);
       print(accompany);
@@ -267,7 +268,7 @@ class _DashboardState extends State<Dashboard> {
                     children: <Widget>[
                       Text(
                         // _dateFormatter.format(notes[0].date),
-                        date,
+                        date1,
                         style: const TextStyle(
                           color: Colors.blueGrey,
                           fontSize: 18.0,
