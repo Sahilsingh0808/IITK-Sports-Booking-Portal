@@ -741,27 +741,22 @@ class _BookSlotState extends State<BookSlot> {
 
       //check if user already booked same slot or same ground on same day
       if (list != null) {
+        int bookingsNum = 0;
         for (var res in list) {
           String date = res.data()["date"];
           String ground = res.data()["ground"];
           String time = res.data()["slot"];
           print(date + " " + ground + " " + time);
-          if (date ==
-              currentDate.day.toString() +
-                  "_" +
-                  currentDate.month.toString() +
-                  "_" +
-                  currentDate.year.toString()) {
-            Fluttertoast.showToast(
-              msg:
-                  "You have already booked on this day. Please select another day.",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-            );
-            return;
+          String selectedDate = currentDate.day.toString() +
+              "_" +
+              currentDate.month.toString() +
+              "_" +
+              currentDate.year.toString();
+
+          if (date == selectedDate) {
+            bookingsNum++;
           }
+
           // else if (date ==
           //         currentDate.day.toString() +
           //             "_" +
@@ -787,6 +782,41 @@ class _BookSlotState extends State<BookSlot> {
           //   );
           //   return;
           // }
+        }
+        if (userEmail != 'sahilsingh20@iitk.ac.in') {
+          if (isStudent == true) {
+            if (bookingsNum > 0) {
+              Fluttertoast.showToast(
+                msg:
+                    "You have already booked on this day. Please select another day.",
+                toastLength: Toast.LENGTH_LONG,
+                gravity:
+                    ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+              );
+              return;
+            }
+          } else {
+            int dep = 1;
+            var res = await FirebaseFirestore.instance
+                .collection('dependents')
+                .doc(userEmail)
+                .get();
+            dep = res.data()!['number'];
+            if (bookingsNum > dep) {
+              Fluttertoast.showToast(
+                msg:
+                    "You have already booked on this day. Please select another day.",
+                toastLength: Toast.LENGTH_LONG,
+                gravity:
+                    ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+              );
+              return;
+            }
+          }
         }
       }
       if (isStudent == true) {

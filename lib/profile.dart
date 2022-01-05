@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/main.dart';
+import 'package:gnsdev/remedy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'home.dart';
@@ -209,6 +210,30 @@ class _ProfileState extends State<Profile> {
                           onPressed: () {},
                           child: const Text(
                             "Change Password",
+                            style: TextStyle(
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ))),
+                const SizedBox(
+                  height: 10,
+                ),
+                Card(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 8.0),
+                    elevation: 2.0,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 30),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Remedy()));
+                          },
+                          child: const Text(
+                            "Update Profile",
                             style: TextStyle(
                                 letterSpacing: 2.0,
                                 fontWeight: FontWeight.w300),

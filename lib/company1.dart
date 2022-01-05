@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/profile.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dashboard.dart';
@@ -346,22 +347,22 @@ class _SOF1State extends State<SOF1> {
           }
 
           //email sent to parent user
+          final df = DateFormat('dd-MM-yyyy hh:mm a');
+          int myvalue =
+              (((DateTime.now()).millisecondsSinceEpoch) / 1000).round();
+          ;
+          print(df.format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)));
+          String date1 = widget.date.replaceAll('_', '-');
           sendEmail(
-              name: 'Games and Sports Council, IITK',
+              name: userName!,
+              time: df
+                  .format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)),
+              date: date1,
               email: userEmail!,
-              message: 'Dear ' +
-                  userName +
-                  ' (' +
-                  userEmail! +
-                  ') \nyour seat for ' +
-                  widget.ground +
-                  ' on ' +
-                  widget.date +
-                  ' at ' +
-                  widget.time +
-                  ' has been confirmed. Booking done for ' +
-                  name +
-                  '.\nRegards,\nSPEC Office',
+              facility: widget.ground,
+              slot: widget.time,
+              message:
+                  'Your booking has been confirmed. The details are as follows:',
               subject: 'Booking Confirmation for Sports Facilities IITK');
 
           //email sent to daughter users(s)
@@ -428,7 +429,11 @@ class _SOF1State extends State<SOF1> {
 
   Future sendEmail(
       {required String name,
+      required String date,
       required String email,
+      required String facility,
+      required String slot,
+      required String time,
       required String subject,
       required String message}) async {
     const String serviceID = 'service_t1yuekz';
@@ -445,6 +450,11 @@ class _SOF1State extends State<SOF1> {
           'user_id': userID,
           'template_params': {
             'user_email': email,
+            'user_date': date,
+            'user_name': name,
+            'user_time': time,
+            'user_facility': facility,
+            'user_slot': slot,
             'user_subject': subject,
             'user_message': message,
             'reply_to': '',

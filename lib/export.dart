@@ -152,7 +152,23 @@ class _ExportState extends State<Export> {
                               color: Color(0xFF0029E2).withOpacity(1),
                             ),
                             child: const Center(
-                                child: Text('Export Data',
+                                child: Text('Export Data (Free Bookings)',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ))))),
+                    SizedBox(height: 50),
+                    InkWell(
+                        onTap: () {
+                          export1();
+                        },
+                        child: Container(
+                            height: 40.0,
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF0029E2).withOpacity(1),
+                            ),
+                            child: const Center(
+                                child: Text('Export Data (Monthly Bookings)',
                                     style: TextStyle(
                                       color: Colors.white,
                                     ))))),
@@ -224,6 +240,7 @@ class _ExportState extends State<Export> {
       'Tennis 4 (Tennis Courts)',
       'Tennis 5 (Tennis Courts)',
       'Tennis 6 (Tennis Courts)',
+      'Billiards Room (New Sports Complex)'
     ];
     var slots = [
       '06.30-07.20 AM',
@@ -254,6 +271,8 @@ class _ExportState extends State<Export> {
       backgroundColor: Colors.black,
       textColor: Colors.white,
     );
+    String date1 = date;
+
     for (int i = 0; i < facilities.length; i++) {
       for (int j = 0; j < slots.length; j++) {
         try {
@@ -272,6 +291,109 @@ class _ExportState extends State<Export> {
           //       );
           //     });
 
+          // if (facilities[i].contains('Gym') || facilities[i].contains('Wall')) {
+          //   date = currentDate.month.toString() +
+          //       "_" +
+          //       currentDate.year.toString();
+          // } else {
+          //   date = date1;
+          // }
+          QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+              .collection('bookings')
+              .doc(facilities[i])
+              .collection(date)
+              .doc(slots[j])
+              .collection('names')
+              .get();
+          list = querySnapshot.docs;
+          if (list != null) {
+            for (var res in list) {
+              String name = res.data()["name"];
+              String email = res.data()["email"];
+              print(facilities[i] + " " + slots[j] + " " + name + " " + email);
+              List<dynamic> df = [];
+              df.add(facilities[i]);
+              df.add(slots[j]);
+              df.add(name);
+              df.add(email);
+              df1.add(df);
+            }
+          }
+        } catch (e) {
+          print(e);
+        }
+      }
+    }
+    String csv = makeCsv(df1);
+    download(csv.codeUnits, downloadName: date + '.csv');
+  }
+
+  Future<void> export1() async {
+    var facilities = [
+      'Gym MWF (New Sports Complex)',
+      'Gym TThS (New Sports Complex)',
+      'Gym MWF (Old Sports Complex)',
+      'Gym TThS (Old Sports Complex)',
+      'Wall Climbing MWF (New Sports Complex)',
+      'Wall Climbing TThS (New Sports Complex)',
+    ];
+    var slots = [
+      '06.30-07.20 AM',
+      '07.30-08.20 AM',
+      '08.30-09.20 AM',
+      '09.30-10.20 AM',
+      '10.30-11.20 AM',
+      '11.30-12.20 PM',
+      '03.00-03.50 PM',
+      '04.00-04.50 PM',
+      '05.00-05.50 PM',
+      '06.00-06.50 PM',
+      '07.00-07.50 PM',
+      '08.00-08.50 PM',
+    ];
+    var list;
+    List<dynamic> df = [];
+    List<List<dynamic>> df1 = [];
+    df.add('Facility');
+    df.add('Slot');
+    df.add('Name');
+    df.add('Email');
+    df1.add(df);
+    Fluttertoast.showToast(
+      msg: "This may take some time.",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
+    String date =
+        currentDate.month.toString() + "_" + currentDate.year.toString();
+
+    for (int i = 0; i < facilities.length; i++) {
+      for (int j = 0; j < slots.length; j++) {
+        try {
+          // _showDialog(context, SimpleFontelicoProgressDialogType.hurricane,
+          //     'Hurricane');
+          // showDialog(
+          //     barrierDismissible: false,
+          //     context: context,
+          //     builder: (context) {
+          //       Future.delayed(const Duration(seconds: 10), () {
+          //         Navigator.of(context).pop(true);
+          //       });
+          //       return const AlertDialog(
+          //         title: Text(
+          //             'Please wait, this may take some time. The file will be downloaded automatically.'),
+          //       );
+          //     });
+
+          // if (facilities[i].contains('Gym') || facilities[i].contains('Wall')) {
+          //   date = currentDate.month.toString() +
+          //       "_" +
+          //       currentDate.year.toString();
+          // } else {
+          //   date = date1;
+          // }
           QuerySnapshot querySnapshot = await FirebaseFirestore.instance
               .collection('bookings')
               .doc(facilities[i])

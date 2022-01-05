@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gnsdev/book.dart';
 import 'package:gnsdev/dashboard.dart';
 import 'package:gnsdev/profile.dart';
+import 'package:intl/intl.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -71,6 +72,10 @@ class _SOFState extends State<SOF> {
 
   Future sendEmail(
       {required String name,
+      required String date,
+      required String time,
+      required String facility,
+      required String slot,
       required String email,
       required String subject,
       required String message}) async {
@@ -88,6 +93,11 @@ class _SOFState extends State<SOF> {
           'user_id': userID,
           'template_params': {
             'user_email': email,
+            'user_time': time,
+            'user_date': date,
+            'user_name': name,
+            'user_facility': facility,
+            'user_slot': slot,
             'user_subject': subject,
             'user_message': message,
             'reply_to': '',
@@ -347,7 +357,7 @@ class _SOFState extends State<SOF> {
             }),
             const SizedBox(width: 50),
           ],
-          title: const Text("Fill in your compananions' details"),
+          title: const Text("Click OK button to continue"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pushReplacement(context,
@@ -386,34 +396,34 @@ class _SOFState extends State<SOF> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RaisedButton(
-                      child: const Text('Add New'),
-                      onPressed: () => setState(() {
-                        if (cards.length < int.parse(widget.people)) {
-                          cards.add(createCard());
-                        } else {
-                          _onDone();
-                        }
-                      }),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    RaisedButton(
-                        child: const Text('Cancel'),
-                        onPressed: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Dashboard()))),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(16.0),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       RaisedButton(
+              //         child: const Text('Add New'),
+              //         onPressed: () => setState(() {
+              //           if (cards.length < int.parse(widget.people)) {
+              //             cards.add(createCard());
+              //           } else {
+              //             _onDone();
+              //           }
+              //         }),
+              //       ),
+              //       const SizedBox(
+              //         width: 30,
+              //       ),
+              //       RaisedButton(
+              //           child: const Text('Cancel'),
+              //           onPressed: () => Navigator.pushReplacement(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => const Dashboard()))),
+              //     ],
+              //   ),
+              // ),
               const Text(
                   'Press the OK button once and wait for your booking confirmation')
             ],
@@ -661,20 +671,22 @@ class _SOFState extends State<SOF> {
           // }
 
           //email sent to parent user
+          final df = DateFormat('dd-MM-yyyy hh:mm a');
+          int myvalue =
+              (((DateTime.now()).millisecondsSinceEpoch) / 1000).round();
+
+          print(df.format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)));
+          String date1 = date.replaceAll('_', '-');
           sendEmail(
-              name: 'Games and Sports Council, IITK',
+              name: userName!,
               email: userEmail!,
-              message: 'Dear ' +
-                  userName +
-                  ' (' +
-                  userEmail! +
-                  ') \nyour seat for ' +
-                  widget.ground +
-                  ' on ' +
-                  widget.date +
-                  ' at ' +
-                  widget.time +
-                  ' has been confirmed.\nRegards\nSPEC Office',
+              date: date1,
+              facility: widget.ground,
+              slot: widget.time,
+              time: df
+                  .format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)),
+              message:
+                  'Your booking has been confirmed. The details are as follows:',
               subject: 'Booking Confirmation for Sports Facilities IITK');
 
           //email sent to daughter users(s)
@@ -699,26 +711,21 @@ class _SOFState extends State<SOF> {
             });
 
             sendEmail(
-                name: 'Games and Sports Council, IITK',
-                email: mailTECs[i].text,
-                message: 'Dear ' +
-                    tempName +
-                    ' (' +
-                    mailTECs[i].text +
-                    ') \nyour seat for ' +
-                    widget.ground +
-                    ' on ' +
-                    widget.date +
-                    ' at ' +
-                    widget.time +
-                    ' has been confirmed by ' +
-                    userName +
-                    ' (' +
-                    userEmail! +
-                    ').\nRegards\nSPEC Office',
+                name: userName!,
+                email: userEmail!,
+                date: date,
+                facility: widget.ground,
+                slot: widget.time,
+                time: df.format(
+                    DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)),
+                message:
+                    'Your booking has been confirmed. The details are as follows:',
                 subject: 'Booking Confirmation for Sports Facilities IITK');
           }
 
+          showSuccess('Booking Confirmed');
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Dashboard()));
           showSuccess('Booking Confirmed');
 
           //

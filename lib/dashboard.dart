@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gnsdev/profile.dart';
 import 'package:gnsdev/section.dart';
+import 'package:intl/intl.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -185,6 +186,9 @@ class _DashboardState extends State<Dashboard> {
   Widget _builderList(String number, String ground, String accompany,
       String date, String time, String desc, String accDetails, String emails) {
     {
+      print(accDetails);
+      print(desc);
+      print(accompany);
       if (number == null || number.isEmpty) number = "Not Available";
       if (ground == null || ground.isEmpty) ground = "Not Available";
       if (accompany == null || accompany.isEmpty) accompany = "Not Available";
@@ -209,7 +213,7 @@ class _DashboardState extends State<Dashboard> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                      'https://media.istockphoto.com/videos/abstract-light-blue-soft-background-video-id466111690?s=480x480'),
+                      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeIAAABoCAMAAAAaawObAAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAODPAMQ4AAG8WSytAAAAAElFTkSuQmCC'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(15),
@@ -287,7 +291,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 child: const Icon(
                                   Icons.remove_red_eye,
-                                  color: Colors.lightBlueAccent,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -335,7 +339,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 child: const Icon(
                                   Icons.delete,
-                                  color: Colors.lightBlueAccent,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -598,7 +602,8 @@ class _DashboardState extends State<Dashboard> {
   Future<void> view(String heading, String desc, String id, String date,
       String time, String important, String accDetails) async {
     String desc1 = "";
-
+    print(accDetails);
+    print(desc);
     List<String> temp = accDetails.split('%');
     for (int i = 0; i < temp.length; i++) {
       print(temp[i] + "__");
@@ -701,7 +706,12 @@ class _DashboardState extends State<Dashboard> {
             //   return;
             // }
             bool check = true;
-            if (date.length == 10) check = checkDelete(slot, date);
+            print(date);
+            if (date.length >= 8)
+              check = checkDelete(slot, date);
+            else {
+              check = checkDeletePaid(date);
+            }
             if (check == false) {
               showError('You cannot delete past bookings');
               return;
@@ -817,31 +827,33 @@ class _DashboardState extends State<Dashboard> {
                   .collection('users')
                   .doc(userEmail)
                   .update({'paid': '-1'});
-            }
-            else if (ground.contains('Wall')) {
+            } else if (ground.contains('Wall')) {
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(userEmail)
                   .update({'paidWC': '-1'});
             }
-            
 
             // _dialog.hide();
+            final df = DateFormat('dd-MM-yyyy hh:mm a');
+            int myvalue =
+                (((DateTime.now()).millisecondsSinceEpoch) / 1000).round();
+
+            print(
+                df.format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)));
+            String date1 = date.replaceAll('_', '-');
             sendEmail(
-                name: '',
-                email: userEmail.toString(),
-                subject: 'Booking Cancellation Confirmation ',
-                message: 'Dear ' +
-                    userName +
-                    ' (' +
-                    userEmail.toString() +
-                    '), Your booking for ' +
-                    ground +
-                    ' on ' +
-                    date +
-                    ' at ' +
-                    slot +
-                    ' has been cancelled.\n\nRegards,\nSPEC Office ');
+                name: userName!,
+                email: userEmail!,
+                facility: ground,
+                date: date1,
+                slot: slot,
+                time: df.format(
+                    DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)),
+                message:
+                    'Your booking has been cancelled. The details are as follows:',
+                subject:
+                    'Booking Cancellation Confirmation for Sports Facilities IITK');
 
             showSuccess('Booking deleted');
             Navigator.pushReplacement(
@@ -858,6 +870,10 @@ class _DashboardState extends State<Dashboard> {
 
   Future sendEmail(
       {required String name,
+      required String facility,
+      required String time,
+      required String date,
+      required String slot,
       required String email,
       required String subject,
       required String message}) async {
@@ -875,8 +891,13 @@ class _DashboardState extends State<Dashboard> {
           'user_id': userID,
           'template_params': {
             'user_email': email,
+            'user_name': name,
+            'user_time': time,
             'user_subject': subject,
             'user_message': message,
+            'user_facility': facility,
+            'user_date': date,
+            'user_slot': slot,
             'reply_to': '',
           }
         }));
@@ -915,6 +936,24 @@ class _DashboardState extends State<Dashboard> {
         onDissmissCallback: (type) {
           debugPrint('Dialog Dissmiss from callback $type');
         }).show();
+  }
+
+  bool checkDeletePaid(String date) {
+    DateTime date1 = DateTime.now();
+    String month = date1.month.toString();
+    int mon = int.parse(month);
+    String year = date1.year.toString();
+    int yr = int.parse(year);
+    List<String> past = date.split('_');
+    int m = int.parse(past[0]);
+    int y = int.parse(past[1]);
+    int pastCal = y * y + m;
+    int preCal = yr * yr + mon;
+    if (pastCal >= preCal) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   bool checkDelete(String slot, String date) {

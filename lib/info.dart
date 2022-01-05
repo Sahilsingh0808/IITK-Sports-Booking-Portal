@@ -125,18 +125,7 @@ class _InfoState extends State<Info> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Beta Testers:',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Khushi Gautam, Navneet Singh, Sweta Kumari, Swayam Gupta',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
-                      textAlign: TextAlign.center,
-                    ),
+                   
                     SizedBox(height: 50),
                     RichText(
                       text: TextSpan(

@@ -337,8 +337,8 @@ class _LoginPageState extends State<LoginPage> {
             email: email, password: password));
         // _dialog.hide();
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Remedy()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const Dashboard()));
         // _dialog.hide();
       } catch (e) {
         // _dialog.hide();

@@ -65,7 +65,7 @@ class _RemedyState extends State<Remedy> {
     setState(() {
       userEmail = user?.email;
     });
-    check();
+    // check();
   }
 
   String? otp, email, password, password1, name, roll, phone, category;
@@ -198,7 +198,7 @@ class _RemedyState extends State<Remedy> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: const Text(
-                                            'Please verify your data below to continue',
+                                            'Update your profile details.\nPlease fill only genuine details here.',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 20,

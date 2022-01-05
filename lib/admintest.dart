@@ -145,12 +145,14 @@ class _DashboardAdminTestState extends State<DashboardAdminTest> {
   addPaid() async {
     final db = FirebaseFirestore.instance;
     var result = await db.collection('users').get();
+    print('started');
     for (var res in result.docs) {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(res.id.toString())
-          .update({'paid': '-1'});
+          .update({'paid': '-1', 'paidB': '-1', 'paidWC': '-1'});
     }
+    print('done');
   }
 
   Future<void> refreshSeats() async {

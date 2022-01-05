@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -63,12 +64,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future sendEmail(
-      {required String name,
-      required String email,
-      required String subject,
-      required String message}) async {
+      {required String email,
+      required String message,
+      required String time}) async {
     const String serviceID = 'service_t1yuekz';
-    const String templateID = 'template_ydlj5s4';
+    const String templateID = 'template_mu2b7yv';
     const String userID = 'user_Rgq3HtaCMu8ckNNNPVR0T';
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
     final response = await http.post(url,
@@ -81,8 +81,8 @@ class _RegisterPageState extends State<RegisterPage> {
           'user_id': userID,
           'template_params': {
             'user_email': email.toLowerCase(),
-            'user_subject': subject,
-            'user_message': message,
+            'user_time': time,
+            'user_otp': message,
             'reply_to': '',
           }
         }));
@@ -135,6 +135,9 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void sendOtp() async {
+    final df = DateFormat('dd-MM-yyyy hh:mm a');
+    int myvalue = (((DateTime.now()).millisecondsSinceEpoch) / 1000).round();
+    print(df.format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)));
     if (email == null || email!.isEmpty) {
       showError("Please enter Email address");
     } else if (!email!.contains('iitk.ac.in')) {
@@ -144,13 +147,9 @@ class _RegisterPageState extends State<RegisterPage> {
         otpNo = otpGenerate();
       });
       sendEmail(
-          name: 'Games and Sports Council, IITK',
           email: email!.toLowerCase(),
-          message:
-              'Your OTP for regestering on the Sports Facilities, IITK is ' +
-                  otpNo.toString() +
-                  '.\nRegards,\nSPEC Office',
-          subject: 'OTP for IITK Sports Facilities Booking Portal');
+          message: otpNo.toString(),
+          time: df.format(DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)));
 
       setState(() {
         submitValid = true;

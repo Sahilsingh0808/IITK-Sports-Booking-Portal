@@ -72,8 +72,12 @@ class _BookPaidState extends State<BookPaid> {
   }
 
   Future sendEmail(
-      {required String name,
+      {required String facility,
+      required String date,
+      required String slot,
+      required String name,
       required String email,
+      required String time,
       required String subject,
       required String message}) async {
     const String serviceID = 'service_t1yuekz';
@@ -89,7 +93,12 @@ class _BookPaidState extends State<BookPaid> {
           'template_id': templateID,
           'user_id': userID,
           'template_params': {
-            'user_email': email,
+            'user_name': name,
+            'user_time': time,
+            'user_facility': facility,
+            'user_slot': slot,
+            'user_date': date,
+            'user_email': email.toLowerCase(),
             'user_subject': subject,
             'user_message': message,
             'reply_to': '',
@@ -698,24 +707,20 @@ class _BookPaidState extends State<BookPaid> {
                       } else if (currentDate.month.toString() == '11') {
                         month = 'November';
                       }
-
+                      final df = DateFormat('dd-MM-yyyy hh:mm a');
+                      int myvalue =
+                          (((DateTime.now()).millisecondsSinceEpoch) / 1000)
+                              .round();
                       sendEmail(
-                          name: 'Games and Sports Council, IITK',
+                          name: userName!,
                           email: userEmail!,
-                          message: 'Dear ' +
-                              userName! +
-                              ' (' +
-                              userEmail! +
-                              ') \nyour registration for ' +
-                              chosenValue.toString() +
-                              ' for ' +
-                              month +
-                              ' at ' +
-                              chosenValue2.toString() +
-                              ' has been confirmed ' +
-                              ' (' +
-                              userEmail! +
-                              ').\nRegards\nSPEC Office',
+                          facility: chosenValue.toString(),
+                          slot: chosenValue2.toString(),
+                          date: month,
+                          time: df.format(DateTime.fromMillisecondsSinceEpoch(
+                              myvalue * 1000)),
+                          message:
+                              'Your booking has been confirmed. The details are as follows:',
                           subject:
                               'Booking Confirmation for Sports Facilities IITK');
 
@@ -780,26 +785,50 @@ class _BookPaidState extends State<BookPaid> {
                     if (paidWC.length <= 2) {
                       showSuccess('Booking Successful',
                           'Your booking has been confirmed');
+                      String month = '';
+                      if (currentDate.month.toString() == '12') {
+                        month = 'December';
+                      } else if (currentDate.month.toString() == '1') {
+                        month = 'January';
+                      } else if (currentDate.month.toString() == '2') {
+                        month = 'February';
+                      } else if (currentDate.month.toString() == '3') {
+                        month = 'March';
+                      } else if (currentDate.month.toString() == '4') {
+                        month = 'April';
+                      } else if (currentDate.month.toString() == '5') {
+                        month = 'May';
+                      } else if (currentDate.month.toString() == '6') {
+                        month = 'June';
+                      } else if (currentDate.month.toString() == '7') {
+                        month = 'July';
+                      } else if (currentDate.month.toString() == '8') {
+                        month = 'August';
+                      } else if (currentDate.month.toString() == '9') {
+                        month = 'September';
+                      } else if (currentDate.month.toString() == '10') {
+                        month = 'October';
+                      } else if (currentDate.month.toString() == '11') {
+                        month = 'November';
+                      }
+                      final df = DateFormat('dd-MM-yyyy hh:mm a');
+                      int myvalue =
+                          (((DateTime.now()).millisecondsSinceEpoch) / 1000)
+                              .round();
+
                       sendEmail(
-                          name: 'Games and Sports Council, IITK',
+                          name: userName!,
                           email: userEmail!,
-                          message: 'Dear ' +
-                              userName! +
-                              ' (' +
-                              userEmail! +
-                              ') \nyour registration for ' +
-                              chosenValue.toString() +
-                              ' for ' +
-                              currentDate.month.toString() +
-                              " month " +
-                              ' at ' +
-                              chosenValue2.toString() +
-                              ' has been confirmed ' +
-                              ' (' +
-                              userEmail! +
-                              ').\nRegards\nSPEC Office',
+                          date: month,
+                          facility: chosenValue.toString(),
+                          slot: chosenValue2.toString(),
+                          time: df.format(DateTime.fromMillisecondsSinceEpoch(
+                              myvalue * 1000)),
+                          message:
+                              'Your booking has been confirmed. The details are as follows:',
                           subject:
                               'Booking Confirmation for Sports Facilities IITK');
+
                       await FirebaseFirestore.instance
                           .collection('users')
                           .doc(userEmail)
@@ -861,26 +890,50 @@ class _BookPaidState extends State<BookPaid> {
                     if (paidB.length <= 2) {
                       showSuccess('Booking Successful',
                           'Your booking has been confirmed');
+                      String month = '';
+                      if (currentDate.month.toString() == '12') {
+                        month = 'December';
+                      } else if (currentDate.month.toString() == '1') {
+                        month = 'January';
+                      } else if (currentDate.month.toString() == '2') {
+                        month = 'February';
+                      } else if (currentDate.month.toString() == '3') {
+                        month = 'March';
+                      } else if (currentDate.month.toString() == '4') {
+                        month = 'April';
+                      } else if (currentDate.month.toString() == '5') {
+                        month = 'May';
+                      } else if (currentDate.month.toString() == '6') {
+                        month = 'June';
+                      } else if (currentDate.month.toString() == '7') {
+                        month = 'July';
+                      } else if (currentDate.month.toString() == '8') {
+                        month = 'August';
+                      } else if (currentDate.month.toString() == '9') {
+                        month = 'September';
+                      } else if (currentDate.month.toString() == '10') {
+                        month = 'October';
+                      } else if (currentDate.month.toString() == '11') {
+                        month = 'November';
+                      }
+                      final df = DateFormat('dd-MM-yyyy hh:mm a');
+                      int myvalue =
+                          (((DateTime.now()).millisecondsSinceEpoch) / 1000)
+                              .round();
+
                       sendEmail(
-                          name: 'Games and Sports Council, IITK',
+                          name: userName!,
                           email: userEmail!,
-                          message: 'Dear ' +
-                              userName! +
-                              ' (' +
-                              userEmail! +
-                              ') \nyour registration for ' +
-                              chosenValue.toString() +
-                              ' for ' +
-                              currentDate.month.toString() +
-                              " month " +
-                              ' at ' +
-                              chosenValue2.toString() +
-                              ' has been confirmed ' +
-                              ' (' +
-                              userEmail! +
-                              ').\nRegards\nSPEC Office',
+                          facility: chosenValue.toString(),
+                          slot: chosenValue2.toString(),
+                          date: month,
+                          time: df.format(DateTime.fromMillisecondsSinceEpoch(
+                              myvalue * 1000)),
+                          message:
+                              'Your booking has been confirmed. The details are as follows:',
                           subject:
                               'Booking Confirmation for Sports Facilities IITK');
+
                       await FirebaseFirestore.instance
                           .collection('users')
                           .doc(userEmail)
