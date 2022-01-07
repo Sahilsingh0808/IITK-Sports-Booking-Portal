@@ -388,6 +388,11 @@ class _SOFState extends State<SOF> {
               //     });
               //   },
               // ),
+              const Text(
+                'Press the button ONLY ONCE and wait for confirmation',
+                textAlign: TextAlign.center,
+                textScaleFactor: 2,
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: cards.length,
@@ -424,6 +429,9 @@ class _SOFState extends State<SOF> {
               //     ],
               //   ),
               // ),
+              const SizedBox(
+                height: 20,
+              ),
               const Text(
                   'Press the OK button once and wait for your booking confirmation')
             ],
@@ -690,38 +698,38 @@ class _SOFState extends State<SOF> {
               subject: 'Booking Confirmation for Sports Facilities IITK');
 
           //email sent to daughter users(s)
-          for (int i = 0; i < int.parse(widget.people); i++) {
-            print("Sending Email to users");
-            print(mailTECs[i].text);
-            var res = await FirebaseFirestore.instance
-                .collection('users')
-                .doc(mailTECs[i].text)
-                .get();
-            String tempName = res.data()!['name'];
-            await FirebaseFirestore.instance
-                .collection("bookings")
-                .doc(widget.ground)
-                .collection(widget.date)
-                .doc(widget.time)
-                .collection('names')
-                .doc(mailTECs[i].text + '%' + tempName)
-                .set({
-              'email': mailTECs[i].text,
-              'name': tempName,
-            });
+          // for (int i = 0; i < int.parse(widget.people); i++) {
+          //   print("Sending Email to users");
+          //   print(mailTECs[i].text);
+          //   var res = await FirebaseFirestore.instance
+          //       .collection('users')
+          //       .doc(mailTECs[i].text)
+          //       .get();
+          //   String tempName = res.data()!['name'];
+          //   await FirebaseFirestore.instance
+          //       .collection("bookings")
+          //       .doc(widget.ground)
+          //       .collection(widget.date)
+          //       .doc(widget.time)
+          //       .collection('names')
+          //       .doc(mailTECs[i].text + '%' + tempName)
+          //       .set({
+          //     'email': mailTECs[i].text,
+          //     'name': tempName,
+          //   });
 
-            sendEmail(
-                name: userName!,
-                email: userEmail!,
-                date: date,
-                facility: widget.ground,
-                slot: widget.time,
-                time: df.format(
-                    DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)),
-                message:
-                    'Your booking has been confirmed. The details are as follows:',
-                subject: 'Booking Confirmation for Sports Facilities IITK');
-          }
+          //   sendEmail(
+          //       name: userName!,
+          //       email: userEmail!,
+          //       date: date,
+          //       facility: widget.ground,
+          //       slot: widget.time,
+          //       time: df.format(
+          //           DateTime.fromMillisecondsSinceEpoch(myvalue * 1000)),
+          //       message:
+          //           'Your booking has been confirmed. The details are as follows:',
+          //       subject: 'Booking Confirmation for Sports Facilities IITK');
+          // }
 
           showSuccess('Booking Confirmed');
           Navigator.push(context,
